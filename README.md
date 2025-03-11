@@ -1,1 +1,1 @@
-# earth_defensor
+# earth-defensor

@@ -1,4 +1,5 @@
 function love.draw()
+  --  Carregamento da imagem da Galáxia  --
   love.graphics.draw(fundo.imagem, fundo.posX, fundo.posY, 0, fundo.tamX, fundo.tamY, fundo.oriX, fundo.oriY)
   
   --  Carregamento da imagem da Terra  --

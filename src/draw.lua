@@ -1,5 +1,5 @@
 function love.draw()
-  love.graphics.setBackgroundColor(255,255,255)
+  love.graphics.draw(fundo.imagem, fundo.posX, fundo.posY, 0, fundo.tamX, fundo.tamY, fundo.oriX, fundo.oriY)
   
   --  Carregamento da imagem da Terra  --
   love.graphics.draw(terra.imagem, terra.posX, terra.posY, 0, terra.tamX, terra.tamY, terra.oriX, terra.oriY)

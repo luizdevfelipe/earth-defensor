@@ -2,7 +2,8 @@ function love.update(dt)
   carregamento()
   
   sombraRot = sombraRot + 1 * dt
-  x, y = orbita(centroJanelaX, centroJanelaY, 250, sombraRot)
+  orbitaLua = orbitaLua + 1 * dt
+  x, y = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
   
   lua.posX = x
   lua.posY = y
@@ -25,8 +26,8 @@ function carregamento()
       imagem = terraImagem,
       posX = centroJanelaX,
       posY = centroJanelaY,
-      tamX = 0.5,
-      tamY = 0.5,
+      tamX = 0.45,
+      tamY = 0.45,
       oriX = terraImagem:getWidth() / 2 ,
       oriY = terraImagem:getHeight() / 2
   }
@@ -35,10 +36,10 @@ function carregamento()
   --  Atributos Lua  --
   lua = {
     imagem = luaImagem,
-    posX = centroJanelaX + 300,
-    posY = centroJanelaY + 100,
-    tamX = 0.2,
-    tamY = 0.2,
+    posX = centroJanelaX,
+    posY = centroJanelaY,
+    tamX = 0.16,
+    tamY = 0.16,
     oriX = luaImagem:getWidth() / 2 ,
     oriY = luaImagem:getHeight() / 2
   }

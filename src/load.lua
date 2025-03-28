@@ -4,5 +4,6 @@ function love.load()
   sombra = love.graphics.newImage("assets/images/sombra.png")
   fundoImagem = love.graphics.newImage("assets/images/fundo.jpeg")
   
-  sombraRot = 0
+  sombraRot = 11.3
+  orbitaLua = 0
 end

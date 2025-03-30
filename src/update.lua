@@ -1,22 +1,37 @@
 function love.update(dt)
   carregamento()
+  movimentoLua(dt)
   
-  sombraRot = sombraRot + 1 * dt
-  orbitaLua = orbitaLua + 1 * dt
-  x, y = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
-  
-  lua.posX = x
-  lua.posY = y
-
 end
 
+-- função que atualiza as posições da Lua no jogo
+function movimentoLua(dt)  
+  sombraRot = sombraRot + velocidadeOrbita * dt * direcaoOrbita
+  orbitaLua = orbitaLua + velocidadeOrbita * dt * direcaoOrbita
+  lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
+end
+
+--[[ 
+ função de detecção das teclas pressionadas
+ diferente de love.keyboard essa callback só é executada uma vez
+ após uma tecla é pressionada 
+]]
+function love.keypressed(key)
+   if key == "d" and direcaoOrbita == 1 then
+    direcaoOrbita = direcaoOrbita * -1
+  elseif key == "a" and direcaoOrbita == -1 then
+    direcaoOrbita = direcaoOrbita * -1
+  end
+end
+
+-- função matemática para cálculo de posicionamento orbital
 function orbita(centroX, centroY, raio, angulo)
     local x = centroX + math.cos(angulo) * raio
     local y = centroY + math.sin(angulo) * raio
     return x, y
 end
 
-
+-- Variáveis que devem ser atualizadas durante a execução
 function carregamento()  
   screenWidth, screenHeight = love.window.getMode()
   centroJanelaX = screenWidth / 2

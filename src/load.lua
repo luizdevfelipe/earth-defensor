@@ -17,6 +17,7 @@ function love.load()
   -- Variáveis dos inimigos
   meteoroides = {}
   metricasMeteoroides = {
+    vel = 300,
     qtd = 5,
     delay = 1,
     contagem = 1

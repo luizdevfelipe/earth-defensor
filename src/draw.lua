@@ -10,4 +10,8 @@ function love.draw()
   --  Carregamento da imagem da Sombra da Lua  --
   love.graphics.draw(sombra, lua.posX, lua.posY, sombraRot, lua.tamX, lua.tamY, lua.oriX, lua.oriY)
   
+  -- Carregamento das imagens de meteoroides --
+  for i, meteoroide in ipairs(meteoroides) do
+    love.graphics.draw(meteoroideImg, meteoroide.x, meteoroide.y, 0, 0.2, 0.2, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2)
+  end
 end

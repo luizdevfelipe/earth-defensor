@@ -12,37 +12,63 @@ function inimigos(dt)
     --metricasMeteoroides.qtd = metricasMeteoroides.qtd - 1
     
     cimaOuBaixo = math.random(0, 1)
-    deUmLadoOuDoOutro = math.random(0, 1)
+    umLadoOuOutro = math.random(0, 1)
     
-    if cimaOuBaixo then
-      -- Se for X aleatório o meteoroide tem o Y reduzido até chegar ao centro
+    if cimaOuBaixo == 1 then
+      -- Se X é aleatório, o meteoroide aparecerá na parte inferior ou superior da tela
       posicaoXAleatoria = math.random(meteoroideImg:getWidth(), love.graphics.getWidth() - meteoroideImg:getWidth())
-      if deUmLadoOuDoOutro then
-        novoMeteoroide = {x = posicaoXAleatoria, y = -meteoroideImg:getHeight()}
+      if umLadoOuOutro == 1 then
+        -- Se "um lado" o meteoroide aparecerá no topo da tela até seu centro, aumentado o seu Y
+        novoMeteoroide = {x = posicaoXAleatoria, y = -meteoroideImg:getHeight(), posicao = "cima"}
       else
-        novoMeteoroide = {x = posicaoXAleatoria, y = screenHeight + meteoroideImg:getHeight()}
+        -- Se "do outro" o meteoroide aparecerá no inferior da tela até seu centro, diminuindo o seu Y
+        novoMeteoroide = {x = posicaoXAleatoria, y = screenHeight + meteoroideImg:getHeight(), posicao = "baixo"}
       end
     else
-      -- Se for Y aleatório o meteoroide tem o X aumentado até chegar ao centro
+      -- Se Y é aleatório, o meteoroide aparecerá na esquerda ou direita da tela
       posicaoYAleatoria = math.random(meteoroideImg:getHeight(), love.graphics.getHeight() - meteoroideImg:getHeight())
-      if deUmLadoOuDoOutro then
-        novoMeteoroide = {x = -meteoroideImg:getWidth(), y = posicaoYAleatoria}
+      if umLadoOuOutro == 1 then
+        -- Se "um lado" o meteoroide aparecerá da esquerda até o centro da tela, aumentado o seu X
+        novoMeteoroide = {x = -meteoroideImg:getWidth(), y = posicaoYAleatoria, posicao = "esquerda"}
       else
-        novoMeteoroide = {x = screenWidth + meteoroideImg:getWidth(), y = posicaoYAleatoria}
+        -- Se "do outro" o meteoroide aparecerá da direita até o centro da tela, diminuindo o seu X
+        novoMeteoroide = {x = screenWidth + meteoroideImg:getWidth(), y = posicaoYAleatoria, posicao = "direita"}
       end
     end    
     
     table.insert(meteoroides, novoMeteoroide)
   end
   
-  --[[ 
-  for m, meteoroide in ipairs(meteoroides) do
-    meteoroide.y = inimigo.y + 200 * dt
-    if inimigo.x > 850 then
-      table.remove(inimigos, i)
+  
+  for i, meteoroide in ipairs(meteoroides) do
+    if meteoroide.posicao == "cima" then
+      meteoroide.y = meteoroide.y + metricasMeteoroides.vel * dt
+      -- Caso o meteoroide não colida em nada
+      if meteoroide.y > screenHeight then
+        table.remove(meteoroides, i)
+      end
+    elseif meteoroide.posicao == "baixo" then
+      meteoroide.y = meteoroide.y - metricasMeteoroides.vel * dt
+      -- Caso o meteoroide não colida em nada
+      if meteoroide.y < 0 then
+        table.remove(meteoroides, i)
+      end
+    elseif meteoroide.posicao == "esquerda" then
+      meteoroide.x = meteoroide.x + metricasMeteoroides.vel * dt
+      -- Caso o meteoroide não colida em nada
+      if meteoroide.x > screenWidth then
+        table.remove(meteoroides, i)
+      end
+    elseif meteoroide.posicao == "direita" then
+      meteoroide.x = meteoroide.x - metricasMeteoroides.vel * dt
+      -- Caso o meteoroide não colida em nada
+      if meteoroide.x < 0 then
+        table.remove(meteoroides, i)
+      end
     end
+    print(tostring(meteoroide.x) .. " - " .. tostring(meteoroide.y))
   end
-  ]]
+  
 
 end
 
@@ -53,11 +79,7 @@ function movimentoLua(dt)
   lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
 end
 
---[[ 
- função de detecção das teclas pressionadas
- diferente de love.keyboard essa callback só é executada uma vez
- após uma tecla é pressionada 
-]]
+-- função de detecção das teclas pressionadas 
 function love.keypressed(key)
    if key == "d" and direcaoOrbita == 1 then
     direcaoOrbita = direcaoOrbita * -1
@@ -71,6 +93,10 @@ function orbita(centroX, centroY, raio, angulo)
     local x = centroX + math.cos(angulo) * raio
     local y = centroY + math.sin(angulo) * raio
     return x, y
+end
+
+function isColisao(x1, y1, w1, h1, x2, y2, w2, h2)
+  return x1 < x2 + w2 and x2 < x1 + w1 and y1 < y2 + h2 and y2 < y1 + h1
 end
 
 -- Variáveis que devem ser atualizadas durante a execução

@@ -1,7 +1,49 @@
 function love.update(dt)
   carregamento()
   movimentoLua(dt)
+  inimigos(dt)
   
+end
+
+function inimigos(dt)
+  metricasMeteoroides.contagem = metricasMeteoroides.contagem - 1 * dt
+  if metricasMeteoroides.contagem < 0 and metricasMeteoroides.qtd > 0 then
+    metricasMeteoroides.contagem = metricasMeteoroides.delay
+    --metricasMeteoroides.qtd = metricasMeteoroides.qtd - 1
+    
+    cimaOuBaixo = math.random(0, 1)
+    deUmLadoOuDoOutro = math.random(0, 1)
+    
+    if cimaOuBaixo then
+      -- Se for X aleatório o meteoroide tem o Y reduzido até chegar ao centro
+      posicaoXAleatoria = math.random(meteoroideImg:getWidth(), love.graphics.getWidth() - meteoroideImg:getWidth())
+      if deUmLadoOuDoOutro then
+        novoMeteoroide = {x = posicaoXAleatoria, y = -meteoroideImg:getHeight()}
+      else
+        novoMeteoroide = {x = posicaoXAleatoria, y = screenHeight + meteoroideImg:getHeight()}
+      end
+    else
+      -- Se for Y aleatório o meteoroide tem o X aumentado até chegar ao centro
+      posicaoYAleatoria = math.random(meteoroideImg:getHeight(), love.graphics.getHeight() - meteoroideImg:getHeight())
+      if deUmLadoOuDoOutro then
+        novoMeteoroide = {x = -meteoroideImg:getWidth(), y = posicaoYAleatoria}
+      else
+        novoMeteoroide = {x = screenWidth + meteoroideImg:getWidth(), y = posicaoYAleatoria}
+      end
+    end    
+    
+    table.insert(meteoroides, novoMeteoroide)
+  end
+  
+  --[[ 
+  for m, meteoroide in ipairs(meteoroides) do
+    meteoroide.y = inimigo.y + 200 * dt
+    if inimigo.x > 850 then
+      table.remove(inimigos, i)
+    end
+  end
+  ]]
+
 end
 
 -- função que atualiza as posições da Lua no jogo
@@ -38,37 +80,37 @@ function carregamento()
   centroJanelaY = screenHeight / 2
   --  Atributos da Terra --
   terra = {
-      imagem = terraImagem,
+      imagem = terraImg,
       posX = centroJanelaX,
       posY = centroJanelaY,
       tamX = 0.45,
       tamY = 0.45,
-      oriX = terraImagem:getWidth() / 2 ,
-      oriY = terraImagem:getHeight() / 2
+      oriX = terraImg:getWidth() / 2 ,
+      oriY = terraImg:getHeight() / 2
   }
   --  Atributos da Terra --
   
   --  Atributos Lua  --
   lua = {
-    imagem = luaImagem,
+    imagem = luaImg,
     posX = centroJanelaX,
     posY = centroJanelaY,
     tamX = 0.16,
     tamY = 0.16,
-    oriX = luaImagem:getWidth() / 2 ,
-    oriY = luaImagem:getHeight() / 2
+    oriX = luaImg:getWidth() / 2 ,
+    oriY = luaImg:getHeight() / 2
   }
   --  Atributos Lua  --
   
   --  Atributos Fundo  --
   fundo = {
-    imagem = fundoImagem,
+    imagem = fundoImg,
     posX = centroJanelaX,
     posY = centroJanelaY,
-    tamX = screenWidth / fundoImagem:getWidth(),
-    tamY = screenHeight / fundoImagem:getHeight(),
-    oriX = fundoImagem:getWidth() / 2 ,
-    oriY = fundoImagem:getHeight() / 2
+    tamX = screenWidth / fundoImg:getWidth(),
+    tamY = screenHeight / fundoImg:getHeight(),
+    oriX = fundoImg:getWidth() / 2 ,
+    oriY = fundoImg:getHeight() / 2
   }
   --  Atributos Fundo  --
 end

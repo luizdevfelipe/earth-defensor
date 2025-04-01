@@ -16,7 +16,7 @@ function inimigos(dt)
     
     if cimaOuBaixo == 1 then
       -- Se X é aleatório, o meteoroide aparecerá na parte inferior ou superior da tela
-      posicaoXAleatoria = math.random(meteoroideImg:getWidth(), love.graphics.getWidth() - meteoroideImg:getWidth())
+      posicaoXAleatoria = math.random(meteoroideImg:getWidth(), screenWidth - meteoroideImg:getWidth())
       if umLadoOuOutro == 1 then
         -- Se "um lado" o meteoroide aparecerá no topo da tela até seu centro, aumentado o seu Y
         novoMeteoroide = {x = posicaoXAleatoria, y = -meteoroideImg:getHeight(), posicao = "cima"}
@@ -26,7 +26,7 @@ function inimigos(dt)
       end
     else
       -- Se Y é aleatório, o meteoroide aparecerá na esquerda ou direita da tela
-      posicaoYAleatoria = math.random(meteoroideImg:getHeight(), love.graphics.getHeight() - meteoroideImg:getHeight())
+      posicaoYAleatoria = math.random(meteoroideImg:getHeight(), screenHeight - meteoroideImg:getHeight())
       if umLadoOuOutro == 1 then
         -- Se "um lado" o meteoroide aparecerá da esquerda até o centro da tela, aumentado o seu X
         novoMeteoroide = {x = -meteoroideImg:getWidth(), y = posicaoYAleatoria, posicao = "esquerda"}
@@ -66,7 +66,6 @@ function inimigos(dt)
         table.remove(meteoroides, i)
       end
     end
-    print(tostring(meteoroide.x) .. " - " .. tostring(meteoroide.y))
   end
   
 
@@ -74,7 +73,6 @@ end
 
 -- função que atualiza as posições da Lua no jogo
 function movimentoLua(dt)  
-  sombraRot = sombraRot + velocidadeOrbita * dt * direcaoOrbita
   orbitaLua = orbitaLua + velocidadeOrbita * dt * direcaoOrbita
   lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
 end
@@ -109,8 +107,6 @@ function carregamento()
       imagem = terraImg,
       posX = centroJanelaX,
       posY = centroJanelaY,
-      tamX = 0.45,
-      tamY = 0.45,
       oriX = terraImg:getWidth() / 2 ,
       oriY = terraImg:getHeight() / 2
   }

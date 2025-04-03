@@ -16,7 +16,7 @@ function inimigos(dt)
     
     if cimaOuBaixo == 1 then
       -- Se X é aleatório, o meteoroide aparecerá na parte inferior ou superior da tela
-      posicaoXAleatoria = math.random(meteoroideImg:getWidth(), screenWidth - meteoroideImg:getWidth())
+      posicaoXAleatoria = math.random(0, screenWidth - meteoroideImg:getWidth())
       if umLadoOuOutro == 1 then
         -- Se "um lado" o meteoroide aparecerá no topo da tela até seu centro, aumentado o seu Y
         novoMeteoroide = {x = posicaoXAleatoria, y = -meteoroideImg:getHeight(), posicao = "cima"}
@@ -26,7 +26,7 @@ function inimigos(dt)
       end
     else
       -- Se Y é aleatório, o meteoroide aparecerá na esquerda ou direita da tela
-      posicaoYAleatoria = math.random(meteoroideImg:getHeight(), screenHeight - meteoroideImg:getHeight())
+      posicaoYAleatoria = math.random(0, screenHeight - meteoroideImg:getHeight())
       if umLadoOuOutro == 1 then
         -- Se "um lado" o meteoroide aparecerá da esquerda até o centro da tela, aumentado o seu X
         novoMeteoroide = {x = -meteoroideImg:getWidth(), y = posicaoYAleatoria, posicao = "esquerda"}
@@ -40,41 +40,29 @@ function inimigos(dt)
   end
   
   
-  for i, meteoroide in ipairs(meteoroides) do
-    if meteoroide.posicao == "cima" then
-      meteoroide.y = meteoroide.y + metricasMeteoroides.vel * dt
-      -- Caso o meteoroide não colida em nada
-      if meteoroide.y > screenHeight then
-        table.remove(meteoroides, i)
-      end
-    elseif meteoroide.posicao == "baixo" then
-      meteoroide.y = meteoroide.y - metricasMeteoroides.vel * dt
-      -- Caso o meteoroide não colida em nada
-      if meteoroide.y < 0 then
-        table.remove(meteoroides, i)
-      end
-    elseif meteoroide.posicao == "esquerda" then
-      meteoroide.x = meteoroide.x + metricasMeteoroides.vel * dt
-      -- Caso o meteoroide não colida em nada
-      if meteoroide.x > screenWidth then
-        table.remove(meteoroides, i)
-      end
-    elseif meteoroide.posicao == "direita" then
-      meteoroide.x = meteoroide.x - metricasMeteoroides.vel * dt
-      -- Caso o meteoroide não colida em nada
-      if meteoroide.x < 0 then
-        table.remove(meteoroides, i)
-      end
-    end
+  for i = 1, #meteoroides, 1 do
+     movimentoMeteoroides(dt, meteoroides[i])
   end
   
-
 end
+
 
 -- função que atualiza as posições da Lua no jogo
 function movimentoLua(dt)  
   orbitaLua = orbitaLua + velocidadeOrbita * dt * direcaoOrbita
   lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
+end
+
+function movimentoMeteoroides(dt, meteoroide)
+  local distX = centroJanelaX - meteoroide.x
+  local distY = centroJanelaY - meteoroide.y
+  local distancia = math.sqrt(distX * distX + distY * distY)
+  if distancia > 1 then
+    local dirX = distX / distancia
+    local dirY = distY / distancia
+    meteoroide.x = meteoroide.x + dirX * metricasMeteoroides.vel * dt
+    meteoroide.y = meteoroide.y + dirY * metricasMeteoroides.vel * dt
+  end
 end
 
 -- função de detecção das teclas pressionadas 

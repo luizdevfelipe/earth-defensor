@@ -1,7 +1,9 @@
 function love.update(dt)
   carregamento()
-  movimentoLua(dt)
-  inimigos(dt)
+  if not pause then    
+    movimentoLua(dt)
+    inimigos(dt)
+  end
   
 end
 
@@ -40,8 +42,20 @@ function inimigos(dt)
   end
   
   
-  for i = 1, #meteoroides, 1 do
-     movimentoMeteoroides(dt, meteoroides[i])
+  for i, meteoroide in ipairs(meteoroides) do
+     movimentoMeteoroides(dt, meteoroide)
+     
+     -- Verificar colisão com a Lua
+     if isColisao(meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2,
+       lua.posX, lua.posY, lua.raio) then
+       table.remove(meteoroides, i)
+     end
+     
+     -- Verificar colisão com a Terra
+     if isColisao(meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2, 
+       terra.posX, terra.posY, terra.raio) then
+       table.remove(meteoroides, i)
+     end
   end
   
 end
@@ -54,24 +68,17 @@ function movimentoLua(dt)
 end
 
 function movimentoMeteoroides(dt, meteoroide)
-  local distX = centroJanelaX - meteoroide.x
-  local distY = centroJanelaY - meteoroide.y
-  local distancia = math.sqrt(distX * distX + distY * distY)
-  if distancia > 1 then
-    local dirX = distX / distancia
-    local dirY = distY / distancia
+  dist = distanciaDeDoisPontos(centroJanelaX, meteoroide.x, centroJanelaY, meteoroide.y)
+  if dist > 1 then
+    local dirX = (centroJanelaX - meteoroide.x) / dist
+    local dirY = (centroJanelaY - meteoroide.y) / dist
     meteoroide.x = meteoroide.x + dirX * metricasMeteoroides.vel * dt
     meteoroide.y = meteoroide.y + dirY * metricasMeteoroides.vel * dt
   end
 end
 
--- função de detecção das teclas pressionadas 
-function love.keypressed(key)
-   if key == "d" and direcaoOrbita == 1 then
-    direcaoOrbita = direcaoOrbita * -1
-  elseif key == "a" and direcaoOrbita == -1 then
-    direcaoOrbita = direcaoOrbita * -1
-  end
+function distanciaDeDoisPontos(x1, x2, y1, y2)
+  return math.sqrt((x2 - x1)^2 + (y2 - y1)^2)
 end
 
 -- função matemática para cálculo de posicionamento orbital
@@ -81,8 +88,22 @@ function orbita(centroX, centroY, raio, angulo)
     return x, y
 end
 
-function isColisao(x1, y1, w1, h1, x2, y2, w2, h2)
-  return x1 < x2 + w2 and x2 < x1 + w1 and y1 < y2 + h2 and y2 < y1 + h1
+-- função matemática para verificar se objetos colidiram
+function isColisao(x1, y1, r1, x2, y2, r2)    
+  return distanciaDeDoisPontos(x1, x2, y1, y2) <= (r1 + r2)
+end
+
+-- função de detecção das teclas pressionadas 
+function love.keypressed(key)
+   if key == "d" and direcaoOrbita == 1 then
+    direcaoOrbita = direcaoOrbita * -1
+  elseif key == "a" and direcaoOrbita == -1 then
+    direcaoOrbita = direcaoOrbita * -1
+  end
+  
+  if key == "escape" then
+    pause = not pause
+  end
 end
 
 -- Variáveis que devem ser atualizadas durante a execução
@@ -95,6 +116,7 @@ function carregamento()
       imagem = terraImg,
       posX = centroJanelaX,
       posY = centroJanelaY,
+      raio = terraImg:getWidth() / 2,
       oriX = terraImg:getWidth() / 2 ,
       oriY = terraImg:getHeight() / 2
   }
@@ -105,9 +127,8 @@ function carregamento()
     imagem = luaImg,
     posX = centroJanelaX,
     posY = centroJanelaY,
-    tamX = 0.16,
-    tamY = 0.16,
-    oriX = luaImg:getWidth() / 2 ,
+    raio = luaImg:getWidth() / 2,
+    oriX = luaImg:getWidth() / 2,
     oriY = luaImg:getHeight() / 2
   }
   --  Atributos Lua  --

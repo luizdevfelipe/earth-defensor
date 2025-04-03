@@ -10,8 +10,9 @@ function love.load()
   
   math.randomseed(os.time())
   orbitaLua = 0
-  velocidadeOrbita = 1
+  velocidadeOrbita = 3
   direcaoOrbita = 1
+  pause = false
   
   -- Variáveis dos inimigos
   meteoroides = {}

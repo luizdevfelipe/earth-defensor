@@ -12,4 +12,17 @@ function love.draw()
   for i, meteoroide in ipairs(meteoroides) do
     love.graphics.draw(meteoroideImg, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2)
   end
+  
+  --Tela de Pause
+   if pause then    
+    telaDePause() 
+  end
+  
+end
+
+function telaDePause()
+  love.graphics.setColor(0,0,0, 180)
+  love.graphics.rectangle("fill", 0, 0, screenWidth, screenHeight)
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.print("> Retornar", centroJanelaX - love.graphics.getFont():getWidth("> Retornar"), centroJanelaY)
 end

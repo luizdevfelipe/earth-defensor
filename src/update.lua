@@ -2,7 +2,7 @@ function love.update(dt)
   carregamento()
   if not pause then    
     movimentoLua(dt)
-    inimigos(dt)
+    inimigos(dt)    
   end
   
 end
@@ -111,6 +111,7 @@ function carregamento()
   screenWidth, screenHeight = love.window.getMode()
   centroJanelaX = screenWidth / 2
   centroJanelaY = screenHeight / 2
+  
   --  Atributos da Terra --
   terra = {
       imagem = terraImg,
@@ -144,4 +145,5 @@ function carregamento()
     oriY = fundoImg:getHeight() / 2
   }
   --  Atributos Fundo  --
+  lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
 end

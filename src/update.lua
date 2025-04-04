@@ -95,9 +95,9 @@ end
 
 -- função de detecção das teclas pressionadas 
 function love.keypressed(key)
-   if key == "d" and direcaoOrbita == 1 then
+   if key == "w" and direcaoOrbita == 1 then
     direcaoOrbita = direcaoOrbita * -1
-  elseif key == "a" and direcaoOrbita == -1 then
+  elseif key == "w" and direcaoOrbita == -1 then
     direcaoOrbita = direcaoOrbita * -1
   end
   

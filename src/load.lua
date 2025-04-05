@@ -6,6 +6,7 @@ function love.load()
   sombra = love.graphics.newImage("assets/images/sombra.png")
   fundoImg = love.graphics.newImage("assets/images/fundo.jpeg")
   meteoroideImg = love.graphics.newImage("assets/images/meteoroide.png")
+  fonteMenu = love.graphics.newFont("assets/fonts/Probeta-SemiBoldItalic.ttf", 100)
   --detritoImg = love.graphics.newImage("assets/images/detrito.png")
   
   math.randomseed(os.time())

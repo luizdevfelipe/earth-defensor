@@ -1,10 +1,13 @@
 function love.update(dt)
-  carregamento()
-  if not pause then    
+  carregamento(dt)
+  if not pause and startGame == 1 then    
     movimentoLua(dt)
     inimigos(dt)    
   end
   
+  if not love.mouse.isDown(1) then
+    botaoUmSolto = true
+  end
 end
 
 function inimigos(dt)
@@ -60,7 +63,6 @@ function inimigos(dt)
   
 end
 
-
 -- função que atualiza as posições da Lua no jogo
 function movimentoLua(dt)  
   orbitaLua = orbitaLua + velocidadeOrbita * dt * direcaoOrbita
@@ -107,7 +109,7 @@ function love.keypressed(key)
 end
 
 -- Variáveis que devem ser atualizadas durante a execução
-function carregamento()  
+function carregamento(dt)  
   screenWidth, screenHeight = love.window.getMode()
   centroJanelaX = screenWidth / 2
   centroJanelaY = screenHeight / 2
@@ -145,5 +147,8 @@ function carregamento()
     oriY = fundoImg:getHeight() / 2
   }
   --  Atributos Fundo  --
+  if startGame == 0 then
+     orbitaLua = orbitaLua + 0.5 * dt * 1
+  end
   lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
 end

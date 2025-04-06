@@ -36,8 +36,19 @@ function telaDePause()
   -- verifica se clicou sobre "Retomar"
   if isCliqueEmTexto(retomarX, retomarY, retomarWidth, retomarHeight) then
     pause = not pause
+  end
+  -- Exibe o texto de "Voltar ao menu"
+  local menuWidth = love.graphics.getFont():getWidth("> Voltar ao Menu")
+  local menuHeight = love.graphics.getFont():getHeight("> Voltar ao Menu") - 10
+  local menuX = centroJanelaX - menuWidth / 2
+  local menuY = centroJanelaY 
+  love.graphics.print("> Voltar ao Menu", menuX, menuY)
+  underlineTextHover(menuX, menuY, menuWidth, menuHeight)
+  -- verifica se clicou sobre "Retomar"
+  if isCliqueEmTexto(menuX, menuY, menuWidth, menuHeight) then
+    pause = not pause
   end  
-end
+  end
 
 -- função que verifica se um texto foi clicado
 function isCliqueEmTexto(x, y, w, h)

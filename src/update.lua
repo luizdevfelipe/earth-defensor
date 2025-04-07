@@ -3,6 +3,7 @@ function love.update(dt)
   if not pause and startGame == 1 then    
     movimentoLua(dt)
     inimigos(dt)    
+    print(getAngulo(terra.posX, terra.posY, lua.posX, lua.posY))
   end
   
   if not love.mouse.isDown(1) then
@@ -81,6 +82,14 @@ end
 
 function distanciaDeDoisPontos(x1, x2, y1, y2)
   return math.sqrt((x2 - x1)^2 + (y2 - y1)^2)
+end
+
+function getAngulo(x1, y1, x2, y2)
+  local a = math.floor( math.deg( math.atan2(x2 - x1, y2 - y1) ) )
+  if a < 0 then 
+    a = a + 360 
+  end
+  return a
 end
 
 -- função matemática para cálculo de posicionamento orbital

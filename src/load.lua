@@ -9,6 +9,12 @@ function love.load()
   fonteMenu = love.graphics.newFont("assets/fonts/Probeta-SemiBoldItalic.ttf", 100)
   --detritoImg = love.graphics.newImage("assets/images/detrito.png")
   
+  sombrasAnim = {}
+  for i = 1, 10, 1 do
+    sombrasAnim[i] = love.graphics.newImage("assets/images/sombras/" .. i .. ".png")
+  end
+  
+  
   math.randomseed(os.time())
   resetaJogo()
   botaoUmSolto = true

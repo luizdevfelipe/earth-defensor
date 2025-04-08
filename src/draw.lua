@@ -7,6 +7,8 @@ function love.draw()
   
   --  Carregamento da imagem da Lua  --
   love.graphics.draw(lua.imagem, lua.posX, lua.posY, 0, 1, 1, lua.oriX, lua.oriY)
+  -- Carregamento da Sombra da Lua --
+  desenhoSombraLua(lua.posX, lua.posY, lua.oriX, lua.oriY, getAngulo(terra.posX, terra.posY, lua.posX, lua.posY))
   
   -- Tela inicial
   if startGame == 0 then
@@ -88,6 +90,12 @@ function telaDePause()
     botaoUmSolto = false
     resetaJogo()
   end  
+end
+
+function desenhoSombraLua(x, y, oriX, oriY, angulo)
+  -- Elaborar a lógica de troca entre sprites
+  
+  love.graphics.draw(sombrasAnim[sombraSprite], x, y, 0, 1, 1, oriX, oriY)
 end
 
 -- função que verifica se um texto foi clicado

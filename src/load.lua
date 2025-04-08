@@ -10,10 +10,11 @@ function love.load()
   --detritoImg = love.graphics.newImage("assets/images/detrito.png")
   
   sombrasAnim = {}
+  sombraSprite = 1
+  sombraDelay = 0
   for i = 1, 10, 1 do
     sombrasAnim[i] = love.graphics.newImage("assets/images/sombras/" .. i .. ".png")
   end
-  
   
   math.randomseed(os.time())
   resetaJogo()

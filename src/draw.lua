@@ -93,7 +93,49 @@ function telaDePause()
 end
 
 function desenhoSombraLua(x, y, oriX, oriY, angulo)
-  -- Elaborar a lógica de troca entre sprites
+  -- Lógica de carregamento das sombras do lado direto
+  if angulo <= 195 and angulo >= 185 then
+    sombraSprite = 1
+  elseif angulo < 185 and angulo >= 170 then
+    sombraSprite = 2
+  elseif angulo < 170 and angulo >= 155 then
+    sombraSprite = 3
+  elseif angulo < 155 and angulo >= 145 then
+    sombraSprite = 4
+  elseif angulo < 145 and angulo >= 135 then
+    sombraSprite = 5
+  elseif angulo < 135 and angulo >= 125 then
+    sombraSprite = 6
+  elseif angulo < 125 and angulo >= 105 then
+    sombraSprite = 7
+  elseif angulo < 105 and angulo >= 75 then
+    sombraSprite = 8
+  elseif angulo < 75 and angulo >= 65 then
+    sombraSprite = 9
+  elseif angulo < 50 and angulo >= 35 then
+    sombraSprite = 10 
+  end
+  -- Lógica de carregamento das sombras do lado esquerdo
+  --  360 - 260
+  if angulo <= 360 and angulo >= 350 then
+    sombraSprite = 9
+  elseif angulo < 350 and angulo >= 340 then
+    sombraSprite = 8
+  elseif angulo < 340 and angulo >= 330 then
+    sombraSprite = 7
+  elseif angulo < 330 and angulo >= 320 then
+    sombraSprite = 6
+  elseif angulo < 320 and angulo >= 310 then
+    sombraSprite = 5
+  elseif angulo < 300 and angulo >= 290 then
+    sombraSprite = 4
+  elseif angulo < 290 and angulo >= 280 then
+    sombraSprite = 3
+  elseif angulo < 280 and angulo >= 270 then
+    sombraSprite = 2
+  elseif angulo < 270 and angulo >= 260 then
+    sombraSprite = 1
+  end
   
   love.graphics.draw(sombrasAnim[sombraSprite], x, y, 0, 1, 1, oriX, oriY)
 end

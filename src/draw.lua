@@ -10,6 +10,16 @@ function love.draw()
   -- Carregamento da Sombra da Lua --
   desenhoSombraLua(lua.posX, lua.posY, lua.oriX, lua.oriY, getAngulo(terra.posX, terra.posY, lua.posX, lua.posY))
   
+   -- Carregamento dos detritos --
+  for i, detrito in ipairs(detritos) do
+    love.graphics.draw(detritoImg, detrito.x, detrito.y, 0, 1, 1, detritoImg:getWidth() / 2, detritoImg:getHeight() / 2)
+  end
+  
+  -- Carregamento das imagens de meteoroides --
+  for i, meteoroide in ipairs(meteoroides) do
+    love.graphics.draw(meteoroideImg, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2)
+  end
+  
   -- Tela inicial
   if startGame == 0 then
      telaInicial()
@@ -18,11 +28,6 @@ function love.draw()
   --Tela de Pause
    if pause and startGame ~= 0 then    
     telaDePause() 
-  end
-  
-  -- Carregamento das imagens de meteoroides --
-  for i, meteoroide in ipairs(meteoroides) do
-    love.graphics.draw(meteoroideImg, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2)
   end
 end
 

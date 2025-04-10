@@ -3,6 +3,7 @@ function love.update(dt)
   if not pause and startGame == 1 then    
     movimentoLua(dt)
     inimigos(dt)    
+    colisaoDetritos()
   end
   
   if not love.mouse.isDown(1) then
@@ -43,14 +44,14 @@ function inimigos(dt)
     
     table.insert(meteoroides, novoMeteoroide)
   end
-  
-  
+    
   for i, meteoroide in ipairs(meteoroides) do
      movimentoMeteoroides(dt, meteoroide)
      
      -- Verificar colisão com a Lua
      if isColisao(meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2,
        lua.posX, lua.posY, lua.raio) then
+       criarDetrito(meteoroide.x, meteoroide.y)
        table.remove(meteoroides, i)
      end
      
@@ -63,7 +64,39 @@ function inimigos(dt)
   
 end
 
--- função que atualiza as posições da Lua no jogo
+-- Função para o criação dos Detritos
+function criarDetrito(x, y)
+  for i = 1, detritosQtd, 1 do
+    novoDetrito = {x = x + math.random(-40 - i^2, 40 + i^2), y = y + math.random(-40 - i^2, 40 + i^2)}
+    table.insert(detritos, novoDetrito)
+  end
+end
+
+-- Função para detecção de colisão e destruição dos detritos
+function colisaoDetritos()
+  for i, detrito in ipairs(detritos) do
+     -- Verificar colisão com a Lua
+     if isColisao(detrito.x, detrito.y, detritoImg:getHeight() / 2,
+       lua.posX, lua.posY, lua.raio) then
+       table.remove(detritos, i)
+     end
+     
+     -- Verificar colisão com a Terra
+     if isColisao(detrito.x, detrito.y, detritoImg:getHeight() / 2, 
+       terra.posX, terra.posY, terra.raio) then
+       table.remove(detritos, i)
+     end
+    
+    for j, meteoroide in ipairs(meteoroides) do
+      if isColisao(detrito.x, detrito.y, detritoImg:getHeight() / 2,
+       meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2) then
+       table.remove(detritos, i)
+     end
+    end    
+  end
+end
+
+-- Função que atualiza as posições da Lua no jogo
 function movimentoLua(dt)  
   orbitaLua = orbitaLua + velocidadeOrbita * dt * direcaoOrbita
   lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)

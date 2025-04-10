@@ -1,21 +1,21 @@
 -- Carregamento de variáveis que serão utilizadas de maneira constante
 -- Ou devem ser resetadas após a finalização do jogo
 function love.load() 
+  -- Carregamentos de arquivos da pasta assets
   terraImg = love.graphics.newImage("assets/images/terra.png")
   luaImg = love.graphics.newImage("assets/images/lua.png")
   sombra = love.graphics.newImage("assets/images/sombra.png")
   fundoImg = love.graphics.newImage("assets/images/fundo.jpeg")
   meteoroideImg = love.graphics.newImage("assets/images/meteoroide.png")
   fonteMenu = love.graphics.newFont("assets/fonts/Probeta-SemiBoldItalic.ttf", 100)
-  --detritoImg = love.graphics.newImage("assets/images/detrito.png")
-  
+  detritoImg = love.graphics.newImage("assets/images/detrito.png")
+  -- Carregamento de variáveis para a Sombra da Lua
   sombrasAnim = {}
   sombraSprite = 1
-  sombraDelay = 0
   for i = 1, 10, 1 do
     sombrasAnim[i] = love.graphics.newImage("assets/images/sombras/" .. i .. ".png")
   end
-  
+  -- Carregamento de variáveis que não se alteram com as partidas
   math.randomseed(os.time())
   resetaJogo()
   botaoUmSolto = true
@@ -29,7 +29,7 @@ function resetaJogo()
   startGame = 0
   gameOver = true
   pause = false
-  -- Variáveis dos inimigos
+  -- Variáveis dos Meteoroides
   meteoroides = {}
   metricasMeteoroides = {
     vel = 300,
@@ -37,4 +37,7 @@ function resetaJogo()
     delay = 1,
     contagem = 1
   }
+  -- Variáveis dos Detritos de Meteoroides
+  detritos = {}
+  detritosQtd = 2
 end

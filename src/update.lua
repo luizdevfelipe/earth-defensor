@@ -3,7 +3,6 @@ function love.update(dt)
   if not pause and startGame == 1 then    
     movimentoLua(dt)
     inimigos(dt)    
-    print(getAngulo(terra.posX, terra.posY, lua.posX, lua.posY))
   end
   
   if not love.mouse.isDown(1) then

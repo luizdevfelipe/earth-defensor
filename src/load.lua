@@ -23,7 +23,7 @@ end
 
 function resetaJogo()  
   orbitaLua = 0
-  velocidadeOrbita = 3
+  velocidadeOrbita = 1.5
   direcaoOrbita = 1
   -- 0 não há jogo, 1 um jogador, 2 dois jogadores
   startGame = 0

@@ -93,6 +93,7 @@ function telaDePause()
 end
 
 function desenhoSombraLua(x, y, oriX, oriY, angulo)
+  
   -- Lógica de carregamento das sombras do lado direto
   if angulo <= 195 and angulo >= 185 then
     sombraSprite = 1
@@ -110,13 +111,12 @@ function desenhoSombraLua(x, y, oriX, oriY, angulo)
     sombraSprite = 7
   elseif angulo < 105 and angulo >= 75 then
     sombraSprite = 8
-  elseif angulo < 75 and angulo >= 65 then
+  elseif angulo < 75 and angulo >= 60 then
     sombraSprite = 9
-  elseif angulo < 50 and angulo >= 35 then
+  elseif angulo < 60 and angulo >= 0 then
     sombraSprite = 10 
   end
   -- Lógica de carregamento das sombras do lado esquerdo
-  --  360 - 260
   if angulo <= 360 and angulo >= 350 then
     sombraSprite = 9
   elseif angulo < 350 and angulo >= 340 then
@@ -125,7 +125,7 @@ function desenhoSombraLua(x, y, oriX, oriY, angulo)
     sombraSprite = 7
   elseif angulo < 330 and angulo >= 320 then
     sombraSprite = 6
-  elseif angulo < 320 and angulo >= 310 then
+  elseif angulo < 320 and angulo >= 300 then
     sombraSprite = 5
   elseif angulo < 300 and angulo >= 290 then
     sombraSprite = 4
@@ -137,7 +137,10 @@ function desenhoSombraLua(x, y, oriX, oriY, angulo)
     sombraSprite = 1
   end
   
-  love.graphics.draw(sombrasAnim[sombraSprite], x, y, 0, 1, 1, oriX, oriY)
+  if sombraSprite > 0 then
+    love.graphics.draw(sombrasAnim[sombraSprite], x, y, 0, 1, 1, oriX, oriY)
+  end 
+  sombraSprite = 0
 end
 
 -- função que verifica se um texto foi clicado

@@ -21,13 +21,17 @@ function love.load()
   botaoUmSolto = true
 end
 
-function resetaJogo()  
+function resetaJogo()
+  vidasTerra = 3
+  velocidadeRegeneracao = 0.5
+  tempoRegeneracao = velocidadeRegeneracao
+  taxaRegeneracao = 0.05
   orbitaLua = 0
-  velocidadeOrbita = 1.5
+  velocidadeOrbita = 3
   direcaoOrbita = 1
   -- 0 não há jogo, 1 um jogador, 2 dois jogadores
   startGame = 0
-  gameOver = true
+  gameOver = false
   pause = false
   -- Variáveis dos Meteoroides
   meteoroides = {}
@@ -35,7 +39,8 @@ function resetaJogo()
     vel = 300,
     qtd = 5,
     delay = 1,
-    contagem = 1
+    contagem = 1,
+    dano = 0.3
   }
   -- Variáveis dos Detritos de Meteoroides
   detritos = {}

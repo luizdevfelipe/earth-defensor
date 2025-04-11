@@ -1,9 +1,10 @@
 function love.update(dt)
   carregamento(dt)
-  if not pause and startGame == 1 then    
+  if not pause and startGame == 1 and gameOver == false then    
     movimentoLua(dt)
     inimigos(dt)    
     colisaoDetritos()
+    regeneracaoPassiva(dt)
   end
   
   if not love.mouse.isDown(1) then
@@ -58,6 +59,7 @@ function inimigos(dt)
      -- Verificar colisão com a Terra
      if isColisao(meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2, 
        terra.posX, terra.posY, terra.raio) then
+       vidasTerra = vidasTerra - metricasMeteoroides.dano
        table.remove(meteoroides, i)
      end
   end
@@ -93,6 +95,30 @@ function colisaoDetritos()
        table.remove(detritos, i)
      end
     end    
+  end
+end
+
+-- Função para regeneração passiva da vida da Terra
+function regeneracaoPassiva(dt)
+  tempoRegeneracao = tempoRegeneracao - dt
+  if tempoRegeneracao <= 0 then
+    if vidasTerra <= 3 and vidasTerra > 2 then
+      vidasTerra = vidasTerra + taxaRegeneracao
+      if vidasTerra > 3 then
+        vidasTerra = 3
+      end
+    elseif vidasTerra > 1 then
+      vidasTerra = vidasTerra + taxaRegeneracao
+      if vidasTerra > 2 then
+        vidasTerra = 2
+      end  
+    else 
+      vidasTerra = vidasTerra + taxaRegeneracao
+      if vidasTerra > 1 then
+        vidasTerra = 1
+      end  
+    end
+    tempoRegeneracao = velocidadeRegeneracao
   end
 end
 

@@ -20,6 +20,9 @@ function love.draw()
     love.graphics.draw(meteoroideImg, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2)
   end
   
+  -- Carregamento da Barra de Vida
+    barraDeVida()    
+  
   -- Tela inicial
   if startGame == 0 then
      telaInicial()
@@ -29,6 +32,20 @@ function love.draw()
    if pause and startGame ~= 0 then    
     telaDePause() 
   end
+end
+
+function barraDeVida()
+  -- Fundo da barra de Vida
+  love.graphics.setColor(255,255,255)
+  love.graphics.rectangle("fill", centroJanelaX - 103, 60, 206, 26)
+  -- Barra de Vida em si
+  love.graphics.setColor(34, 177, 76)
+  love.graphics.rectangle("fill", centroJanelaX - 100, 63, (vidasTerra * 200) / 3, 20)
+  -- Recortes nas vidas principais
+  love.graphics.setColor(0,0,0)
+  love.graphics.rectangle("fill", centroJanelaX - 100 / 3, 60, 4, 26)
+  love.graphics.rectangle("fill", centroJanelaX + 100 / 3, 60, 4, 26)
+  love.graphics.setColor(255,255,255)
 end
 
 function telaInicial()
@@ -54,19 +71,17 @@ function telaInicial()
   if isCliqueEmTexto(umJogadorX, umJogadorY, umJogadorWidth, umJogadorHeight) and botaoUmSolto then
     botaoUmSolto = false
     startGame = 1
-    gameOver = false
   end
   
   -- verifica se clicou sobre "Dois Jogadores"
   if isCliqueEmTexto(doisJogadoresX, doisJogadoresY, doisJogadoresWidth, doisJogadoresHeight) and botaoUmSolto then
     botaoUmSolto = false
     startGame = 2
-    gameOver = false
   end  
 end
 
 function telaDePause()
- desfoqueFundo(150)
+ desfoqueFundo(220)
   -- Exibe o texto de "Retomar"
   love.graphics.setFont(fonteMenu)
   local retomarWidth = love.graphics.getFont():getWidth("> Retomar")
@@ -98,7 +113,6 @@ function telaDePause()
 end
 
 function desenhoSombraLua(x, y, oriX, oriY, angulo)
-  
   -- Lógica de carregamento das sombras do lado direto
   if angulo <= 195 and angulo >= 185 then
     sombraSprite = 1

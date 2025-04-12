@@ -6,14 +6,14 @@ function love.conf(t)
   t.externalstorage = false
   t.gammacorrect = true
   
-  t.window.title = "Meu Jogo"
+  t.window.title = "Earth Defensor"
   t.window.icon = nil
   t.window.width = 1280
   t.window.height = 768
   t.window.borderless = false
   t.window.resizable = true
-  t.window.minwidth = 800
-  t.window.minheight = 600
+  t.window.minwidth = 1280
+  t.window.minheight = 768
   t.window.fullscreen = false
   t.window.fullscreentype = "desktop"
   t.window.vsync = true

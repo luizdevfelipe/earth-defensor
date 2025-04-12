@@ -26,8 +26,39 @@ function animacaoIntroducao(dt)
     movimentoTerraAnim = movimentoTerraAnim + 22 * dt
   end
   
-  if transparenciaTerraAnim > 0 then
-    transparenciaTerraAnim = transparenciaTerraAnim - 55 * dt
+  if transparenciaTerraAnim < 255 then
+    transparenciaTerraAnim = transparenciaTerraAnim + 55 * dt
+    if transparenciaTerraAnim > 255 then
+      transparenciaTerraAnim = 255
+    end
+  end
+  
+  intervaloMeteoroAnim = intervaloMeteoroAnim - 10 * dt
+  if transparenciaMeteoroAnim < 255 and intervaloMeteoroAnim <= 0 then
+    transparenciaMeteoroAnim = transparenciaMeteoroAnim + 55 * dt
+    if transparenciaMeteoroAnim > 255 then
+      transparenciaMeteoroAnim = 255
+    end
+  end
+    
+  intervaloLuaAnim = intervaloLuaAnim - 5 * dt
+  if transparenciaLuaAnim < 255 and intervaloLuaAnim <= 0 then
+    transparenciaLuaAnim = transparenciaLuaAnim + 60 * dt
+    movimentoLuaAnim = movimentoLuaAnim + 22 * dt
+    if movimentoLuaAnim > 75 then
+      movimentoLuaAnim = 75 
+    end
+    if transparenciaLuaAnim > 255 then
+      transparenciaLuaAnim = 255
+    end
+  end
+  
+  intervaloCreditosAnim = intervaloCreditosAnim - 2 * dt
+  if transparenciaCreditosAnim < 255 and intervaloCreditosAnim <= 0 then
+    transparenciaCreditosAnim = transparenciaCreditosAnim + 55 * dt
+    if transparenciaCreditosAnim > 255 then
+      transparenciaCreditosAnim = 255
+    end
   end
   
 end

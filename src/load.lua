@@ -12,10 +12,19 @@ function love.load()
   fontNormal = love.graphics.newFont("assets/fonts/Roboto-VariableFont_wdth,wght.ttf", 40)
   detritoImg = love.graphics.newImage("assets/images/detrito.png")
   musicaIntroducao = love.audio.newSource("assets/audio/Midnight Trace - Jimena Contreras.mp3")
+  meteoroImg = love.graphics.newImage("assets/images/meteoro.png")
+  protetoraImg = love.graphics.newImage("assets/images/protetora.png")
   -- Carregamento das variáveis da Animação
-  introducao = true
+  introducao = false
   movimentoTerraAnim = 0
-  transparenciaTerraAnim = 250
+  movimentoLuaAnim = 0
+  transparenciaTerraAnim = 60
+  transparenciaMeteoroAnim = 0
+  intervaloMeteoroAnim = 70
+  transparenciaLuaAnim = 0
+  intervaloLuaAnim = 56
+  intervaloCreditosAnim = 40
+  transparenciaCreditosAnim = 0
   -- Carregamento de variáveis para a Sombra da Lua
   sombrasAnim = {}
   sombraSprite = 1

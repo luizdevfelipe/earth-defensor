@@ -82,15 +82,29 @@ end
 function desenharIntroducao()
   love.graphics.setBackgroundColor(0,0,0)
   --  Carregamento da imagem da Terra  --
-  love.graphics.draw(terra.imagem, centroJanelaX, centroJanelaY + 30 - movimentoTerraAnim, 0, 1, 1, terra.oriX, terra.oriY)
-  love.graphics.setColor(0,0,0, transparenciaTerraAnim)
-  love.graphics.circle("fill", centroJanelaX, centroJanelaY + 30 - movimentoTerraAnim, terra.raio)
-  --[[--  Carregamento da imagem da Lua  --
-  love.graphics.draw(lua.imagem, centroJanelaX, centroJanelaY, 0, 1, 1, lua.oriX, lua.oriY)
+  love.graphics.setColor(transparenciaTerraAnim,transparenciaTerraAnim,transparenciaTerraAnim,transparenciaTerraAnim)
+  love.graphics.draw(terra.imagem, centroJanelaX - 100, centroJanelaY + 30 - movimentoTerraAnim, 0, 1, 1, terra.oriX, terra.oriY)
+  --  Carregamento da imagem da Lua  --
+  love.graphics.setColor(transparenciaLuaAnim, transparenciaLuaAnim, transparenciaLuaAnim, transparenciaLuaAnim)
+  love.graphics.draw(protetoraImg, centroJanelaX - 100 + terra.raio, centroJanelaY - 60 - movimentoLuaAnim, 0, 1, 1, protetoraImg:getWidth() / 2, protetoraImg:getHeight() / 2)
   -- Carregamento da imagem do Meteoroide --
-  love.graphics.draw(meteoroideImg, centroJanelaX, centroJanelaY, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2) ]]
+  love.graphics.setColor(transparenciaMeteoroAnim,transparenciaMeteoroAnim,transparenciaMeteoroAnim,transparenciaMeteoroAnim)
+  love.graphics.draw(meteoroImg, centroJanelaX + 230, centroJanelaY * 0.5, 0, 1, 1, meteoroImg:getWidth() / 2, meteoroImg:getHeight() / 2)
   
-  love.graphics.setColor(255,255,255)
+  -- Texto dos Créditos --
+  love.graphics.setColor(transparenciaCreditosAnim,transparenciaCreditosAnim,transparenciaCreditosAnim,transparenciaCreditosAnim)
+  love.graphics.setFont(fonteMenu)
+  local tituloWidth = love.graphics.getFont():getWidth("Earth Defensor")
+  local tituloX = centroJanelaX - tituloWidth / 2
+  local tituloY = screenHeight * 0.7
+  love.graphics.print("Earth Defensor", tituloX, tituloY)
+  
+  love.graphics.setFont(fontNormal)
+  local autorWidth = love.graphics.getFont():getWidth("luizdevfelipe")
+  local autorX = centroJanelaX - autorWidth / 2
+  local autorY = screenHeight * 0.85
+  love.graphics.print("luizdevfelipe", autorX, autorY)
+  
 end
 
 function barraDeVida()

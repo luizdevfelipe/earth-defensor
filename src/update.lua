@@ -1,15 +1,35 @@
 function love.update(dt)
   carregamento(dt)
-  if not pause and startGame == 1 and gameOver == false then    
-    movimentoLua(dt)
-    inimigos(dt)    
-    colisaoDetritos()
-    regeneracaoPassiva(dt)
+  if introducao or musicaIntroducao:isPlaying() then
+    animacaoIntroducao(dt)
+  else
+    if not pause and startGame == 1 and not gameOver then    
+      movimentoLua(dt)
+      inimigos(dt)    
+      colisaoDetritos()
+      regeneracaoPassiva(dt)
+    end
+  
+    if not love.mouse.isDown(1) then
+      botaoUmSolto = true
+    end
+  end
+end
+
+function animacaoIntroducao(dt)
+  if not musicaIntroducao:isPlaying() then
+    musicaIntroducao:play()
+    introducao = false
   end
   
-  if not love.mouse.isDown(1) then
-    botaoUmSolto = true
+  if movimentoTerraAnim < 30 then
+    movimentoTerraAnim = movimentoTerraAnim + 22 * dt
   end
+  
+  if transparenciaTerraAnim > 0 then
+    transparenciaTerraAnim = transparenciaTerraAnim - 55 * dt
+  end
+  
 end
 
 function inimigos(dt)
@@ -100,6 +120,12 @@ end
 
 -- Função para regeneração passiva da vida da Terra
 function regeneracaoPassiva(dt)
+  -- Verifica se o jogador perdeu
+  if vidasTerra <= 0 then
+    vidasTerra = 0
+    gameOver = true
+  end
+  -- Lógica de regeneração da vida da Terra
   tempoRegeneracao = tempoRegeneracao - dt
   if tempoRegeneracao <= 0 then
     if vidasTerra <= 3 and vidasTerra > 2 then
@@ -116,7 +142,7 @@ function regeneracaoPassiva(dt)
       vidasTerra = vidasTerra + taxaRegeneracao
       if vidasTerra > 1 then
         vidasTerra = 1
-      end  
+      end
     end
     tempoRegeneracao = velocidadeRegeneracao
   end

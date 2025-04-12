@@ -1,37 +1,96 @@
 function love.draw()
-  --  Carregamento da imagem da Galáxia  --
-  love.graphics.draw(fundo.imagem, fundo.posX, fundo.posY, 0, fundo.tamX, fundo.tamY, fundo.oriX, fundo.oriY)
+  if musicaIntroducao:isPlaying() then
+    desenharIntroducao()
+  else 
+    --  Carregamento da imagem da Galáxia  --
+    love.graphics.draw(fundo.imagem, fundo.posX, fundo.posY, 0, fundo.tamX, fundo.tamY, fundo.oriX, fundo.oriY)
+    
+    --  Carregamento da imagem da Terra  --
+    love.graphics.draw(terra.imagem, terra.posX, terra.posY, 0, 1, 1, terra.oriX, terra.oriY)
+    
+    --  Carregamento da imagem da Lua  --
+    love.graphics.draw(lua.imagem, lua.posX, lua.posY, 0, 1, 1, lua.oriX, lua.oriY)
+    -- Carregamento da Sombra da Lua --
+    desenhoSombraLua(lua.posX, lua.posY, lua.oriX, lua.oriY, getAngulo(terra.posX, terra.posY, lua.posX, lua.posY))
+    
+     -- Carregamento dos detritos --
+    for i, detrito in ipairs(detritos) do
+      love.graphics.draw(detritoImg, detrito.x, detrito.y, 0, 1, 1, detritoImg:getWidth() / 2, detritoImg:getHeight() / 2)
+    end
+    
+    -- Carregamento das imagens de meteoroides --
+    for i, meteoroide in ipairs(meteoroides) do
+      love.graphics.draw(meteoroideImg, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2)
+    end
+    
+    if gameOver then
+      telaGameOver()
+    end
+    
+    -- Tela inicial
+    if startGame == 0 then
+       telaInicial()
+    end
+    
+    -- Carregamento da Barra de Vida
+    if not gameOver and startGame ~= 0 then
+      barraDeVida() 
+    end
+    
+    --Tela de Pause
+     if pause and startGame ~= 0 then    
+      telaDePause() 
+    end
+  end
+end
+
+function telaGameOver()
+  desfoqueFundo(240)
+  -- Exibe o texto "Derrota"
+  love.graphics.setFont(fonteNegrito)
+  local derrotaWidth = love.graphics.getFont():getWidth("Derrota!")
+  local derrotaHeight = love.graphics.getFont():getHeight("Derrota!") - 10
+  local derrotaX = centroJanelaX - derrotaWidth / 2
+  local derrotaY = centroJanelaY * 0.2
+  love.graphics.print("Derrota!", derrotaX, derrotaY)
+  -- Exibe o texto de "Onda Alcançada"
+  local ondaWidth = love.graphics.getFont():getWidth("Onda Alcançada: " .. onda)
+  local ondaHeight = love.graphics.getFont():getHeight("Onda Alcançada: " .. onda) - 10
+  local ondaX = centroJanelaX - ondaWidth / 2
+  local ondaY = centroJanelaY * 0.6
+  love.graphics.print("Onda Alcançada: " .. onda, ondaX, ondaY)
+  -- Estatísticas da partida --
+  love.graphics.setFont(fontNormal)
+  love.graphics.print("Foram destruídos:", centroJanelaX * 0.7, centroJanelaY)
+  local meteoroidesWidth = love.graphics.getFont():getWidth(metricasMeteoroides.destruidos .. " Meteoroides")
+  love.graphics.print(metricasMeteoroides.destruidos .. " Meteoroides", centroJanelaX - meteoroidesWidth / 2, centroJanelaY * 1.1)
+  -- Exibe o texto de "Voltar ao Menu Principal"
+  local menuWidth = love.graphics.getFont():getWidth("Voltar ao Menu Principal")
+  local menuHeight = love.graphics.getFont():getHeight("Voltar ao Menu Principal") - 10
+  local menuX = centroJanelaX - menuWidth / 2
+  local menuY = screenHeight * 0.9
+  love.graphics.print("Voltar ao Menu Principal", menuX, menuY)
+  underlineTextHover(menuX, menuY, menuWidth, menuHeight+5)
   
+  -- verifica se clicou sobre "Voltar ao Menu Principal"
+  if isCliqueEmTexto(menuX, menuY, menuWidth, menuHeight) and botaoUmSolto then
+    botaoUmSolto = false
+    resetaJogo()
+  end  
+end
+
+function desenharIntroducao()
+  love.graphics.setBackgroundColor(0,0,0)
   --  Carregamento da imagem da Terra  --
-  love.graphics.draw(terra.imagem, terra.posX, terra.posY, 0, 1, 1, terra.oriX, terra.oriY)
+  love.graphics.draw(terra.imagem, centroJanelaX, centroJanelaY + 30 - movimentoTerraAnim, 0, 1, 1, terra.oriX, terra.oriY)
+  love.graphics.setColor(0,0,0, transparenciaTerraAnim)
+  love.graphics.circle("fill", centroJanelaX, centroJanelaY + 30 - movimentoTerraAnim, terra.raio)
+  --[[--  Carregamento da imagem da Lua  --
+  love.graphics.draw(lua.imagem, centroJanelaX, centroJanelaY, 0, 1, 1, lua.oriX, lua.oriY)
+  -- Carregamento da imagem do Meteoroide --
+  love.graphics.draw(meteoroideImg, centroJanelaX, centroJanelaY, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2) ]]
   
-  --  Carregamento da imagem da Lua  --
-  love.graphics.draw(lua.imagem, lua.posX, lua.posY, 0, 1, 1, lua.oriX, lua.oriY)
-  -- Carregamento da Sombra da Lua --
-  desenhoSombraLua(lua.posX, lua.posY, lua.oriX, lua.oriY, getAngulo(terra.posX, terra.posY, lua.posX, lua.posY))
-  
-   -- Carregamento dos detritos --
-  for i, detrito in ipairs(detritos) do
-    love.graphics.draw(detritoImg, detrito.x, detrito.y, 0, 1, 1, detritoImg:getWidth() / 2, detritoImg:getHeight() / 2)
-  end
-  
-  -- Carregamento das imagens de meteoroides --
-  for i, meteoroide in ipairs(meteoroides) do
-    love.graphics.draw(meteoroideImg, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2)
-  end
-  
-  -- Carregamento da Barra de Vida
-    barraDeVida()    
-  
-  -- Tela inicial
-  if startGame == 0 then
-     telaInicial()
-  end
-  
-  --Tela de Pause
-   if pause and startGame ~= 0 then    
-    telaDePause() 
-  end
+  love.graphics.setColor(255,255,255)
 end
 
 function barraDeVida()

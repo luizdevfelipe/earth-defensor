@@ -7,8 +7,15 @@ function love.load()
   sombra = love.graphics.newImage("assets/images/sombra.png")
   fundoImg = love.graphics.newImage("assets/images/fundo.jpeg")
   meteoroideImg = love.graphics.newImage("assets/images/meteoroide.png")
+  fonteNegrito = love.graphics.newFont("assets/fonts/SpecialGothicExpandedOne-Regular.ttf", 70)
   fonteMenu = love.graphics.newFont("assets/fonts/Probeta-SemiBoldItalic.ttf", 100)
+  fontNormal = love.graphics.newFont("assets/fonts/Roboto-VariableFont_wdth,wght.ttf", 40)
   detritoImg = love.graphics.newImage("assets/images/detrito.png")
+  musicaIntroducao = love.audio.newSource("assets/audio/Midnight Trace - Jimena Contreras.mp3")
+  -- Carregamento das variáveis da Animação
+  introducao = true
+  movimentoTerraAnim = 0
+  transparenciaTerraAnim = 250
   -- Carregamento de variáveis para a Sombra da Lua
   sombrasAnim = {}
   sombraSprite = 1
@@ -22,6 +29,7 @@ function love.load()
 end
 
 function resetaJogo()
+  onda = 0
   vidasTerra = 3
   velocidadeRegeneracao = 0.5
   tempoRegeneracao = velocidadeRegeneracao
@@ -40,7 +48,8 @@ function resetaJogo()
     qtd = 5,
     delay = 1,
     contagem = 1,
-    dano = 0.3
+    dano = 1,
+    destruidos = 0
   }
   -- Variáveis dos Detritos de Meteoroides
   detritos = {}

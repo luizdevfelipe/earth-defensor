@@ -15,7 +15,7 @@ function love.load()
   meteoroImg = love.graphics.newImage("assets/images/meteoro.png")
   protetoraImg = love.graphics.newImage("assets/images/protetora.png")
   -- Carregamento das variáveis da Animação
-  introducao = false
+  introducao = true
   movimentoTerraAnim = 0
   movimentoLuaAnim = 0
   transparenciaTerraAnim = 60

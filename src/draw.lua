@@ -23,6 +23,11 @@ function love.draw()
       love.graphics.draw(meteoroideImg, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2)
     end
     
+    -- Carregamento das imagens de SuperMeteoroides --
+    for i, super in ipairs(superMeteoroides) do
+      love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, 0, 1, 1, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
+    end
+    
     if transparenciaTextoInfo < 255 then
       love.graphics.setFont(fontNormal)
       love.graphics.setColor(transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo)

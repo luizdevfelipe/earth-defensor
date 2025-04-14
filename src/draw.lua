@@ -23,6 +23,13 @@ function love.draw()
       love.graphics.draw(meteoroideImg, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2)
     end
     
+    if transparenciaTextoInfo < 255 then
+      love.graphics.setFont(fontNormal)
+      love.graphics.setColor(transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo)
+      local instrucaoWidth = love.graphics.getFont():getWidth("Pressione W para alterar o movimento lunar")
+      love.graphics.print("Pressione W para alterar o movimento lunar", centroJanelaX - instrucaoWidth / 2, screenHeight * 0.8)
+    end
+    
     if gameOver then
       telaGameOver()
     end
@@ -38,7 +45,7 @@ function love.draw()
     end
     
     --Tela de Pause
-     if pause and startGame ~= 0 then    
+     if pause then    
       telaDePause() 
     end
   end
@@ -61,9 +68,14 @@ function telaGameOver()
   love.graphics.print("Onda Alcançada: " .. onda, ondaX, ondaY)
   -- Estatísticas da partida --
   love.graphics.setFont(fontNormal)
-  love.graphics.print("Foram destruídos:", centroJanelaX * 0.7, centroJanelaY)
-  local meteoroidesWidth = love.graphics.getFont():getWidth(metricasMeteoroides.destruidos .. " Meteoroides")
-  love.graphics.print(metricasMeteoroides.destruidos .. " Meteoroides", centroJanelaX - meteoroidesWidth / 2, centroJanelaY * 1.1)
+  local destruidosWidth = love.graphics.getFont():getWidth("Foram destruídos:")
+  love.graphics.print("Foram destruídos:", centroJanelaX - destruidosWidth / 2, centroJanelaY)
+  -- Meteoroides --
+  love.graphics.print(metricasMeteoroides.destruidos .. " Meteoroides", centroJanelaX , centroJanelaY + 50)
+  -- Supermeteoroides --
+  love.graphics.print(metricasSupermeteoroides.destruidos .. " Supermeteoroides", centroJanelaX , centroJanelaY + 100)
+  -- Detritos --
+  love.graphics.print(metricasDetrito.destruidos .. " Detritos", centroJanelaX , centroJanelaY + 150)
   -- Exibe o texto de "Voltar ao Menu Principal"
   local menuWidth = love.graphics.getFont():getWidth("Voltar ao Menu Principal")
   local menuHeight = love.graphics.getFont():getHeight("Voltar ao Menu Principal") - 10

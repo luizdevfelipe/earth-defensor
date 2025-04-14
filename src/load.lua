@@ -15,7 +15,7 @@ function love.load()
   meteoroImg = love.graphics.newImage("assets/images/meteoro.png")
   protetoraImg = love.graphics.newImage("assets/images/protetora.png")
   -- Carregamento das variáveis da Animação
-  introducao = true
+  introducao = false
   movimentoTerraAnim = 0
   movimentoLuaAnim = 0
   transparenciaTerraAnim = 60
@@ -25,6 +25,7 @@ function love.load()
   intervaloLuaAnim = 56
   intervaloCreditosAnim = 40
   transparenciaCreditosAnim = 0
+  transparenciaTextoInfo = 0
   -- Carregamento de variáveis para a Sombra da Lua
   sombrasAnim = {}
   sombraSprite = 1
@@ -57,7 +58,18 @@ function resetaJogo()
     qtd = 5,
     delay = 1,
     contagem = 1,
-    dano = 1,
+    dano = 0.4,
+    destruidos = 0
+  }
+  metricasSupermeteoroides = {
+    vel = 300,
+    qtd = 5,
+    delay = 1,
+    contagem = 1,
+    dano = 0.5,
+    destruidos = 0
+  }
+  metricasDetrito = {
     destruidos = 0
   }
   -- Variáveis dos Detritos de Meteoroides

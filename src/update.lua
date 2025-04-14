@@ -8,6 +8,10 @@ function love.update(dt)
       inimigos(dt)    
       colisaoDetritos()
       regeneracaoPassiva(dt)
+      
+      if transparenciaTextoInfo < 255 then
+        transparenciaTextoInfo = transparenciaTextoInfo + 40 * dt
+      end
     end
   
     if not love.mouse.isDown(1) then
@@ -104,6 +108,7 @@ function inimigos(dt)
      if isColisao(meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2,
        lua.posX, lua.posY, lua.raio) then
        criarDetrito(meteoroide.x, meteoroide.y)
+       metricasMeteoroides.destruidos = metricasMeteoroides.destruidos + 1
        table.remove(meteoroides, i)
      end
      
@@ -111,6 +116,7 @@ function inimigos(dt)
      if isColisao(meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2, 
        terra.posX, terra.posY, terra.raio) then
        vidasTerra = vidasTerra - metricasMeteoroides.dano
+       metricasMeteoroides.destruidos = metricasMeteoroides.destruidos + 1
        table.remove(meteoroides, i)
      end
   end
@@ -131,18 +137,21 @@ function colisaoDetritos()
      -- Verificar colisão com a Lua
      if isColisao(detrito.x, detrito.y, detritoImg:getHeight() / 2,
        lua.posX, lua.posY, lua.raio) then
+       metricasDetrito.destruidos = metricasDetrito.destruidos + 1
        table.remove(detritos, i)
      end
      
      -- Verificar colisão com a Terra
      if isColisao(detrito.x, detrito.y, detritoImg:getHeight() / 2, 
        terra.posX, terra.posY, terra.raio) then
+       metricasDetrito.destruidos = metricasDetrito.destruidos + 1
        table.remove(detritos, i)
      end
     
     for j, meteoroide in ipairs(meteoroides) do
       if isColisao(detrito.x, detrito.y, detritoImg:getHeight() / 2,
        meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2) then
+       metricasDetrito.destruidos = metricasDetrito.destruidos + 1
        table.remove(detritos, i)
      end
     end    
@@ -227,7 +236,7 @@ function love.keypressed(key)
     direcaoOrbita = direcaoOrbita * -1
   end
   
-  if key == "escape" then
+  if key == "escape" and startGame ~= 0 and not gameOver then
     pause = not pause
   end
 end

@@ -5,7 +5,8 @@ function love.update(dt)
   else
     if not pause and startGame == 1 and not gameOver then    
       movimentoLua(dt)
-      inimigos(dt)    
+      inimigos(meteoroides, metricasMeteoroides, dt)    
+      inimigos(superMeteoroides, metricasSupermeteoroides, dt)
       colisaoDetritos()
       regeneracaoPassiva(dt)
       
@@ -67,60 +68,66 @@ function animacaoIntroducao(dt)
   
 end
 
-function inimigos(dt)
-  metricasMeteoroides.contagem = metricasMeteoroides.contagem - 1 * dt
-  if metricasMeteoroides.contagem < 0 and metricasMeteoroides.qtd > 0 then
-    metricasMeteoroides.contagem = metricasMeteoroides.delay
-    --metricasMeteoroides.qtd = metricasMeteoroides.qtd - 1
+function inimigos(inimigos, metricas, dt)
+  metricas.contagem = metricas.contagem - 1 * dt
+  if metricas.contagem < 0 and metricas.qtd > 0 then
+    metricas.contagem = metricas.delay
+    metricas.qtd = metricas.qtd - 1
+    print(metricas.qtd .. "--" .. metricas.dano)
     
     cimaOuBaixo = math.random(0, 1)
     umLadoOuOutro = math.random(0, 1)
     
     if cimaOuBaixo == 1 then
       -- Se X é aleatório, o meteoroide aparecerá na parte inferior ou superior da tela
-      posicaoXAleatoria = math.random(0, screenWidth - meteoroideImg:getWidth())
+      posicaoXAleatoria = math.random(0, screenWidth - metricas.img:getWidth())
       if umLadoOuOutro == 1 then
         -- Se "um lado" o meteoroide aparecerá no topo da tela até seu centro, aumentado o seu Y
-        novoMeteoroide = {x = posicaoXAleatoria, y = -meteoroideImg:getHeight(), posicao = "cima"}
+        novoInimigo = {x = posicaoXAleatoria, y = -metricas.img:getHeight(), posicao = "cima"}
       else
         -- Se "do outro" o meteoroide aparecerá no inferior da tela até seu centro, diminuindo o seu Y
-        novoMeteoroide = {x = posicaoXAleatoria, y = screenHeight + meteoroideImg:getHeight(), posicao = "baixo"}
+        novoInimigo = {x = posicaoXAleatoria, y = screenHeight + metricas.img:getHeight(), posicao = "baixo"}
       end
     else
       -- Se Y é aleatório, o meteoroide aparecerá na esquerda ou direita da tela
-      posicaoYAleatoria = math.random(0, screenHeight - meteoroideImg:getHeight())
+      posicaoYAleatoria = math.random(0, screenHeight - metricas.img:getHeight())
       if umLadoOuOutro == 1 then
         -- Se "um lado" o meteoroide aparecerá da esquerda até o centro da tela, aumentado o seu X
-        novoMeteoroide = {x = -meteoroideImg:getWidth(), y = posicaoYAleatoria, posicao = "esquerda"}
+        novoInimigo = {x = -metricas.img:getWidth(), y = posicaoYAleatoria, posicao = "esquerda"}
       else
         -- Se "do outro" o meteoroide aparecerá da direita até o centro da tela, diminuindo o seu X
-        novoMeteoroide = {x = screenWidth + meteoroideImg:getWidth(), y = posicaoYAleatoria, posicao = "direita"}
+        novoInimigo = {x = screenWidth + metricas.img:getWidth(), y = posicaoYAleatoria, posicao = "direita"}
       end
     end    
     
-    table.insert(meteoroides, novoMeteoroide)
+    table.insert(inimigos, novoInimigo)
   end
     
-  for i, meteoroide in ipairs(meteoroides) do
-     movimentoMeteoroides(dt, meteoroide)
+  for i, inimigo in ipairs(inimigos) do
+     movimentoMeteoroides(dt, inimigo)
      
      -- Verificar colisão com a Lua
-     if isColisao(meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2,
+     if isColisao(inimigo.x, inimigo.y, metricas.img:getHeight() / 2,
        lua.posX, lua.posY, lua.raio) then
-       criarDetrito(meteoroide.x, meteoroide.y)
-       metricasMeteoroides.destruidos = metricasMeteoroides.destruidos + 1
-       table.remove(meteoroides, i)
+       if metricasSupermeteoroides.id == "super" then 
+         -- fazer com que seja apenas descontado vidas dele até a destruição
+        
+       end
+       
+       criarDetrito(inimigo.x, inimigo.y)
+       metricas.destruidos = metricas.destruidos + 1
+       table.remove(inimigos, i)
      end
      
      -- Verificar colisão com a Terra
-     if isColisao(meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2, 
+     if isColisao(inimigo.x, inimigo.y, metricas.img:getHeight() / 2, 
        terra.posX, terra.posY, terra.raio) then
-       vidasTerra = vidasTerra - metricasMeteoroides.dano
-       metricasMeteoroides.destruidos = metricasMeteoroides.destruidos + 1
-       table.remove(meteoroides, i)
+       vidasTerra = vidasTerra - metricas.dano
+       metricas.destruidos = metricas.destruidos + 1
+       table.remove(inimigos, i)
      end
   end
-  
+    
 end
 
 -- Função para o criação dos Detritos
@@ -156,6 +163,10 @@ function colisaoDetritos()
      end
     end    
   end
+end
+
+function novaRodada()
+  
 end
 
 -- Função para regeneração passiva da vida da Terra

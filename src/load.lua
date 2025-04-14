@@ -7,6 +7,7 @@ function love.load()
   sombra = love.graphics.newImage("assets/images/sombra.png")
   fundoImg = love.graphics.newImage("assets/images/fundo.jpeg")
   meteoroideImg = love.graphics.newImage("assets/images/meteoroide.png")
+  superImg = love.graphics.newImage("assets/images/super.png")
   fonteNegrito = love.graphics.newFont("assets/fonts/SpecialGothicExpandedOne-Regular.ttf", 70)
   fonteMenu = love.graphics.newFont("assets/fonts/Probeta-SemiBoldItalic.ttf", 100)
   fontNormal = love.graphics.newFont("assets/fonts/Roboto-VariableFont_wdth,wght.ttf", 40)
@@ -39,7 +40,7 @@ function love.load()
 end
 
 function resetaJogo()
-  onda = 0
+  onda = 1
   vidasTerra = 3
   velocidadeRegeneracao = 0.5
   tempoRegeneracao = velocidadeRegeneracao
@@ -54,25 +55,30 @@ function resetaJogo()
   -- Variáveis dos Meteoroides
   meteoroides = {}
   metricasMeteoroides = {
+    id = "normal",
+    img = meteoroideImg,
     vel = 300,
-    qtd = 5,
+    qtd = 10,
     delay = 1,
     contagem = 1,
-    dano = 0.4,
+    dano = 0.3,
     destruidos = 0
   }
+  superMeteoroides = {}
   metricasSupermeteoroides = {
+    id = "super",
+    img = superImg,
     vel = 300,
-    qtd = 5,
+    qtd = 10,
     delay = 1,
     contagem = 1,
-    dano = 0.5,
+    dano = 1,
     destruidos = 0
   }
-  metricasDetrito = {
-    destruidos = 0
-  }
-  -- Variáveis dos Detritos de Meteoroides
   detritos = {}
+  metricasDetrito = {
+    img = detritoImg,
+    destruidos = 0
+  }  
   detritosQtd = 2
 end

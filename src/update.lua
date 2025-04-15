@@ -4,12 +4,15 @@ function love.update(dt)
     animacaoIntroducao(dt)
   else
     if not pause and startGame == 1 and not gameOver then    
+      -- Execução de funções que fazem o processamento do jogo --
       movimentoLua(dt)
       inimigos(meteoroides, metricasMeteoroides, dt)    
       inimigos(superMeteoroides, metricasSupermeteoroides, dt)
       colisaoDetritos()
       regeneracaoPassiva(dt)
       
+      
+      -- Apresenta o texto informativo --
       if transparenciaTextoInfo < 255 then
         transparenciaTextoInfo = transparenciaTextoInfo + 40 * dt
       end
@@ -69,7 +72,9 @@ function animacaoIntroducao(dt)
 end
 
 function inimigos(inimigos, metricas, dt)
+  -- Intervalo de criação de inimigos --
   metricas.contagem = metricas.contagem - 1 * dt
+  -- Irá criar um novo inimigo dentro do jogo --
   if metricas.contagem < 0 and metricas.qtd > 0 then
     metricas.contagem = metricas.delay
     metricas.qtd = metricas.qtd - 1
@@ -108,7 +113,9 @@ function inimigos(inimigos, metricas, dt)
     table.insert(inimigos, novoInimigo)
   end
     
+  -- Irá verificar se houve colisões dos inimigos e entre a Lua e Terra --
   for i, inimigo in ipairs(inimigos) do
+    -- Movimenta os inimigos antes de verificar a colisão --
      movimentoMeteoroides(dt, inimigo, metricas)
      
      -- Verificar colisão com a Lua

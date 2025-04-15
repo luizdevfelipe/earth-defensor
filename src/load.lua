@@ -57,23 +57,24 @@ function resetaJogo()
   metricasMeteoroides = {
     id = "normal",
     img = meteoroideImg,
-    vel = 300,
-    qtd = 10,
+    vel = 200,
+    qtd = 5,
     delay = 1,
     contagem = 1,
-    dano = 0.3,
+    dano = 0.2,
     destruidos = 0
   }
   superMeteoroides = {}
   metricasSupermeteoroides = {
     id = "super",
     img = superImg,
-    vel = 300,
-    qtd = 10,
+    vel = 50,
+    qtd = 2,
     delay = 1,
     contagem = 1,
     dano = 1,
-    destruidos = 0
+    destruidos = 0,
+    colisoes = 2
   }
   detritos = {}
   metricasDetrito = {

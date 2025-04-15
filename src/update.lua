@@ -73,7 +73,6 @@ function inimigos(inimigos, metricas, dt)
   if metricas.contagem < 0 and metricas.qtd > 0 then
     metricas.contagem = metricas.delay
     metricas.qtd = metricas.qtd - 1
-    print(metricas.qtd .. "--" .. metricas.dano)
     
     cimaOuBaixo = math.random(0, 1)
     umLadoOuOutro = math.random(0, 1)
@@ -100,24 +99,41 @@ function inimigos(inimigos, metricas, dt)
       end
     end    
     
+    if metricas.id == "super" then
+      novoInimigo.vidas = metricas.colisoes
+    end
+    
+    novoInimigo.colisaoAnterior = false
+    
     table.insert(inimigos, novoInimigo)
   end
     
   for i, inimigo in ipairs(inimigos) do
-     movimentoMeteoroides(dt, inimigo)
+     movimentoMeteoroides(dt, inimigo, metricas)
      
      -- Verificar colisão com a Lua
      if isColisao(inimigo.x, inimigo.y, metricas.img:getHeight() / 2,
-       lua.posX, lua.posY, lua.raio) then
-       if metricasSupermeteoroides.id == "super" then 
-         -- fazer com que seja apenas descontado vidas dele até a destruição
-        
-       end
+      lua.posX, lua.posY, lua.raio) then
+      if not inimigo.colisaoAnterior then
+        if metricas.id == "super" then 
+          -- faz com que seja apenas descontado vidas dele até a destruição
+          inimigo.vidas = inimigo.vidas - 1
+          print(inimigo.vidas)
+          if inimigo.vidas <= 0 then
+            table.remove(inimigos, i)
+            metricas.destruidos = metricas.destruidos + 1
+          end
+        else
+          criarDetrito(inimigo.x, inimigo.y)
+          table.remove(inimigos, i)
+          metricas.destruidos = metricas.destruidos + 1
+        end
        
-       criarDetrito(inimigo.x, inimigo.y)
-       metricas.destruidos = metricas.destruidos + 1
-       table.remove(inimigos, i)
-     end
+        inimigo.colisaoAnterior = true
+      end
+    else 
+       inimigo.colisaoAnterior = false
+    end
      
      -- Verificar colisão com a Terra
      if isColisao(inimigo.x, inimigo.y, metricas.img:getHeight() / 2, 
@@ -205,13 +221,13 @@ function movimentoLua(dt)
   lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
 end
 
-function movimentoMeteoroides(dt, meteoroide)
+function movimentoMeteoroides(dt, meteoroide, metrica)
   dist = distanciaDeDoisPontos(centroJanelaX, meteoroide.x, centroJanelaY, meteoroide.y)
   if dist > 1 then
     local dirX = (centroJanelaX - meteoroide.x) / dist
     local dirY = (centroJanelaY - meteoroide.y) / dist
-    meteoroide.x = meteoroide.x + dirX * metricasMeteoroides.vel * dt
-    meteoroide.y = meteoroide.y + dirY * metricasMeteoroides.vel * dt
+    meteoroide.x = meteoroide.x + dirX * metrica.vel * dt
+    meteoroide.y = meteoroide.y + dirY * metrica.vel * dt
   end
 end
 

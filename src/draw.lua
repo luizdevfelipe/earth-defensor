@@ -35,6 +35,11 @@ function love.draw()
       love.graphics.print("Pressione W para alterar o movimento lunar", centroJanelaX - instrucaoWidth / 2, screenHeight * 0.8)
     end
     
+    if (metricasSupermeteoroides.qtd == 0 and next(superMeteoroides) == nil) and (metricasMeteoroides.qtd == 0 and next(meteoroides) == nil)  then
+      trocaDeFase = true
+      telaDePotencializadores()
+    end
+    
     if gameOver then
       telaGameOver()
     end
@@ -45,7 +50,7 @@ function love.draw()
     end
     
     -- Carregamento da Barra de Vida
-    if not gameOver and startGame ~= 0 then
+    if not gameOver and not trocaDeFase and startGame ~= 0 then
       barraDeVida() 
     end
     
@@ -54,6 +59,43 @@ function love.draw()
       telaDePause() 
     end
   end
+end
+
+function telaDePotencializadores()
+  local larguraRetangulo = 300
+  local alturaRetangulo = 400
+  local larguraBorda = 8
+  local centralizadoX = centroJanelaX - larguraRetangulo / 2
+  local centralizadoY = centroJanelaY - alturaRetangulo / 2
+  local espacoRetang = 30
+  
+  desfoqueFundo(240)
+  -- Exibe o texto "Escolha seu novo poder"
+  love.graphics.setFont(fonteNegrito)
+  local escolhaPoderWidth = love.graphics.getFont():getWidth("Escolha seu novo poder:")
+  local escolhaPoderHeight = love.graphics.getFont():getHeight("Escolha seu novo poder:") - 10
+  love.graphics.print("Escolha seu novo poder:", centroJanelaX - escolhaPoderWidth / 2, 60)
+  
+  
+  -- Exibe o 1º quadrado com a habilidade --
+  love.graphics.setLineWidth(larguraBorda)
+  love.graphics.rectangle("line", centralizadoX - larguraRetangulo - espacoRetang , centralizadoY, larguraRetangulo, alturaRetangulo)
+  love.graphics.setColor(0, 0, 0, 220)
+  love.graphics.rectangle("fill", centralizadoX - larguraRetangulo - espacoRetang + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+  
+  -- Exibe o 2º quadrado com a habilidade --
+  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.rectangle("line", centralizadoX, centralizadoY, larguraRetangulo, alturaRetangulo)
+  love.graphics.setColor(0, 0, 0, 220)
+  love.graphics.rectangle("fill", centralizadoX + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+ 
+ -- Exibe o 3º quadrado com a habilidade --
+ love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.rectangle("line", centralizadoX + larguraRetangulo + espacoRetang , centralizadoY, larguraRetangulo, alturaRetangulo)
+  love.graphics.setColor(0, 0, 0, 220)
+  love.graphics.rectangle("fill", centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+ 
+  love.graphics.setColor(255, 255, 255, 255)
 end
 
 function telaGameOver()

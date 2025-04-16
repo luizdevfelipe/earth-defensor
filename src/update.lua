@@ -3,7 +3,7 @@ function love.update(dt)
   if introducao or musicaIntroducao:isPlaying() then
     animacaoIntroducao(dt)
   else
-    if not pause and startGame == 1 and not gameOver then    
+    if not pause and not trocaDeFase and startGame == 1 and not gameOver then    
       -- Execução de funções que fazem o processamento do jogo --
       movimentoLua(dt)
       inimigos(meteoroides, metricasMeteoroides, dt)    
@@ -125,7 +125,6 @@ function inimigos(inimigos, metricas, dt)
         if metricas.id == "super" then 
           -- faz com que seja apenas descontado vidas dele até a destruição
           inimigo.vidas = inimigo.vidas - 1
-          print(inimigo.vidas)
           if inimigo.vidas <= 0 then
             table.remove(inimigos, i)
             metricas.destruidos = metricas.destruidos + 1

@@ -37,9 +37,16 @@ function love.load()
   math.randomseed(os.time())
   resetaJogo()
   botaoUmSolto = true
+  potencializadores = {
+    {"Velocidade Lunar", "A Lua recebe um incremento de **% em sua velocidade, mas ** Meteoroide(s) extra(s) aparece(m).", 0.05, 1},
+    {"Reconstrução da Terra", "A Terra recebe %d Vida Fundamental, em troca a velocidade dos inimigos aumenta em %d%%", 1, 0.05},
+    {"Fúria Lunar", " A Lua destrói todos os meteoros ao encostar, com um limite de %d, porém a Terra sofre %d ponto de dano ao final do efeito.", 5, 0.5}
+  }  
+  
 end
 
 function resetaJogo()
+  trocaDeFase = false
   onda = 1
   vidasTerra = 3
   velocidadeRegeneracao = 0.5
@@ -57,8 +64,8 @@ function resetaJogo()
   metricasMeteoroides = {
     id = "normal",
     img = meteoroideImg,
-    vel = 200,
-    qtd = 5,
+    vel = 1000,
+    qtd = 1,
     delay = 1,
     contagem = 1,
     dano = 0.2,
@@ -69,7 +76,7 @@ function resetaJogo()
     id = "super",
     img = superImg,
     vel = 50,
-    qtd = 2,
+    qtd = 0,
     delay = 1,
     contagem = 1,
     dano = 1,

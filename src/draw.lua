@@ -35,8 +35,7 @@ function love.draw()
       love.graphics.print("Pressione W para alterar o movimento lunar", centroJanelaX - instrucaoWidth / 2, screenHeight * 0.8)
     end
     
-    if (metricasSupermeteoroides.qtd == 0 and next(superMeteoroides) == nil) and (metricasMeteoroides.qtd == 0 and next(meteoroides) == nil)  then
-      trocaDeFase = true
+    if trocaDeFase  then
       telaDePotencializadores()
     end
     
@@ -75,25 +74,76 @@ function telaDePotencializadores()
   local escolhaPoderWidth = love.graphics.getFont():getWidth("Escolha seu novo poder:")
   local escolhaPoderHeight = love.graphics.getFont():getHeight("Escolha seu novo poder:") - 10
   love.graphics.print("Escolha seu novo poder:", centroJanelaX - escolhaPoderWidth / 2, 60)
-  
-  
+    
   -- Exibe o 1º quadrado com a habilidade --
   love.graphics.setLineWidth(larguraBorda)
   love.graphics.rectangle("line", centralizadoX - larguraRetangulo - espacoRetang , centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", centralizadoX - larguraRetangulo - espacoRetang + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  love.graphics.printf( 
+    retornaTextoPotencializador(1),
+    centralizadoX - larguraRetangulo - espacoRetang + larguraBorda / 2, 
+    centroJanelaY - love.graphics.getFont():getHeight(retornaTextoPotencializador(1)) - 10,
+    larguraRetangulo - larguraBorda,
+    "justify"
+  )
+  love.graphics.setFont(fonteMenu50)
+  love.graphics.print(
+    "Selecionar", 
+    (centralizadoX - larguraRetangulo - espacoRetang + larguraBorda / 2) + ((larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2), 
+    centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10
+  )
+  underlineTextHover(
+    (centralizadoX - larguraRetangulo - espacoRetang + larguraBorda / 2) + ((larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2), 
+    centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10,
+    love.graphics.getFont():getWidth("Selecionar"), 
+    love.graphics.getFont():getHeight("Selecionar"))
   
   -- Exibe o 2º quadrado com a habilidade --
-  love.graphics.setColor(255, 255, 255, 255)
   love.graphics.rectangle("line", centralizadoX, centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", centralizadoX + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  love.graphics.printf( 
+    retornaTextoPotencializador(2),
+    centralizadoX + larguraBorda / 2,
+    centroJanelaY - love.graphics.getFont():getHeight(retornaTextoPotencializador(1)) - 10,
+    larguraRetangulo - larguraBorda,
+    "justify"
+  )
+  love.graphics.setFont(fonteMenu50)
+  love.graphics.printf(
+    "Selecionar", 
+   centralizadoX + larguraBorda / 2, 
+    centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10, 
+    larguraRetangulo - larguraBorda, 
+    "center"
+  )
  
  -- Exibe o 3º quadrado com a habilidade --
- love.graphics.setColor(255, 255, 255, 255)
   love.graphics.rectangle("line", centralizadoX + larguraRetangulo + espacoRetang , centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  love.graphics.printf( 
+    retornaTextoPotencializador(3),
+    centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2, 
+    centroJanelaY - love.graphics.getFont():getHeight(retornaTextoPotencializador(1)) - 10,
+    larguraRetangulo - larguraBorda,
+    "justify"
+  )
+  love.graphics.setFont(fonteMenu50)
+  love.graphics.printf(
+    "Selecionar", 
+    centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2, 
+    centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10, 
+    larguraRetangulo - larguraBorda, 
+    "center"
+  )
  
   love.graphics.setColor(255, 255, 255, 255)
 end
@@ -316,4 +366,7 @@ function desfoqueFundo(des)
   love.graphics.setColor(0,0,0, des)
   love.graphics.rectangle("fill", 0, 0, screenWidth, screenHeight)
   love.graphics.setColor(255, 255, 255)
+end
+function retornaTextoPotencializador(opcao)
+  return string.format(potencializadores[potencializadoresSorteados[opcao]][2], potencializadores[potencializadoresSorteados[opcao]][3], potencializadores[potencializadoresSorteados[opcao]][4])
 end

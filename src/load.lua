@@ -10,7 +10,9 @@ function love.load()
   superImg = love.graphics.newImage("assets/images/super.png")
   fonteNegrito = love.graphics.newFont("assets/fonts/SpecialGothicExpandedOne-Regular.ttf", 70)
   fonteMenu = love.graphics.newFont("assets/fonts/Probeta-SemiBoldItalic.ttf", 100)
+  fonteMenu50 = love.graphics.newFont("assets/fonts/Probeta-SemiBoldItalic.ttf", 50)
   fontNormal = love.graphics.newFont("assets/fonts/Roboto-VariableFont_wdth,wght.ttf", 40)
+  fontNormal20 = love.graphics.newFont("assets/fonts/Roboto-VariableFont_wdth,wght.ttf", 20)
   detritoImg = love.graphics.newImage("assets/images/detrito.png")
   musicaIntroducao = love.audio.newSource("assets/audio/Midnight Trace - Jimena Contreras.mp3")
   meteoroImg = love.graphics.newImage("assets/images/meteoro.png")
@@ -38,11 +40,12 @@ function love.load()
   resetaJogo()
   botaoUmSolto = true
   potencializadores = {
-    {"Velocidade Lunar", "A Lua recebe um incremento de **% em sua velocidade, mas ** Meteoroide(s) extra(s) aparece(m).", 0.05, 1},
-    {"Reconstrução da Terra", "A Terra recebe %d Vida Fundamental, em troca a velocidade dos inimigos aumenta em %d%%", 1, 0.05},
-    {"Fúria Lunar", " A Lua destrói todos os meteoros ao encostar, com um limite de %d, porém a Terra sofre %d ponto de dano ao final do efeito.", 5, 0.5}
+    -- Titulo, Descrição, Vantagem%, Desvantagem%,  --
+    {"Velocidade Lunar", "A Lua recebe um incremento de %d%% em sua velocidade, mas %d Meteoroide(s) extra(s) aparece(m).", 5, 1},
+    {"Reconstrução da Terra", "A Terra recebe %d Vida Fundamental, em troca a velocidade dos inimigos aumenta em %d%%", 1, 5},
+    {"Fúria Lunar", " A Lua destrói todos os meteoros ao encostar, com um limite de %d, porém a Terra sofre %d ponto de dano ao final do efeito.", 5, 1}
   }  
-  
+  potencializadoresSorteados = nil
 end
 
 function resetaJogo()

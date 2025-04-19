@@ -10,6 +10,7 @@ function love.update(dt)
       inimigos(superMeteoroides, metricasSupermeteoroides, dt)
       colisaoDetritos()
       regeneracaoPassiva(dt)
+      verificaTrocaDeFase()
       
       
       -- Apresenta o texto informativo --
@@ -187,8 +188,18 @@ function colisaoDetritos()
   end
 end
 
-function novaRodada()
-  
+function verificaTrocaDeFase()
+  if (metricasSupermeteoroides.qtd == 0 and next(superMeteoroides) == nil) and (metricasMeteoroides.qtd == 0 and next(meteoroides) == nil) then
+    trocaDeFase = true
+    
+    local pesos = {
+      [1] = 1,
+      [2] = 2,
+      [3] = 5,
+    }
+    
+    potencializadoresSorteados = sortearUnicosComPeso(3, pesos)
+  end
 end
 
 -- Função para regeneração passiva da vida da Terra
@@ -272,6 +283,41 @@ function love.keypressed(key)
   if key == "escape" and startGame ~= 0 and not gameOver then
     pause = not pause
   end
+end
+
+-- Função para retornar N valores aleatórios com probabilidades diferentes
+function sortearUnicosComPeso(qtd, pesos)
+  -- Cria pool ponderada
+  local pool = {}
+  for valor, peso in pairs(pesos) do
+    for i = 1, peso do
+      table.insert(pool, valor)
+    end
+  end
+
+  local resultado = {}
+  local sorteados = {}
+
+  while #resultado < qtd and #pool > 0 do
+    -- Sorteia da pool
+    local index = math.random(#pool)
+    local valor = pool[index]
+
+    -- Adiciona se ainda não foi sorteado
+    if not sorteados[valor] then
+      table.insert(resultado, valor)
+      sorteados[valor] = true
+    end
+
+    -- Remove todas as ocorrências desse valor da pool
+    for i = #pool, 1, -1 do
+      if pool[i] == valor then
+        table.remove(pool, i)
+      end
+    end
+  end
+
+  return resultado
 end
 
 -- Variáveis que devem ser atualizadas durante a execução

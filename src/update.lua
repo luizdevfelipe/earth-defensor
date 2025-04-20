@@ -155,7 +155,7 @@ end
 
 -- Função para o criação dos Detritos
 function criarDetrito(x, y)
-  for i = 1, detritosQtd, 1 do
+  for i = 1, metricasDetrito.qtd, 1 do
     novoDetrito = {x = x + math.random(-40 - i^2, 40 + i^2), y = y + math.random(-40 - i^2, 40 + i^2)}
     table.insert(detritos, novoDetrito)
   end
@@ -200,6 +200,13 @@ function verificaTrocaDeFase()
     
     potencializadoresSorteados = sortearUnicosComPeso(3, pesos)
   end
+end
+
+function potencializadorEscolhido(escolha)
+  trocaDeFase = false
+  onda = onda + 1
+  resetaRodada()
+  
 end
 
 -- Função para regeneração passiva da vida da Terra

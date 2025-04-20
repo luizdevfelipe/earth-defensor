@@ -76,9 +76,9 @@ function inimigos(inimigos, metricas, dt)
   -- Intervalo de criação de inimigos --
   metricas.contagem = metricas.contagem - 1 * dt
   -- Irá criar um novo inimigo dentro do jogo --
-  if metricas.contagem < 0 and metricas.qtd > 0 then
+  if metricas.contagem < 0 and round(metricas.qtd.valor) > 0 then
     metricas.contagem = metricas.delay
-    metricas.qtd = metricas.qtd - 1
+    metricas.qtd.valor = round(metricas.qtd.valor) - 1
     
     cimaOuBaixo = math.random(0, 1)
     umLadoOuOutro = math.random(0, 1)
@@ -189,14 +189,12 @@ function colisaoDetritos()
 end
 
 function verificaTrocaDeFase()
-  if (metricasSupermeteoroides.qtd == 0 and next(superMeteoroides) == nil) and (metricasMeteoroides.qtd == 0 and next(meteoroides) == nil) then
+  if (round(metricasSupermeteoroides.qtd.valor) == 0 and next(superMeteoroides) == nil) and (round(metricasMeteoroides.qtd.valor) == 0 and next(meteoroides) == nil) then
     trocaDeFase = true
     
-    local pesos = {
-      [1] = 1,
-      [2] = 2,
-      [3] = 5,
-    }
+    for i = 1, #potencializadores do 
+      pesos[i] = potencializadores[i].peso
+    end
     
     potencializadoresSorteados = sortearUnicosComPeso(3, pesos)
   end
@@ -207,6 +205,10 @@ function potencializadorEscolhido(escolha)
   onda = onda + 1
   resetaRodada()
   
+  varVantagem = potencializadores[escolha].alvoVantagem
+  varDesvantagem = potencializadores[escolha].alvoDesvantagem
+  varVantagem.valor = varVantagem.valor + varVantagem.valor * (potencializadores[escolha].vantagem / 100)
+  varDesvantagem.valor = varDesvantagem.valor + varDesvantagem.valor * (potencializadores[escolha].desvantagem / 100)
 end
 
 -- Função para regeneração passiva da vida da Terra
@@ -241,7 +243,7 @@ end
 
 -- Função que atualiza as posições da Lua no jogo
 function movimentoLua(dt)  
-  orbitaLua = orbitaLua + velocidadeOrbita * dt * direcaoOrbita
+  orbitaLua = orbitaLua + velocidadeOrbita.valor * dt * direcaoOrbita
   lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
 end
 
@@ -265,6 +267,10 @@ function getAngulo(x1, y1, x2, y2)
     a = a + 360 
   end
   return a
+end
+
+function round(n)
+  return math.floor(n + 0.5)
 end
 
 -- função matemática para cálculo de posicionamento orbital

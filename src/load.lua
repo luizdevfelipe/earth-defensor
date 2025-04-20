@@ -40,10 +40,30 @@ function love.load()
   resetaJogo()
   botaoUmSolto = true
   potencializadores = {
-    -- Titulo, Descrição, Vantagem%, Desvantagem%,  --
-    {"Velocidade Lunar", "A Lua recebe um incremento de %d%% em sua velocidade, mas %d Meteoroide(s) extra(s) aparece(m).", 5, 1},
-    {"Reconstrução da Terra", "A Terra recebe %d Vida Fundamental, em troca a velocidade dos inimigos aumenta em %d%%", 1, 5},
-    {"Fúria Lunar", " A Lua destrói todos os meteoros ao encostar, com um limite de %d, porém a Terra sofre %d ponto de dano ao final do efeito.", 5, 1}
+    {
+      titulo = "Velocidade Lunar", 
+      descricao = "A Lua recebe um incremento de %d%% em sua velocidade, mas %d Meteoroide(s) extra(s) aparece(m).", 
+      vantagem = 5, 
+      desvantagem = 1,
+      alvoVantagem = velocidadeOrbita,
+      alvoDesvantagem = metricasMeteoroides.qtd
+    },
+    {
+      titulo = "Reconstrução da Terra", 
+      descricao = "A Terra recebe %d Vida Fundamental, em troca a velocidade dos inimigos aumenta em %d%%", 
+      vantagem = 1, 
+      desvantagem = 5,
+      alvoVantagem = vidasTerra,
+      alvoDesvantagem = metricasMeteoroides.vel
+    },
+    {
+      titulo = "Fúria Lunar", 
+      descricao = "A Lua destrói todos os meteoros ao encostar, com um limite de %d, porém a Terra sofre %d ponto de dano ao final do efeito.", 
+      vantagem = 5, 
+      desvantagem = 1,
+      alvoVantagem = metricasMeteoroides.qtd,
+      alvoDesvantagem = vidasTerra
+    },
   }  
   potencializadoresSorteados = nil
 end
@@ -62,7 +82,21 @@ function resetaJogo()
   startGame = 0
   gameOver = false
   pause = false
-  -- Variáveis dos Meteoroides
+  
+  -- Variáveis dos Supermeteoroides --
+  superMeteoroides = {}
+  metricasSupermeteoroides = {
+    id = "super",
+    img = superImg,
+    vel = 50,
+    qtd = 0,
+    delay = 1, -- intervalo padrão de criação
+    contagem = 1, -- variável de "cronometro" para uma nova criação
+    dano = 1,
+    destruidos = 0,
+    colisoes = 2
+  }
+  -- Variáveis dos Meteoroides --
   meteoroides = {}
   metricasMeteoroides = {
     id = "normal",
@@ -74,22 +108,25 @@ function resetaJogo()
     dano = 0.2,
     destruidos = 0
   }
-  superMeteoroides = {}
-  metricasSupermeteoroides = {
-    id = "super",
-    img = superImg,
-    vel = 50,
-    qtd = 0,
-    delay = 1,
-    contagem = 1,
-    dano = 1,
-    destruidos = 0,
-    colisoes = 2
-  }
+  -- Variáveis dos Detritos --
   detritos = {}
   metricasDetrito = {
     img = detritoImg,
-    destruidos = 0
-  }  
-  detritosQtd = 2
+    destruidos = 0,
+    qtd = 2
+  }
+end
+
+function resetaRodada()  
+  -- Metricas Definidas de acordo com rodadas Fáceis, Médias e Difíceis --
+  if onda <= 10 then
+    metricasSupermeteoroides.qtd = 0
+    metricasMeteoroides.qtd = 3 + onda - 1
+  elseif onda <= 20 then
+    metricasSupermeteoroides.qtd = 1
+    metricasMeteoroides.qtd = 3 + onda
+  else
+    metricasSupermeteoroides.qtd = 3
+    metricasMeteoroides.qtd = 3 * onda
+  end
 end

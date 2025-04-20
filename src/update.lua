@@ -145,7 +145,7 @@ function inimigos(inimigos, metricas, dt)
      -- Verificar colisão com a Terra
      if isColisao(inimigo.x, inimigo.y, metricas.img:getHeight() / 2, 
        terra.posX, terra.posY, terra.raio) then
-       vidasTerra = vidasTerra - metricas.dano
+       vidasTerra.valor = vidasTerra.valor - metricas.dano
        metricas.destruidos = metricas.destruidos + 1
        table.remove(inimigos, i)
      end
@@ -214,27 +214,27 @@ end
 -- Função para regeneração passiva da vida da Terra
 function regeneracaoPassiva(dt)
   -- Verifica se o jogador perdeu
-  if vidasTerra <= 0 then
-    vidasTerra = 0
+  if vidasTerra.valor <= 0 then
+    vidasTerra.valor = 0
     gameOver = true
   end
   -- Lógica de regeneração da vida da Terra
   tempoRegeneracao = tempoRegeneracao - dt
   if tempoRegeneracao <= 0 then
-    if vidasTerra <= 3 and vidasTerra > 2 then
-      vidasTerra = vidasTerra + taxaRegeneracao
-      if vidasTerra > 3 then
-        vidasTerra = 3
+    if vidasTerra.valor <= 3 and vidasTerra.valor > 2 then
+      vidasTerra.valor = vidasTerra.valor + taxaRegeneracao
+      if vidasTerra.valor > 3 then
+        vidasTerra.valor = 3
       end
-    elseif vidasTerra > 1 then
-      vidasTerra = vidasTerra + taxaRegeneracao
-      if vidasTerra > 2 then
-        vidasTerra = 2
+    elseif vidasTerra.valor > 1 then
+      vidasTerra.valor = vidasTerra.valor + taxaRegeneracao
+      if vidasTerra.valor > 2 then
+        vidasTerra.valor = 2
       end  
     else 
-      vidasTerra = vidasTerra + taxaRegeneracao
-      if vidasTerra > 1 then
-        vidasTerra = 1
+      vidasTerra.valor = vidasTerra.valor + taxaRegeneracao
+      if vidasTerra.valor > 1 then
+        vidasTerra.valor = 1
       end
     end
     tempoRegeneracao = velocidadeRegeneracao

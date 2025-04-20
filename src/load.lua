@@ -42,17 +42,17 @@ function love.load()
   potencializadores = {
     {
       titulo = "Velocidade Lunar", 
-      descricao = "A Lua recebe um incremento de %d%% em sua velocidade, mas %d Meteoroide(s) extra(s) aparece(m).", 
+      descricao = "A Lua recebe um incremento de %d%% em sua velocidade, mas %d%% de Meteoroides extras aparecem.", 
       vantagem = 5, 
-      desvantagem = 1,
+      desvantagem = 6,
       alvoVantagem = velocidadeOrbita,
       alvoDesvantagem = metricasMeteoroides.qtd,
       peso = 1
     },
     {
       titulo = "Reconstrução da Terra", 
-      descricao = "A Terra recebe %d Vida Fundamental, em troca a velocidade dos inimigos aumenta em %d%%", 
-      vantagem = 1, 
+      descricao = "A Terra recebe %d%% da sua vida fundamental, em troca a velocidade dos inimigos aumenta em %d%%", 
+      vantagem = 20, 
       desvantagem = 5,
       alvoVantagem = vidasTerra,
       alvoDesvantagem = metricasMeteoroides.vel,
@@ -76,7 +76,7 @@ function resetaJogo()
   pesos = {}
   trocaDeFase = false
   onda = 1
-  vidasTerra = 3
+  vidasTerra = { valor = 3 }
   velocidadeRegeneracao = 0.5
   tempoRegeneracao = velocidadeRegeneracao
   taxaRegeneracao = 0.05

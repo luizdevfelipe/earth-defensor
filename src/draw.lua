@@ -67,6 +67,9 @@ function telaDePotencializadores()
   local centralizadoX = centroJanelaX - larguraRetangulo / 2
   local centralizadoY = centroJanelaY - alturaRetangulo / 2
   local espacoRetang = 30
+  local interior1QuadradoX = centralizadoX - larguraRetangulo - espacoRetang + larguraBorda / 2
+  local interior3QuadradoX = centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2
+  local textoSelecionarY = centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10
   
   desfoqueFundo(240)
   -- Exibe o texto "Escolha seu novo poder"
@@ -77,34 +80,38 @@ function telaDePotencializadores()
     
   -- Exibe o 1º quadrado com a habilidade --
   love.graphics.setLineWidth(larguraBorda)
-  love.graphics.rectangle("line", centralizadoX - larguraRetangulo - espacoRetang , centralizadoY, larguraRetangulo, alturaRetangulo)
+  love.graphics.rectangle("line", centralizadoX - larguraRetangulo - espacoRetang, centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
-  love.graphics.rectangle("fill", centralizadoX - larguraRetangulo - espacoRetang + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+  love.graphics.rectangle("fill", interior1QuadradoX, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+  -- Exibe o 1º texto da habilidade --
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     retornaTextoPotencializador(1),
-    centralizadoX - larguraRetangulo - espacoRetang + larguraBorda / 2, 
+    interior1QuadradoX, 
     centroJanelaY - love.graphics.getFont():getHeight(retornaTextoPotencializador(1)) - 10,
     larguraRetangulo - larguraBorda,
     "justify"
   )
+  -- Exibe o 1º botão de "Selecionar" --
   love.graphics.setFont(fonteMenu50)
   love.graphics.print(
     "Selecionar", 
-    (centralizadoX - larguraRetangulo - espacoRetang + larguraBorda / 2) + ((larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2), 
-    centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10
+    interior1QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
+    textoSelecionarY
   )
   underlineTextHover(
-    (centralizadoX - larguraRetangulo - espacoRetang + larguraBorda / 2) + ((larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2), 
-    centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10,
+    interior1QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
+    textoSelecionarY - 8,
     love.graphics.getFont():getWidth("Selecionar"), 
-    love.graphics.getFont():getHeight("Selecionar"))
+    love.graphics.getFont():getHeight("Selecionar")
+  )
   
   -- Exibe o 2º quadrado com a habilidade --
   love.graphics.rectangle("line", centralizadoX, centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", centralizadoX + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+  -- Exibe o 2º texto da habilidade --
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
@@ -114,36 +121,84 @@ function telaDePotencializadores()
     larguraRetangulo - larguraBorda,
     "justify"
   )
+  -- Exibe o 2º botão de "Selecionar" --
   love.graphics.setFont(fonteMenu50)
   love.graphics.printf(
     "Selecionar", 
-   centralizadoX + larguraBorda / 2, 
-    centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10, 
+    centralizadoX + larguraBorda / 2, 
+    textoSelecionarY, 
     larguraRetangulo - larguraBorda, 
     "center"
+  )
+  underlineTextHover(
+    centralizadoX + larguraBorda / 2 + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
+    textoSelecionarY - 8,
+    love.graphics.getFont():getWidth("Selecionar"), 
+    love.graphics.getFont():getHeight("Selecionar")
   )
  
  -- Exibe o 3º quadrado com a habilidade --
   love.graphics.rectangle("line", centralizadoX + larguraRetangulo + espacoRetang , centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+  -- Exibe o 3º texto da habilidade --
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     retornaTextoPotencializador(3),
-    centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2, 
+    interior3QuadradoX, 
     centroJanelaY - love.graphics.getFont():getHeight(retornaTextoPotencializador(1)) - 10,
     larguraRetangulo - larguraBorda,
     "justify"
   )
+  -- Exibe o 3º botão de "Selecionar" --
   love.graphics.setFont(fonteMenu50)
   love.graphics.printf(
     "Selecionar", 
-    centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2, 
-    centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10, 
+    interior3QuadradoX, 
+    textoSelecionarY, 
     larguraRetangulo - larguraBorda, 
     "center"
   )
+  underlineTextHover(
+    interior3QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
+    textoSelecionarY - 8,
+    love.graphics.getFont():getWidth("Selecionar"), 
+    love.graphics.getFont():getHeight("Selecionar")
+  )
+ 
+  -- Verifica se selecionou a 1º habilidade -- 
+  if isCliqueEmTexto(
+    interior1QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
+    textoSelecionarY - 8,
+    love.graphics.getFont():getWidth("Selecionar"), 
+    love.graphics.getFont():getHeight("Selecionar")
+    ) and botaoUmSolto then
+    botaoUmSolto = false
+    potencializadorEscolhido(1)
+  end 
+  
+  -- Verifica se selecionou a 2º habilidade --   
+  if isCliqueEmTexto(
+    centralizadoX + larguraBorda / 2 + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
+    textoSelecionarY - 8,
+    love.graphics.getFont():getWidth("Selecionar"), 
+    love.graphics.getFont():getHeight("Selecionar")
+    ) and botaoUmSolto then
+    botaoUmSolto = false
+    potencializadorEscolhido(2)
+  end 
+  
+  -- Verifica se selecionou a 3º habilidade --   
+  if isCliqueEmTexto(
+    interior3QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
+    textoSelecionarY - 8,
+    love.graphics.getFont():getWidth("Selecionar"), 
+    love.graphics.getFont():getHeight("Selecionar")
+    ) and botaoUmSolto then
+    botaoUmSolto = false
+    potencializadorEscolhido(3)
+  end 
  
   love.graphics.setColor(255, 255, 255, 255)
 end
@@ -368,5 +423,5 @@ function desfoqueFundo(des)
   love.graphics.setColor(255, 255, 255)
 end
 function retornaTextoPotencializador(opcao)
-  return string.format(potencializadores[potencializadoresSorteados[opcao]][2], potencializadores[potencializadoresSorteados[opcao]][3], potencializadores[potencializadoresSorteados[opcao]][4])
+  return string.format(potencializadores[potencializadoresSorteados[opcao]].descricao, potencializadores[potencializadoresSorteados[opcao]].vantagem, potencializadores[potencializadoresSorteados[opcao]].desvantagem)
 end

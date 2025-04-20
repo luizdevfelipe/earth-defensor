@@ -25,7 +25,7 @@ function love.draw()
     
     -- Carregamento das imagens de SuperMeteoroides --
     for i, super in ipairs(superMeteoroides) do
-      love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, 0, 1, 1, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
+      love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, 0, 2, 2, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
     end
     
     if transparenciaTextoInfo < 255 then
@@ -175,7 +175,7 @@ function telaDePotencializadores()
     love.graphics.getFont():getHeight("Selecionar")
     ) and botaoUmSolto then
     botaoUmSolto = false
-    potencializadorEscolhido(1)
+    potencializadorEscolhido(potencializadoresSorteados[1])
   end 
   
   -- Verifica se selecionou a 2º habilidade --   
@@ -186,7 +186,7 @@ function telaDePotencializadores()
     love.graphics.getFont():getHeight("Selecionar")
     ) and botaoUmSolto then
     botaoUmSolto = false
-    potencializadorEscolhido(2)
+    potencializadorEscolhido(potencializadoresSorteados[2])
   end 
   
   -- Verifica se selecionou a 3º habilidade --   
@@ -197,7 +197,7 @@ function telaDePotencializadores()
     love.graphics.getFont():getHeight("Selecionar")
     ) and botaoUmSolto then
     botaoUmSolto = false
-    potencializadorEscolhido(3)
+    potencializadorEscolhido(potencializadoresSorteados[3])
   end 
  
   love.graphics.setColor(255, 255, 255, 255)
@@ -422,6 +422,7 @@ function desfoqueFundo(des)
   love.graphics.rectangle("fill", 0, 0, screenWidth, screenHeight)
   love.graphics.setColor(255, 255, 255)
 end
+
 function retornaTextoPotencializador(opcao)
   return string.format(potencializadores[potencializadoresSorteados[opcao]].descricao, potencializadores[potencializadoresSorteados[opcao]].vantagem, potencializadores[potencializadoresSorteados[opcao]].desvantagem)
 end

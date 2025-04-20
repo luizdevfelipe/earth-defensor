@@ -46,7 +46,8 @@ function love.load()
       vantagem = 5, 
       desvantagem = 1,
       alvoVantagem = velocidadeOrbita,
-      alvoDesvantagem = metricasMeteoroides.qtd
+      alvoDesvantagem = metricasMeteoroides.qtd,
+      peso = 1
     },
     {
       titulo = "Reconstrução da Terra", 
@@ -54,7 +55,8 @@ function love.load()
       vantagem = 1, 
       desvantagem = 5,
       alvoVantagem = vidasTerra,
-      alvoDesvantagem = metricasMeteoroides.vel
+      alvoDesvantagem = metricasMeteoroides.vel,
+      peso = 2
     },
     {
       titulo = "Fúria Lunar", 
@@ -62,13 +64,16 @@ function love.load()
       vantagem = 5, 
       desvantagem = 1,
       alvoVantagem = metricasMeteoroides.qtd,
-      alvoDesvantagem = vidasTerra
+      alvoDesvantagem = vidasTerra,
+      peso = 5
     },
   }  
   potencializadoresSorteados = nil
+  
 end
 
 function resetaJogo()
+  pesos = {}
   trocaDeFase = false
   onda = 1
   vidasTerra = 3
@@ -76,7 +81,7 @@ function resetaJogo()
   tempoRegeneracao = velocidadeRegeneracao
   taxaRegeneracao = 0.05
   orbitaLua = 0
-  velocidadeOrbita = 3
+  velocidadeOrbita = {valor = 1.5}
   direcaoOrbita = 1
   -- 0 não há jogo, 1 um jogador, 2 dois jogadores
   startGame = 0
@@ -88,8 +93,8 @@ function resetaJogo()
   metricasSupermeteoroides = {
     id = "super",
     img = superImg,
-    vel = 50,
-    qtd = 0,
+    vel = 100,
+    qtd = { valor = 1 }, -- possibilita passagem por referência --
     delay = 1, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
     dano = 1,
@@ -102,8 +107,8 @@ function resetaJogo()
     id = "normal",
     img = meteoroideImg,
     vel = 1000,
-    qtd = 1,
-    delay = 1,
+    qtd = { valor = 5 }, -- tabela possibilita passagem por referência --
+    delay = 1.5,
     contagem = 1,
     dano = 0.2,
     destruidos = 0
@@ -120,13 +125,13 @@ end
 function resetaRodada()  
   -- Metricas Definidas de acordo com rodadas Fáceis, Médias e Difíceis --
   if onda <= 10 then
-    metricasSupermeteoroides.qtd = 0
-    metricasMeteoroides.qtd = 3 + onda - 1
+    metricasSupermeteoroides.qtd.valor = 0
+    metricasMeteoroides.qtd.valor = 3 + onda - 1
   elseif onda <= 20 then
-    metricasSupermeteoroides.qtd = 1
-    metricasMeteoroides.qtd = 3 + onda
+    metricasSupermeteoroides.qtd.valor = 1
+    metricasMeteoroides.qtd.valor = 3 + onda
   else
-    metricasSupermeteoroides.qtd = 3
-    metricasMeteoroides.qtd = 3 * onda
+    metricasSupermeteoroides.qtd.valor = 3
+    metricasMeteoroides.qtd.valor = 3 * onda
   end
 end

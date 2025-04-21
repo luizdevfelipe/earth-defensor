@@ -59,12 +59,12 @@ function love.load()
       peso = 2
     },
     {
-      titulo = "Fúria Lunar", 
-      descricao = "A Lua destrói todos os meteoros ao encostar, com um limite de %d, porém a Terra sofre %d ponto de dano ao final do efeito.", 
-      vantagem = 5, 
-      desvantagem = 1,
-      alvoVantagem = metricasMeteoroides.qtd,
-      alvoDesvantagem = vidasTerra,
+      titulo = "Máquinas Aceleradas", 
+      descricao = "As máquinas usadas na recuperação de impactos passam a trabalhar %d%% mais rápido aumentando a taxa de regeneração, mas a poluição gerada contribui para os danos causados por Meteoroides em %d%%.", 
+      vantagem = 20, 
+      desvantagem = 25,
+      alvoVantagem = taxaRegeneracao,
+      alvoDesvantagem = metricasMeteoroides.dano,
       peso = 5
     },
   }  
@@ -79,7 +79,7 @@ function resetaJogo()
   vidasTerra = { valor = 3 }
   velocidadeRegeneracao = 0.5
   tempoRegeneracao = velocidadeRegeneracao
-  taxaRegeneracao = 0.05
+  taxaRegeneracao = { valor = 0.05 }
   orbitaLua = 0
   velocidadeOrbita = {valor = 1.5}
   direcaoOrbita = 1
@@ -97,7 +97,7 @@ function resetaJogo()
     qtd = { valor = 2 }, -- possibilita passagem por referência --
     delay = 1, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
-    dano = 1,
+    dano = { valor = 1 },
     destruidos = 0,
     colisoes = 2,
     escala = { valor = 2 }
@@ -111,8 +111,9 @@ function resetaJogo()
     qtd = { valor = 5 }, -- tabela possibilita passagem por referência --
     delay = 1.5,
     contagem = 1,
-    dano = 0.2,
-    destruidos = 0
+    dano = { valor =  0.2 },
+    destruidos = 0,
+    escala = { valor = 1 }
   }
   -- Variáveis dos Detritos --
   detritos = {}

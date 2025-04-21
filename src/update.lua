@@ -122,9 +122,9 @@ function inimigos(inimigos, metricas, dt)
      
      -- Verificar colisão com a Lua
      -- No caso de supermeteoroide
-     if metricas.id == "super" then
+    if metricas.id == "super" then
        -- Verifica se houve a colisao
-      if isColisao(inimigo.x, inimigo.y, (metricas.img:getHeight() / 2) * metricasSupermeteoroides.escala.valor,
+      if isColisao(inimigo.x, inimigo.y, (metricas.img:getHeight() / 2) * metricas.escala.valor,
       lua.posX, lua.posY, lua.raio) then
         if not inimigo.colisaoAnterior then
           -- faz com que seja apenas descontado vidas dele até a destruição
@@ -154,9 +154,9 @@ function inimigos(inimigos, metricas, dt)
     end
     
      -- Verificar colisão com a Terra
-     if isColisao(inimigo.x, inimigo.y, metricas.img:getHeight() / 2, 
+     if isColisao(inimigo.x, inimigo.y, (metricas.img:getHeight() / 2) * metricas.escala.valor, 
        terra.posX, terra.posY, terra.raio) then
-       vidasTerra.valor = vidasTerra.valor - metricas.dano
+       vidasTerra.valor = vidasTerra.valor - metricas.dano.valor
        metricas.destruidos = metricas.destruidos + 1
        table.remove(inimigos, i)
      end
@@ -220,6 +220,9 @@ function potencializadorEscolhido(escolha)
   varDesvantagem = potencializadores[escolha].alvoDesvantagem
   varVantagem.valor = varVantagem.valor + varVantagem.valor * (potencializadores[escolha].vantagem / 100)
   varDesvantagem.valor = varDesvantagem.valor + varDesvantagem.valor * (potencializadores[escolha].desvantagem / 100)
+  
+  print(varVantagem.valor)
+  print(varDesvantagem.valor)
 end
 
 -- Função para regeneração passiva da vida da Terra
@@ -233,17 +236,17 @@ function regeneracaoPassiva(dt)
   tempoRegeneracao = tempoRegeneracao - dt
   if tempoRegeneracao <= 0 then
     if vidasTerra.valor <= 3 and vidasTerra.valor > 2 then
-      vidasTerra.valor = vidasTerra.valor + taxaRegeneracao
+      vidasTerra.valor = vidasTerra.valor + taxaRegeneracao.valor
       if vidasTerra.valor > 3 then
         vidasTerra.valor = 3
       end
     elseif vidasTerra.valor > 1 then
-      vidasTerra.valor = vidasTerra.valor + taxaRegeneracao
+      vidasTerra.valor = vidasTerra.valor + taxaRegeneracao.valor
       if vidasTerra.valor > 2 then
         vidasTerra.valor = 2
       end  
     else 
-      vidasTerra.valor = vidasTerra.valor + taxaRegeneracao
+      vidasTerra.valor = vidasTerra.valor + taxaRegeneracao.valor
       if vidasTerra.valor > 1 then
         vidasTerra.valor = 1
       end

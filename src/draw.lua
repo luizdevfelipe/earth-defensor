@@ -28,6 +28,10 @@ function love.draw()
       love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, 0, 2, 2, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
     end
     
+    -- Exibe a Onda atual do jogador --
+    love.graphics.setFont(fontNormal)
+    love.graphics.print("Onda: " .. onda, centroJanelaX - love.graphics.getFont():getWidth("Onda: " .. onda) / 2, screenHeight - 45)
+    
     if transparenciaTextoInfo < 255 then
       love.graphics.setFont(fontNormal)
       love.graphics.setColor(transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo)
@@ -83,6 +87,14 @@ function telaDePotencializadores()
   love.graphics.rectangle("line", centralizadoX - larguraRetangulo - espacoRetang, centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", interior1QuadradoX, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+  -- Exibe o título da 1º habilidade --
+  love.graphics.setFont(fonteMenu50)
+  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.print(
+    potencializadores[potencializadoresSorteados[1]].titulo, 
+    interior1QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth(potencializadores[potencializadoresSorteados[1]].titulo)) / 2, 
+    centralizadoY
+  )
   -- Exibe o 1º texto da habilidade --
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.setFont(fontNormal20)
@@ -111,6 +123,14 @@ function telaDePotencializadores()
   love.graphics.rectangle("line", centralizadoX, centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", centralizadoX + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+  -- Exibe o título da 2º habilidade --
+  love.graphics.setFont(fonteMenu50)
+  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.print(
+    potencializadores[potencializadoresSorteados[2]].titulo, 
+    centralizadoX + larguraBorda / 2 + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth(potencializadores[potencializadoresSorteados[2]].titulo)) / 2, 
+    centralizadoY
+  )
   -- Exibe o 2º texto da habilidade --
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.setFont(fontNormal20)
@@ -141,6 +161,14 @@ function telaDePotencializadores()
   love.graphics.rectangle("line", centralizadoX + larguraRetangulo + espacoRetang , centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
+  -- Exibe o título da 3º habilidade --
+  love.graphics.setFont(fonteMenu50)
+  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.print(
+    potencializadores[potencializadoresSorteados[3]].titulo, 
+    interior3QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth(potencializadores[potencializadoresSorteados[3]].titulo)) / 2, 
+    centralizadoY
+  )
   -- Exibe o 3º texto da habilidade --
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.setFont(fontNormal20)

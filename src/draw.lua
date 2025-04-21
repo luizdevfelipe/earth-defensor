@@ -25,7 +25,7 @@ function love.draw()
     
     -- Carregamento das imagens de SuperMeteoroides --
     for i, super in ipairs(superMeteoroides) do
-      love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, 0, 2, 2, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
+      love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, 0, super.escala, super.escala, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
     end
     
     -- Exibe a Onda atual do jogador --

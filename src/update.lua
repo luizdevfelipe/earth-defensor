@@ -107,6 +107,7 @@ function inimigos(inimigos, metricas, dt)
     
     if metricas.id == "super" then
       novoInimigo.vidas = metricas.colisoes
+      novoInimigo.escala = metricas.escala.valor
     end
     
     novoInimigo.colisaoAnterior = false
@@ -120,28 +121,38 @@ function inimigos(inimigos, metricas, dt)
      movimentoMeteoroides(dt, inimigo, metricas)
      
      -- Verificar colisão com a Lua
-     if isColisao(inimigo.x, inimigo.y, metricas.img:getHeight() / 2,
+     -- No caso de supermeteoroide
+     if metricas.id == "super" then
+       -- Verifica se houve a colisao
+      if isColisao(inimigo.x, inimigo.y, (metricas.img:getHeight() / 2) * metricasSupermeteoroides.escala.valor,
       lua.posX, lua.posY, lua.raio) then
-      if not inimigo.colisaoAnterior then
-        if metricas.id == "super" then 
+        if not inimigo.colisaoAnterior then
           -- faz com que seja apenas descontado vidas dele até a destruição
           inimigo.vidas = inimigo.vidas - 1
+          inimigo.escala = inimigo.escala - 0.5
           if inimigo.vidas <= 0 then
             table.remove(inimigos, i)
             metricas.destruidos = metricas.destruidos + 1
           end
-        else
-          criarDetrito(inimigo.x, inimigo.y)
-          table.remove(inimigos, i)
-          metricas.destruidos = metricas.destruidos + 1
+          inimigo.colisaoAnterior = true
         end
-       
-        inimigo.colisaoAnterior = true
+      else
+        inimigo.colisaoAnterior = false
       end
     else 
-       inimigo.colisaoAnterior = false
+      -- No caso de meteoroide
+      if isColisao(inimigo.x, inimigo.y, metricas.img:getHeight() / 2,
+      lua.posX, lua.posY, lua.raio) then
+        -- "transformar" meteoroide em detrito
+        criarDetrito(inimigo.x, inimigo.y)
+        table.remove(inimigos, i)
+        metricas.destruidos = metricas.destruidos + 1
+        inimigo.colisaoAnterior = true
+      else
+        inimigo.colisaoAnterior = false
+      end
     end
-     
+    
      -- Verificar colisão com a Terra
      if isColisao(inimigo.x, inimigo.y, metricas.img:getHeight() / 2, 
        terra.posX, terra.posY, terra.raio) then

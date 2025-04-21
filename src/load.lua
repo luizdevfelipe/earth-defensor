@@ -94,12 +94,13 @@ function resetaJogo()
     id = "super",
     img = superImg,
     vel = { valor = 100 },
-    qtd = { valor = 1 }, -- possibilita passagem por referência --
+    qtd = { valor = 2 }, -- possibilita passagem por referência --
     delay = 1, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
     dano = 1,
     destruidos = 0,
-    colisoes = 2
+    colisoes = 2,
+    escala = { valor = 2 }
   }
   -- Variáveis dos Meteoroides --
   meteoroides = {}

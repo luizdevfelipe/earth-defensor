@@ -277,6 +277,8 @@ function barraDeVida()
   love.graphics.rectangle("fill", centroJanelaX - 103, 60, 206, 26)
   -- Barra de Vida em si
   love.graphics.setColor(34, 177, 76)
+  if vidasTerra.valor > 3 then vidasTerra.valor = 3 end
+  if vidasTerra.valor < 0 then vidasTerra.valor = 0 end
   love.graphics.rectangle("fill", centroJanelaX - 100, 63, (vidasTerra.valor * 200) / 3, 20)
   -- Recortes nas vidas principais
   love.graphics.setColor(0,0,0)

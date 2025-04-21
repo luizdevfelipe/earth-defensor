@@ -252,8 +252,8 @@ function movimentoMeteoroides(dt, meteoroide, metrica)
   if dist > 1 then
     local dirX = (centroJanelaX - meteoroide.x) / dist
     local dirY = (centroJanelaY - meteoroide.y) / dist
-    meteoroide.x = meteoroide.x + dirX * metrica.vel * dt
-    meteoroide.y = meteoroide.y + dirY * metrica.vel * dt
+    meteoroide.x = meteoroide.x + dirX * metrica.vel.valor * dt
+    meteoroide.y = meteoroide.y + dirY * metrica.vel.valor * dt
   end
 end
 

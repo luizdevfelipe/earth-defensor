@@ -93,7 +93,7 @@ function resetaJogo()
   metricasSupermeteoroides = {
     id = "super",
     img = superImg,
-    vel = 100,
+    vel = { valor = 100 },
     qtd = { valor = 1 }, -- possibilita passagem por referência --
     delay = 1, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
@@ -106,7 +106,7 @@ function resetaJogo()
   metricasMeteoroides = {
     id = "normal",
     img = meteoroideImg,
-    vel = 1000,
+    vel = { valor = 120 },
     qtd = { valor = 5 }, -- tabela possibilita passagem por referência --
     delay = 1.5,
     contagem = 1,
@@ -125,7 +125,7 @@ end
 function resetaRodada()  
   -- Metricas Definidas de acordo com rodadas Fáceis, Médias e Difíceis --
   if onda <= 10 then
-    metricasSupermeteoroides.qtd.valor = 0
+    metricasSupermeteoroides.qtd.valor = 1
     metricasMeteoroides.qtd.valor = 3 + onda - 1
   elseif onda <= 20 then
     metricasSupermeteoroides.qtd.valor = 1

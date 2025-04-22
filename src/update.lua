@@ -5,6 +5,7 @@ function love.update(dt)
   else
     if not pause and not trocaDeFase and startGame == 1 and not gameOver then    
       -- Execução de funções que fazem o processamento do jogo --
+      verificaEficienciaLunar(dt)
       movimentoLua(dt)
       inimigos(meteoroides, metricasMeteoroides, dt)    
       inimigos(superMeteoroides, metricasSupermeteoroides, dt)
@@ -179,6 +180,7 @@ function colisaoDetritos()
      if isColisao(detrito.x, detrito.y, detritoImg:getHeight() / 2,
        lua.posX, lua.posY, lua.raio) then
        metricasDetrito.destruidos = metricasDetrito.destruidos + 1
+       eficienciaLunar = eficienciaLunar - taxaReducaoEficienciaLunar.valor
        table.remove(detritos, i)
      end
      
@@ -256,9 +258,26 @@ function regeneracaoPassiva(dt)
 end
 
 -- Função que atualiza as posições da Lua no jogo
-function movimentoLua(dt)  
-  orbitaLua = orbitaLua + velocidadeOrbita.valor * dt * direcaoOrbita
+function movimentoLua(dt) 
+  local velocidade = velocidadeOrbita.valor
+  
+  if lentidaoLunarRestante > 0 and eficienciaLunar <= 0 then
+    velocidade = math.abs(velocidade - efeitoLentidao.valor)
+  end
+    
+  orbitaLua = orbitaLua + velocidade * dt * direcaoOrbita
   lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
+end
+
+function verificaEficienciaLunar(dt)
+  if eficienciaLunar <= 0 then
+    if lentidaoLunarRestante > 0 then
+      lentidaoLunarRestante = lentidaoLunarRestante - taxaReducaoTempoLentidaoLunar.valor * dt
+    else
+      lentidaoLunarRestante = tempoLentidaoLunar.valor
+      eficienciaLunar = resistenciaLunar.valor
+    end
+  end
 end
 
 function movimentoMeteoroides(dt, meteoroide, metrica)

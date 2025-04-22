@@ -68,33 +68,43 @@ function love.load()
       peso = 5
     },
   }  
-  potencializadoresSorteados = nil
+  
   
 end
 
 function resetaJogo()
-  pesos = {}
+  potencializadoresSorteados = nil -- variável para armazenar os potencializadores a serem escolhidos
+  pesos = {} -- variável para armazenar os pesos de probabilidades
   trocaDeFase = false
   onda = 1
   vidasTerra = { valor = 3 }
-  velocidadeRegeneracao = 0.5
-  tempoRegeneracao = velocidadeRegeneracao
-  taxaRegeneracao = { valor = 0.05 }
-  orbitaLua = 0
-  velocidadeOrbita = {valor = 1.5}
+  velocidadeRegeneracao = 0.5 -- intervalo padrão para regeneração da Terra
+  tempoRegeneracao = velocidadeRegeneracao -- variável que tem o tempo alterado verificando momento de regenerar 
+  taxaRegeneracao = { valor = 0.05 } -- valor padrão usado no momento de recuperação da vida da Terra
+  orbitaLua = 0 -- valor usado para definir a posição atual da Lua
+  
+  velocidadeOrbita = { valor = 1.5 }
+  resistenciaLunar = { valor = 10 } -- valor padrão que indica quantos meteoritos a Lua resiste colidir até ficar lenta
+  eficienciaLunar = resistenciaLunar.valor -- variável durante o jogo, esse valor indica o momento de aplicar a lentidão
+  taxaReducaoEficienciaLunar = { valor = 1 }
+  tempoLentidaoLunar = { valor = 3.5 }  -- valor do tempo de lentidão aplicado sobre o cálculo da órbita lunar
+  lentidaoLunarRestante = tempoLentidaoLunar.valor -- variável, indicará o tempo restante do efeito de Lentidão
+  taxaReducaoTempoLentidaoLunar = { valor = 4 } -- valor usado para reduzir o tempo restante de lentidão
+  efeitoLentidao = { valor = 2 } -- valor aplicado sobre a velocidade da orbita 
+  
   direcaoOrbita = 1
   -- 0 não há jogo, 1 um jogador, 2 dois jogadores
   startGame = 0
   gameOver = false
   pause = false
-  
+ 
   -- Variáveis dos Supermeteoroides --
   superMeteoroides = {}
   metricasSupermeteoroides = {
     id = "super",
     img = superImg,
     vel = { valor = 100 },
-    qtd = { valor = 2 }, -- possibilita passagem por referência --
+    qtd = { valor = 0 }, -- possibilita passagem por referência --
     delay = 1, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
     dano = { valor = 1 },
@@ -108,7 +118,7 @@ function resetaJogo()
     id = "normal",
     img = meteoroideImg,
     vel = { valor = 120 },
-    qtd = { valor = 5 }, -- tabela possibilita passagem por referência --
+    qtd = { valor = 8 }, -- tabela possibilita passagem por referência --
     delay = 1.5,
     contagem = 1,
     dano = { valor =  0.2 },
@@ -120,7 +130,7 @@ function resetaJogo()
   metricasDetrito = {
     img = detritoImg,
     destruidos = 0,
-    qtd = 2
+    qtd = 3
   }
 end
 

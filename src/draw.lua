@@ -27,11 +27,7 @@ function love.draw()
     for i, super in ipairs(superMeteoroides) do
       love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, 0, super.escala, super.escala, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
     end
-    
-    -- Exibe a Onda atual do jogador --
-    love.graphics.setFont(fontNormal)
-    love.graphics.print("Onda: " .. onda, centroJanelaX - love.graphics.getFont():getWidth("Onda: " .. onda) / 2, screenHeight - 45)
-    
+       
     if transparenciaTextoInfo < 255 then
       love.graphics.setFont(fontNormal)
       love.graphics.setColor(transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo)
@@ -52,9 +48,14 @@ function love.draw()
        telaInicial()
     end
     
-    -- Carregamento da Barra de Vida
+    -- Exibe conteúdos que devem aparecer apenas durante o jogo --
     if not gameOver and not trocaDeFase and startGame ~= 0 then
+      -- Carregamento da Barra de Vida
       barraDeVida() 
+      
+      -- Exibe a Onda atual do jogador --
+      love.graphics.setFont(fontNormal)
+      love.graphics.print("Onda: " .. onda, centroJanelaX - love.graphics.getFont():getWidth("Onda: " .. onda) / 2, screenHeight - 45)
     end
     
     --Tela de Pause

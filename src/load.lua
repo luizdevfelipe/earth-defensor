@@ -1,7 +1,12 @@
 -- Carregamento de variáveis que serão utilizadas de maneira constante
 -- Ou devem ser resetadas após a finalização do jogo
 function love.load() 
-  -- Carregamentos de arquivos da pasta assets
+  -- Definição de variáveis com o tamanho da tela do jogo --
+  screenWidth, screenHeight = love.window.getMode()
+  centroJanelaX = screenWidth / 2
+  centroJanelaY = screenHeight / 2
+  -- Definição de variáveis com o tamanho da tela do jogo --
+  -- Carregamentos de arquivos da pasta assets --
   terraImg = love.graphics.newImage("assets/images/terra.png")
   luaImg = love.graphics.newImage("assets/images/lua.png")
   sombra = love.graphics.newImage("assets/images/sombra.png")
@@ -17,6 +22,7 @@ function love.load()
   musicaIntroducao = love.audio.newSource("assets/audio/Midnight Trace - Jimena Contreras.mp3")
   meteoroImg = love.graphics.newImage("assets/images/meteoro.png")
   protetoraImg = love.graphics.newImage("assets/images/protetora.png")
+  -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
   introducao = false
   movimentoTerraAnim = 0
@@ -29,12 +35,14 @@ function love.load()
   intervaloCreditosAnim = 40
   transparenciaCreditosAnim = 0
   transparenciaTextoInfo = 0
+  -- Carregamento das variáveis da Animação
   -- Carregamento de variáveis para a Sombra da Lua
   sombrasAnim = {}
   sombraSprite = 1
   for i = 1, 10, 1 do
     sombrasAnim[i] = love.graphics.newImage("assets/images/sombras/" .. i .. ".png")
   end
+  -- Carregamento de variáveis para a Sombra da Lua
   -- Carregamento de variáveis que não se alteram com as partidas
   math.randomseed(os.time())
   resetaJogo()
@@ -69,7 +77,30 @@ function love.load()
     },
   }  
   
+   --  Atributos da Terra --
+  terra = {
+      imagem = terraImg,
+      posX = centroJanelaX,
+      posY = centroJanelaY,
+      raio = terraImg:getWidth() / 2,
+      oriX = terraImg:getWidth() / 2 ,
+      oriY = terraImg:getHeight() / 2,
+      vel = { valor = 400 }
+  }
+  --  Atributos da Terra --
   
+  --  Atributos Lua  --
+  lua = {
+    imagem = luaImg,
+    posX = 0,
+    posY = 0,
+    raio = luaImg:getWidth() / 2,
+    distanciaTerra = { valor = 250 },
+    oriX = luaImg:getWidth() / 2,
+    oriY = luaImg:getHeight() / 2,
+  }
+  --  Atributos Lua  --
+  -- Carregamento de variáveis que não se alteram com as partidas
 end
 
 function resetaJogo()

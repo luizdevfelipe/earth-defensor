@@ -3,7 +3,7 @@ function love.update(dt)
   if introducao or musicaIntroducao:isPlaying() then
     animacaoIntroducao(dt)
   else
-    if not pause and not trocaDeFase and startGame == 1 and not gameOver then    
+    if not pause and not trocaDeFase and startGame ~= 0 and not gameOver then    
       -- Execução de funções que fazem o processamento do jogo --
       verificaEficienciaLunar(dt)
       movimentoLua(dt)
@@ -12,7 +12,9 @@ function love.update(dt)
       colisaoDetritos()
       regeneracaoPassiva(dt)
       verificaTrocaDeFase()
-      
+      if startGame == 2 then
+        movimentoTerra(dt)
+      end
       
       -- Apresenta o texto informativo --
       if transparenciaTextoInfo < 255 then
@@ -266,7 +268,25 @@ function movimentoLua(dt)
   end
     
   orbitaLua = orbitaLua + velocidade * dt * direcaoOrbita
-  lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
+  lua.posX, lua.posY = orbita(terra.posX, terra.posY, lua.distanciaTerra.valor, orbitaLua)
+end
+-- Função que realiza o movimento da Terra no modo de Dois Jogadores
+function movimentoTerra(dt)
+  if love.keyboard.isDown("left") and (terra.posX - terra.vel.valor * dt) > lua.distanciaTerra.valor then
+    terra.posX = terra.posX - terra.vel.valor * dt
+  end
+    
+  if love.keyboard.isDown("right") and (terra.posX + terra.vel.valor * dt) < screenWidth - lua.distanciaTerra.valor then
+    terra.posX = terra.posX + terra.vel.valor * dt
+  end
+  
+  if love.keyboard.isDown("up") and (terra.posY - terra.vel.valor * dt) > lua.distanciaTerra.valor then
+    terra.posY = terra.posY - terra.vel.valor * dt
+  end
+  
+  if love.keyboard.isDown("down") and (terra.posY + terra.vel.valor *dt) < screenHeight - lua.distanciaTerra.valor then
+    terra.posY = terra.posY + terra.vel.valor *dt
+  end
 end
 
 function verificaEficienciaLunar(dt)
@@ -281,10 +301,10 @@ function verificaEficienciaLunar(dt)
 end
 
 function movimentoMeteoroides(dt, meteoroide, metrica)
-  dist = distanciaDeDoisPontos(centroJanelaX, meteoroide.x, centroJanelaY, meteoroide.y)
+  dist = distanciaDeDoisPontos(terra.posX, meteoroide.x, terra.posY, meteoroide.y)
   if dist > 1 then
-    local dirX = (centroJanelaX - meteoroide.x) / dist
-    local dirY = (centroJanelaY - meteoroide.y) / dist
+    local dirX = (terra.posX - meteoroide.x) / dist
+    local dirY = (terra.posY - meteoroide.y) / dist
     meteoroide.x = meteoroide.x + dirX * metrica.vel.valor * dt
     meteoroide.y = meteoroide.y + dirY * metrica.vel.valor * dt
   end
@@ -372,28 +392,6 @@ function carregamento(dt)
   centroJanelaX = screenWidth / 2
   centroJanelaY = screenHeight / 2
   
-  --  Atributos da Terra --
-  terra = {
-      imagem = terraImg,
-      posX = centroJanelaX,
-      posY = centroJanelaY,
-      raio = terraImg:getWidth() / 2,
-      oriX = terraImg:getWidth() / 2 ,
-      oriY = terraImg:getHeight() / 2
-  }
-  --  Atributos da Terra --
-  
-  --  Atributos Lua  --
-  lua = {
-    imagem = luaImg,
-    posX = centroJanelaX,
-    posY = centroJanelaY,
-    raio = luaImg:getWidth() / 2,
-    oriX = luaImg:getWidth() / 2,
-    oriY = luaImg:getHeight() / 2
-  }
-  --  Atributos Lua  --
-  
   --  Atributos Fundo  --
   fundo = {
     imagem = fundoImg,
@@ -405,8 +403,14 @@ function carregamento(dt)
     oriY = fundoImg:getHeight() / 2
   }
   --  Atributos Fundo  --
+  
+  -- Apresentação do movimento da Lua no menu --
   if startGame == 0 then
+    terra.posX = centroJanelaX
+    terra.posY = centroJanelaY
+    
      orbitaLua = orbitaLua + 0.5 * dt * 1
+     lua.posX, lua.posY = orbita(terra.posX, terra.posY, lua.distanciaTerra.valor, orbitaLua)
   end
-  lua.posX, lua.posY = orbita(centroJanelaX, centroJanelaY, 250, orbitaLua)
+  -- Apresentação do movimento da Lua no menu --  
 end

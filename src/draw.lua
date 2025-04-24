@@ -53,6 +53,9 @@ function love.draw()
       -- Carregamento da Barra de Vida
       barraDeVida() 
       
+      -- Carregamento do botão de Atração Gravitacional --
+    exibeBotaoAtracaoGravitacional()
+      
       -- Exibe a Onda atual do jogador --
       love.graphics.setFont(fontNormal)
       love.graphics.print("Onda: " .. onda, centroJanelaX - love.graphics.getFont():getWidth("Onda: " .. onda) / 2, screenHeight - 45)
@@ -454,6 +457,31 @@ function desfoqueFundo(des)
   love.graphics.setColor(255, 255, 255)
 end
 
+-- Função que retorna o texto da descrição dos potencializadores formatado de acordo com vantagens e desvantagens --
 function retornaTextoPotencializador(opcao)
   return string.format(potencializadores[potencializadoresSorteados[opcao]].descricao, potencializadores[potencializadoresSorteados[opcao]].vantagem, potencializadores[potencializadoresSorteados[opcao]].desvantagem)
+end
+
+-- Função responsável por gerenciar o botão que ativa "Atração Gravitacional"
+function exibeBotaoAtracaoGravitacional()
+  -- Exibe a imagem do botão -- 
+  love.graphics.setColor(255, 255, 255, 130)
+  love.graphics.draw(atracaoImg, 300, screenHeight - 300, 0, 1, 1, atracaoImg:getWidth() / 2, atracaoImg:getHeight() / 2)
+  -- Define os valores para exibir o texto -- 
+  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  
+  if (tempoAtracaoGravitacional > 0) then
+    love.graphics.print(
+      string.format("%.1f", tempoAtracaoGravitacional / 60) .. 's', 
+      300, screenHeight - 300, 
+      0, 1, 1, 
+      love.graphics.getFont():getWidth(string.format("%.1f", tempoAtracaoGravitacional / 60) .. 's') / 2,
+      love.graphics.getFont():getHeight(string.format("%.1f", tempoAtracaoGravitacional / 60) .. 's') / 2)
+    tempoAtracaoGravitacional = tempoAtracaoGravitacional - 1 -- valor de testes
+  else
+    love.graphics.print('E', 300, screenHeight - 300, 0, 1, 1, love.graphics.getFont():getWidth('E') / 2, love.graphics.getFont():getHeight('E') / 2)
+  end
+  
+  love.graphics.setColor(255, 255, 255, 255)
 end

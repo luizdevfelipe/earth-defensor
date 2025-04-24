@@ -22,6 +22,7 @@ function love.load()
   musicaIntroducao = love.audio.newSource("assets/audio/Midnight Trace - Jimena Contreras.mp3")
   meteoroImg = love.graphics.newImage("assets/images/meteoro.png")
   protetoraImg = love.graphics.newImage("assets/images/protetora.png")
+  atracaoImg = love.graphics.newImage("assets/images/atracao.png")
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
   introducao = false
@@ -122,6 +123,9 @@ function resetaJogo()
   lentidaoLunarRestante = tempoLentidaoLunar.valor -- variável, indicará o tempo restante do efeito de Lentidão
   taxaReducaoTempoLentidaoLunar = { valor = 4 } -- valor usado para reduzir o tempo restante de lentidão
   efeitoLentidao = { valor = 2 } -- valor aplicado sobre a velocidade da orbita 
+  
+  intervaloAtracaoGravitacional = 5 * 60
+  tempoAtracaoGravitacional = intervaloAtracaoGravitacional
   
   direcaoOrbita = 1
   -- 0 não há jogo, 1 um jogador, 2 dois jogadores

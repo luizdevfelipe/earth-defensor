@@ -12,6 +12,7 @@ function love.update(dt)
       colisaoDetritos()
       regeneracaoPassiva(dt)
       verificaTrocaDeFase()
+      gerenciarHabilidades(dt)
       if startGame == 2 then
         movimentoTerra(dt)
       end
@@ -300,14 +301,46 @@ function verificaEficienciaLunar(dt)
   end
 end
 
+function gerenciarHabilidades(dt)
+  -- Verifica se Atração Gravitacional está ativa --
+  if isAtracaoGravitacional then
+    -- Redução o tempo de duração --
+    tempoAtracaoGravitacionalAtiva = tempoAtracaoGravitacionalAtiva - 1
+    if tempoAtracaoGravitacionalAtiva <= 0 then
+      isAtracaoGravitacional = false
+      tempoAtracaoGravitacional = intervaloAtracaoGravitacional.valor
+      tempoAtracaoGravitacionalAtiva = duracaoAtracaoGravitacional.valor
+    end
+  else
+    tempoAtracaoGravitacional = tempoAtracaoGravitacional - 1    
+  end
+    
+end
+
 function movimentoMeteoroides(dt, meteoroide, metrica)
-  dist = distanciaDeDoisPontos(terra.posX, meteoroide.x, terra.posY, meteoroide.y)
-  if dist > 1 then
-    local dirX = (terra.posX - meteoroide.x) / dist
-    local dirY = (terra.posY - meteoroide.y) / dist
+
+  local distTerra = distanciaDeDoisPontos(terra.posX, meteoroide.x, terra.posY, meteoroide.y)
+  if distTerra > 1 then
+    local dirX = (terra.posX - meteoroide.x) / distTerra
+    local dirY = (terra.posY - meteoroide.y) / distTerra
     meteoroide.x = meteoroide.x + dirX * metrica.vel.valor * dt
     meteoroide.y = meteoroide.y + dirY * metrica.vel.valor * dt
   end
+  
+  -- Verifica se a habilidade está ativada --
+  if isAtracaoGravitacional then
+    -- Calcula a distância entre o meteoroide e a Lua -- 
+    distLua = distanciaDeDoisPontos(lua.posX, meteoroide.x, lua.posY, meteoroide.y)
+    -- Se estiver no raio da habilidade ele será atraído --
+    if distLua > 1 and distLua < 500 then
+      local dirX = (lua.posX - meteoroide.x) / distLua
+      local dirY = (lua.posY - meteoroide.y) / distLua
+      
+      meteoroide.x = meteoroide.x + dirX * velAtracaoGravitacional.valor * dt
+      meteoroide.y = meteoroide.y + dirY * velAtracaoGravitacional.valor * dt
+    end
+  end
+  
 end
 
 function distanciaDeDoisPontos(x1, x2, y1, y2)
@@ -348,6 +381,10 @@ function love.keypressed(key)
   
   if key == "escape" and startGame ~= 0 and not gameOver then
     pause = not pause
+  end
+  
+  if key == "e" and not isAtracaoGravitacional and tempoAtracaoGravitacional <= 0 then
+    isAtracaoGravitacional = true
   end
 end
 

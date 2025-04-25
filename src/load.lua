@@ -124,8 +124,12 @@ function resetaJogo()
   taxaReducaoTempoLentidaoLunar = { valor = 4 } -- valor usado para reduzir o tempo restante de lentidão
   efeitoLentidao = { valor = 2 } -- valor aplicado sobre a velocidade da orbita 
   
-  intervaloAtracaoGravitacional = 5 * 60
-  tempoAtracaoGravitacional = intervaloAtracaoGravitacional
+  intervaloAtracaoGravitacional = { valor = 5 * 60 } -- tempo padrão de espera para usar a habilidade
+  tempoAtracaoGravitacional = intervaloAtracaoGravitacional.valor -- variável que calcula o tempo restante para poder usar a hab
+  duracaoAtracaoGravitacional = { valor = 4 * 60 } -- tempo padrão que a habilidade fica ativa
+  tempoAtracaoGravitacionalAtiva = duracaoAtracaoGravitacional.valor -- variável que calcula o tempo ativo da habilidade
+  isAtracaoGravitacional = false
+  velAtracaoGravitacional = { valor = 200 }
   
   direcaoOrbita = 1
   -- 0 não há jogo, 1 um jogador, 2 dois jogadores

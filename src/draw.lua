@@ -478,7 +478,6 @@ function exibeBotaoAtracaoGravitacional()
       0, 1, 1, 
       love.graphics.getFont():getWidth(string.format("%.1f", tempoAtracaoGravitacional / 60) .. 's') / 2,
       love.graphics.getFont():getHeight(string.format("%.1f", tempoAtracaoGravitacional / 60) .. 's') / 2)
-    tempoAtracaoGravitacional = tempoAtracaoGravitacional - 1 -- valor de testes
   else
     love.graphics.print('E', 300, screenHeight - 300, 0, 1, 1, love.graphics.getFont():getWidth('E') / 2, love.graphics.getFont():getHeight('E') / 2)
   end

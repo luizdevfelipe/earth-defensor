@@ -23,6 +23,7 @@ function love.load()
   meteoroImg = love.graphics.newImage("assets/images/meteoro.png")
   protetoraImg = love.graphics.newImage("assets/images/protetora.png")
   atracaoImg = love.graphics.newImage("assets/images/atracao.png")
+  controleGravImg = love.graphics.newImage("assets/images/controle.png")
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
   introducao = false
@@ -124,12 +125,19 @@ function resetaJogo()
   taxaReducaoTempoLentidaoLunar = { valor = 4 } -- valor usado para reduzir o tempo restante de lentidão
   efeitoLentidao = { valor = 2 } -- valor aplicado sobre a velocidade da orbita 
   
-  intervaloAtracaoGravitacional = { valor = 5 * 60 } -- tempo padrão de espera para usar a habilidade
+  intervaloAtracaoGravitacional = { valor = 1 * 60 } -- tempo padrão de espera para usar a habilidade
   tempoAtracaoGravitacional = intervaloAtracaoGravitacional.valor -- variável que calcula o tempo restante para poder usar a hab
-  duracaoAtracaoGravitacional = { valor = 4 * 60 } -- tempo padrão que a habilidade fica ativa
+  duracaoAtracaoGravitacional = { valor = 8 * 60 } -- tempo padrão que a habilidade fica ativa
   tempoAtracaoGravitacionalAtiva = duracaoAtracaoGravitacional.valor -- variável que calcula o tempo ativo da habilidade
   isAtracaoGravitacional = false
   velAtracaoGravitacional = { valor = 200 }
+  
+  intervaloControleGravitacional = { valor = 5 * 60 } -- tempo padrão de espera para usar a habilidade
+  tempoControleGravitacional = intervaloControleGravitacional.valor -- variável que calcula o tempo restante para poder usar a hab
+  duracaoControleGravitacional = { valor = 4 * 60 } -- tempo padrão que a habilidade fica ativa
+  tempoControleGravitacional = duracaoControleGravitacional.valor -- variável que calcula o tempo ativo da habilidade
+  isControleGravitacional = false
+  velControleGravitacional = { valor = 200 }
   
   direcaoOrbita = 1
   -- 0 não há jogo, 1 um jogador, 2 dois jogadores
@@ -156,8 +164,8 @@ function resetaJogo()
   metricasMeteoroides = {
     id = "normal",
     img = meteoroideImg,
-    vel = { valor = 120 },
-    qtd = { valor = 8 }, -- tabela possibilita passagem por referência --
+    vel = { valor = 30 },
+    qtd = { valor = 20 }, -- tabela possibilita passagem por referência --
     delay = 1.5,
     contagem = 1,
     dano = { valor =  0.2 },

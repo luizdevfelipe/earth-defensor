@@ -54,7 +54,10 @@ function love.draw()
       barraDeVida() 
       
       -- Carregamento do botão de Atração Gravitacional --
-    exibeBotaoAtracaoGravitacional()
+      exibeBotaoAtracaoGravitacional()
+    
+      -- Carregamento do botão de Controle Gravitacional --
+      exibeBotaoControleGravitacional()
       
       -- Exibe a Onda atual do jogador --
       love.graphics.setFont(fontNormal)
@@ -478,8 +481,34 @@ function exibeBotaoAtracaoGravitacional()
       0, 1, 1, 
       love.graphics.getFont():getWidth(string.format("%.1f", tempoAtracaoGravitacional / 60) .. 's') / 2,
       love.graphics.getFont():getHeight(string.format("%.1f", tempoAtracaoGravitacional / 60) .. 's') / 2)
+  elseif isAtracaoGravitacional then
+    love.graphics.print('--', 300, screenHeight - 300, 0, 1.9, 1.9, love.graphics.getFont():getWidth('--') / 2, love.graphics.getFont():getHeight('--') / 2)
   else
     love.graphics.print('E', 300, screenHeight - 300, 0, 1, 1, love.graphics.getFont():getWidth('E') / 2, love.graphics.getFont():getHeight('E') / 2)
+  end
+  
+  love.graphics.setColor(255, 255, 255, 255)
+end
+
+function exibeBotaoControleGravitacional()
+  -- Exibe a imagem do botão -- 
+  love.graphics.setColor(255, 255, 255, 130)
+  love.graphics.draw(controleGravImg, 150, screenHeight - 400, 0, 1, 1, controleGravImg:getWidth() / 2, controleGravImg:getHeight() / 2)
+  -- Define os valores para exibir o texto -- 
+  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  
+  if (tempoControleGravitacional > 0) then
+    love.graphics.print(
+      string.format("%.1f", tempoControleGravitacional / 60) .. 's', 
+      150, screenHeight - 400, 
+      0, 1, 1, 
+      love.graphics.getFont():getWidth(string.format("%.1f", tempoControleGravitacional / 60) .. 's') / 2,
+      love.graphics.getFont():getHeight(string.format("%.1f", tempoControleGravitacional / 60) .. 's') / 2)
+  elseif isControleGravitacional then
+    love.graphics.print('--', 150, screenHeight - 400, 0, 1.9, 1.9, love.graphics.getFont():getWidth('--') / 2, love.graphics.getFont():getHeight('--') / 2)
+  else
+    love.graphics.print('Q', 150, screenHeight - 400, 0, 1, 1, love.graphics.getFont():getWidth('Q') / 2, love.graphics.getFont():getHeight('Q') / 2)
   end
   
   love.graphics.setColor(255, 255, 255, 255)

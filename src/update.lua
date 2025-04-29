@@ -137,6 +137,11 @@ function inimigos(inimigos, metricas, dt)
           if inimigo.vidas <= 0 then
             table.remove(inimigos, i)
             metricas.destruidos = metricas.destruidos + 1
+            -- Caso o super destruído tenha sido derrotado com a habilidade o alvo é redefinido --
+            if isControleGravitacional and lua.meteoroideAlvo.index == i then
+              lua.meteoroideAlvo.index = nil
+              isControleGravitacional = false
+            end
           end
           inimigo.colisaoAnterior = true
         end
@@ -152,6 +157,11 @@ function inimigos(inimigos, metricas, dt)
         table.remove(inimigos, i)
         metricas.destruidos = metricas.destruidos + 1
         inimigo.colisaoAnterior = true
+        -- Caso o meteoroide destruído tenha sido derrotado com a habilidade o alvo é redefinido --
+        if isControleGravitacional and lua.meteoroideAlvo.index == i then
+          lua.meteoroideAlvo.index = nil
+          isControleGravitacional = false
+        end
       else
         inimigo.colisaoAnterior = false
       end
@@ -268,8 +278,60 @@ function movimentoLua(dt)
     velocidade = math.abs(velocidade - efeitoLentidao.valor)
   end
     
-  orbitaLua = orbitaLua + velocidade * dt * direcaoOrbita
-  lua.posX, lua.posY = orbita(terra.posX, terra.posY, lua.distanciaTerra.valor, orbitaLua)
+  -- Verifica se a habilidade está ativada e um novo alvo será escolhido --
+  if isControleGravitacional and lua.meteoroideAlvo.index == nil then
+    local menorDistMeteor = nil
+    local menorDistSuperMeteor = nil
+    
+    for i, meteoroide in ipairs(meteoroides) do
+      -- Calcula a distância entre o meteoroide e a Lua -- 
+      distLua = distanciaDeDoisPontos(lua.posX, meteoroide.x, lua.posY, meteoroide.y)
+      if menorDistMeteor == nil or distLua < menorDistMeteor then
+        menorDistMeteor = distLua
+        lua.meteoroideAlvo.id = 'normal'
+        lua.meteoroideAlvo.index = i
+      end
+    end
+    
+    for i, super in ipairs(superMeteoroides) do
+      -- Calcula a distância entre o meteoroide e a Lua -- 
+      distLua = distanciaDeDoisPontos(lua.posX, super.x, lua.posY, super.y)
+      if menorDistSuperMeteor == nil or distLua < menorDistSuperMeteor then
+        menorDistSuperMeteor = distLua
+        
+        if menorDistSuperMeteor <= menorDistMeteor then
+          lua.meteoroideAlvo.id = 'super'
+          lua.meteoroideAlvo.index = i
+        end
+      end
+    end
+    
+    
+  -- Habilidade está ativa e um alvo foi determinado -- 
+  elseif isControleGravitacional and  lua.meteoroideAlvo.index ~= nil then
+    if lua.meteoroideAlvo.id == 'normal' then
+      distLua = distanciaDeDoisPontos(meteoroides[lua.meteoroideAlvo.index].x, lua.posX, meteoroides[lua.meteoroideAlvo.index].y, lua.posY)
+      dirX = (meteoroides[lua.meteoroideAlvo.index].x - lua.posX) / distLua
+      dirY = (meteoroides[lua.meteoroideAlvo.index].y - lua.posY) / distLua
+    elseif lua.meteoroideAlvo.id == 'super' then
+      distLua = distanciaDeDoisPontos(lua.posX, superMeteoroides[lua.meteoroideAlvo.index].x, lua.posY, superMeteoroides[lua.meteoroideAlvo.index].y)
+      
+      dirX = (superMeteoroides[lua.meteoroideAlvo.index].x - lua.posX) / distLua
+      dirY = (superMeteoroides[lua.meteoroideAlvo.index].y - lua.posY) / distLua
+    end
+        
+    if distLua > 1 then
+      lua.posX = lua.posX + dirX * velControleGravitacional.valor * dt
+      lua.posY = lua.posY + dirY * velControleGravitacional.valor * dt
+    else
+      isControleGravitacional = false
+      tempoControleGravitacional = intervaloControleGravitacional.valor   
+      lua.meteoroideAlvo.index = nil
+    end
+  else
+    orbitaLua = orbitaLua + velocidade * dt * direcaoOrbita
+    lua.posX, lua.posY = orbita(terra.posX, terra.posY, lua.distanciaTerra.valor, orbitaLua)
+  end
 end
 -- Função que realiza o movimento da Terra no modo de Dois Jogadores
 function movimentoTerra(dt)
@@ -314,6 +376,11 @@ function gerenciarHabilidades(dt)
   else
     tempoAtracaoGravitacional = tempoAtracaoGravitacional - 1    
   end
+  
+  -- Verifica se Controle Gravitacional não está ativa --
+  if not isControleGravitacional and tempoControleGravitacional >= 0 then
+    tempoControleGravitacional = tempoControleGravitacional - 1
+  end
     
 end
 
@@ -348,7 +415,7 @@ function distanciaDeDoisPontos(x1, x2, y1, y2)
 end
 
 function getAngulo(x1, y1, x2, y2)
-  local a = math.floor( math.deg( math.atan2(x2 - x1, y2 - y1) ) )
+  local a = math.deg( math.atan2(y2 - y1, x2 - x1) )
   if a < 0 then 
     a = a + 360 
   end
@@ -385,6 +452,10 @@ function love.keypressed(key)
   
   if key == "e" and not isAtracaoGravitacional and tempoAtracaoGravitacional <= 0 then
     isAtracaoGravitacional = true
+  end
+  
+  if key == "q" and not isControleGravitacional and tempoControleGravitacional <= 0 then
+    isControleGravitacional = true
   end
 end
 

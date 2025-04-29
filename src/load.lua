@@ -78,7 +78,10 @@ function love.load()
       peso = 5
     },
   }  
-  
+  -- Carregamento de variáveis que não se alteram com as partidas
+end
+
+function resetaJogo()
    --  Atributos da Terra --
   terra = {
       imagem = terraImg,
@@ -100,12 +103,9 @@ function love.load()
     distanciaTerra = { valor = 250 },
     oriX = luaImg:getWidth() / 2,
     oriY = luaImg:getHeight() / 2,
+    meteoroideAlvo = { id = nil, index = nil },
   }
   --  Atributos Lua  --
-  -- Carregamento de variáveis que não se alteram com as partidas
-end
-
-function resetaJogo()
   potencializadoresSorteados = nil -- variável para armazenar os potencializadores a serem escolhidos
   pesos = {} -- variável para armazenar os pesos de probabilidades
   trocaDeFase = false
@@ -125,19 +125,19 @@ function resetaJogo()
   taxaReducaoTempoLentidaoLunar = { valor = 4 } -- valor usado para reduzir o tempo restante de lentidão
   efeitoLentidao = { valor = 2 } -- valor aplicado sobre a velocidade da orbita 
   
-  intervaloAtracaoGravitacional = { valor = 1 * 60 } -- tempo padrão de espera para usar a habilidade
+  intervaloAtracaoGravitacional = { valor = 2 * 60 } -- tempo padrão de espera para usar a habilidade
   tempoAtracaoGravitacional = intervaloAtracaoGravitacional.valor -- variável que calcula o tempo restante para poder usar a hab
   duracaoAtracaoGravitacional = { valor = 8 * 60 } -- tempo padrão que a habilidade fica ativa
   tempoAtracaoGravitacionalAtiva = duracaoAtracaoGravitacional.valor -- variável que calcula o tempo ativo da habilidade
   isAtracaoGravitacional = false
   velAtracaoGravitacional = { valor = 200 }
   
-  intervaloControleGravitacional = { valor = 5 * 60 } -- tempo padrão de espera para usar a habilidade
+  intervaloControleGravitacional = { valor = 2 * 60 } -- tempo padrão de espera para usar a habilidade
   tempoControleGravitacional = intervaloControleGravitacional.valor -- variável que calcula o tempo restante para poder usar a hab
   duracaoControleGravitacional = { valor = 4 * 60 } -- tempo padrão que a habilidade fica ativa
   tempoControleGravitacional = duracaoControleGravitacional.valor -- variável que calcula o tempo ativo da habilidade
   isControleGravitacional = false
-  velControleGravitacional = { valor = 200 }
+  velControleGravitacional = { valor = 400 }
   
   direcaoOrbita = 1
   -- 0 não há jogo, 1 um jogador, 2 dois jogadores
@@ -151,7 +151,7 @@ function resetaJogo()
     id = "super",
     img = superImg,
     vel = { valor = 100 },
-    qtd = { valor = 0 }, -- possibilita passagem por referência --
+    qtd = { valor = 1 }, -- possibilita passagem por referência --
     delay = 1, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
     dano = { valor = 1 },
@@ -164,9 +164,9 @@ function resetaJogo()
   metricasMeteoroides = {
     id = "normal",
     img = meteoroideImg,
-    vel = { valor = 30 },
-    qtd = { valor = 20 }, -- tabela possibilita passagem por referência --
-    delay = 1.5,
+    vel = { valor = 100 },
+    qtd = { valor = 10 }, -- tabela possibilita passagem por referência --
+    delay = 0.8,
     contagem = 1,
     dano = { valor =  0.2 },
     destruidos = 0,

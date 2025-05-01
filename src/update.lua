@@ -139,6 +139,7 @@ function inimigos(inimigos, metricas, dt)
           if isControleGravitacional and lua.meteoroideAlvo.id == inimigo.id then
             lua.meteoroideAlvo.index = nil
             isControleGravitacional = false
+            tempoControleGravitacional = intervaloControleGravitacional.valor 
           end          
           -- caso as vidas acabem ele é removido --
           if inimigo.vidas <= 0 then
@@ -160,6 +161,7 @@ function inimigos(inimigos, metricas, dt)
         if isControleGravitacional and lua.meteoroideAlvo.id == inimigo.id then
           lua.meteoroideAlvo.index = nil
           isControleGravitacional = false
+          tempoControleGravitacional = intervaloControleGravitacional.valor 
         end
         table.remove(inimigos, i)
         metricas.destruidos = metricas.destruidos + 1
@@ -174,9 +176,9 @@ function inimigos(inimigos, metricas, dt)
       terra.posX, terra.posY, terra.raio) then
        -- Caso o inimigo destruído pela Terra estava marcado pela habilidade ela é redefinida --
       if isControleGravitacional and lua.meteoroideAlvo.id == inimigo.id then
-        print('alvo da habilidade detido pela terra')
         lua.meteoroideAlvo.index = nil
         isControleGravitacional = false
+        tempoControleGravitacional = intervaloControleGravitacional.valor 
       end
       vidasTerra.valor = vidasTerra.valor - metricas.dano.valor
       metricas.destruidos = metricas.destruidos + 1
@@ -243,9 +245,6 @@ function potencializadorEscolhido(escolha)
   varDesvantagem = potencializadores[escolha].alvoDesvantagem
   varVantagem.valor = varVantagem.valor + varVantagem.valor * (potencializadores[escolha].vantagem / 100)
   varDesvantagem.valor = varDesvantagem.valor + varDesvantagem.valor * (potencializadores[escolha].desvantagem / 100)
-  
-  print(varVantagem.valor)
-  print(varDesvantagem.valor)
 end
 
 -- Função para regeneração passiva da vida da Terra
@@ -288,7 +287,6 @@ function movimentoLua(dt)
     
   -- Verifica se a habilidade está ativada e um novo alvo será escolhido --
   if isControleGravitacional and lua.meteoroideAlvo.index == nil then
-    print('um novo alvo será escolhido')
     local menorDistMeteor = nil
     local menorDistSuperMeteor = nil
     
@@ -300,7 +298,6 @@ function movimentoLua(dt)
         lua.meteoroideAlvo.tipo = 'normal'
         lua.meteoroideAlvo.id = meteoroide.id
         lua.meteoroideAlvo.index = i
-        print('o alvo será meteoroide')
       end
     end
     
@@ -314,7 +311,6 @@ function movimentoLua(dt)
           lua.meteoroideAlvo.tipo = 'super'
           lua.meteoroideAlvo.id = super.id
           lua.meteoroideAlvo.index = i
-          print('o alvo será super')
         end
       end
     end
@@ -349,8 +345,8 @@ function movimentoLua(dt)
       end
     else
       isControleGravitacional = false
-      tempoControleGravitacional = intervaloControleGravitacional.valor   
       lua.meteoroideAlvo.index = nil
+      tempoControleGravitacional = intervaloControleGravitacional.valor 
     end
   else
     orbitaLua = orbitaLua + velocidade * dt * direcaoOrbita
@@ -403,9 +399,9 @@ function gerenciarHabilidades(dt)
   
   -- Verifica se Controle Gravitacional não está ativa --
   if not isControleGravitacional and tempoControleGravitacional >= 0 then
+    -- Reduz o tempo de intervalo para sua ativação --
     tempoControleGravitacional = tempoControleGravitacional - 1
   end
-    
 end
 
 function movimentoMeteoroides(dt, meteoroide, metrica)

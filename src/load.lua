@@ -132,7 +132,7 @@ function resetaJogo()
   isAtracaoGravitacional = false
   velAtracaoGravitacional = { valor = 200 }
   
-  intervaloControleGravitacional = { valor = 0 * 60 } -- tempo padrão de espera para usar a habilidade
+  intervaloControleGravitacional = { valor = 2 * 60 } -- tempo padrão de espera para usar a habilidade
   tempoControleGravitacional = intervaloControleGravitacional.valor -- variável que calcula o tempo restante para poder usar a hab
   isControleGravitacional = false
   velControleGravitacional = { valor = 400 }
@@ -153,7 +153,7 @@ function resetaJogo()
     qtd = { valor = 0 }, -- possibilita passagem por referência --
     delay = 1, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
-    dano = { valor = 0.3 },
+    dano = { valor = 1 },
     destruidos = 0,
     colisoes = 2,
     escala = { valor = 2 }
@@ -164,9 +164,9 @@ function resetaJogo()
     id = 0,
     tipo = "normal",
     img = meteoroideImg,
-    vel = { valor = 150 },
+    vel = { valor = 100 },
     qtd = { valor = 2 }, -- tabela possibilita passagem por referência --
-    delay = 0.1,
+    delay = 0.8,
     contagem = 1,
     dano = { valor =  0.3 },
     destruidos = 0,

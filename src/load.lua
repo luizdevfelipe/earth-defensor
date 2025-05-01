@@ -103,7 +103,7 @@ function resetaJogo()
     distanciaTerra = { valor = 250 },
     oriX = luaImg:getWidth() / 2,
     oriY = luaImg:getHeight() / 2,
-    meteoroideAlvo = { id = nil, index = nil },
+    meteoroideAlvo = { id = nil, index = nil, tipo = nil },
   }
   --  Atributos Lua  --
   potencializadoresSorteados = nil -- variável para armazenar os potencializadores a serem escolhidos
@@ -132,10 +132,8 @@ function resetaJogo()
   isAtracaoGravitacional = false
   velAtracaoGravitacional = { valor = 200 }
   
-  intervaloControleGravitacional = { valor = 2 * 60 } -- tempo padrão de espera para usar a habilidade
+  intervaloControleGravitacional = { valor = 0 * 60 } -- tempo padrão de espera para usar a habilidade
   tempoControleGravitacional = intervaloControleGravitacional.valor -- variável que calcula o tempo restante para poder usar a hab
-  duracaoControleGravitacional = { valor = 4 * 60 } -- tempo padrão que a habilidade fica ativa
-  tempoControleGravitacional = duracaoControleGravitacional.valor -- variável que calcula o tempo ativo da habilidade
   isControleGravitacional = false
   velControleGravitacional = { valor = 400 }
   
@@ -148,13 +146,14 @@ function resetaJogo()
   -- Variáveis dos Supermeteoroides --
   superMeteoroides = {}
   metricasSupermeteoroides = {
-    id = "super",
+    id = 0,
+    tipo = "super",
     img = superImg,
     vel = { valor = 100 },
-    qtd = { valor = 1 }, -- possibilita passagem por referência --
+    qtd = { valor = 0 }, -- possibilita passagem por referência --
     delay = 1, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
-    dano = { valor = 1 },
+    dano = { valor = 0.3 },
     destruidos = 0,
     colisoes = 2,
     escala = { valor = 2 }
@@ -162,13 +161,14 @@ function resetaJogo()
   -- Variáveis dos Meteoroides --
   meteoroides = {}
   metricasMeteoroides = {
-    id = "normal",
+    id = 0,
+    tipo = "normal",
     img = meteoroideImg,
-    vel = { valor = 100 },
-    qtd = { valor = 10 }, -- tabela possibilita passagem por referência --
-    delay = 0.8,
+    vel = { valor = 150 },
+    qtd = { valor = 2 }, -- tabela possibilita passagem por referência --
+    delay = 0.1,
     contagem = 1,
-    dano = { valor =  0.2 },
+    dano = { valor =  0.3 },
     destruidos = 0,
     escala = { valor = 1 }
   }

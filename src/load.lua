@@ -103,7 +103,7 @@ function resetaJogo()
     distanciaTerra = { valor = 250 },
     oriX = luaImg:getWidth() / 2,
     oriY = luaImg:getHeight() / 2,
-    meteoroideAlvo = { id = nil, index = nil, tipo = nil },
+    meteoroideAlvo = { id = nil, tipo = nil },
   }
   --  Atributos Lua  --
   potencializadoresSorteados = nil -- variável para armazenar os potencializadores a serem escolhidos

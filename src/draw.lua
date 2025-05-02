@@ -19,12 +19,12 @@ function love.draw()
     end
     
     -- Carregamento das imagens de meteoroides --
-    for i, meteoroide in ipairs(meteoroides) do
+    for id, meteoroide in pairs(meteoroides) do
       love.graphics.draw(meteoroideImg, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2)
     end
     
     -- Carregamento das imagens de SuperMeteoroides --
-    for i, super in ipairs(superMeteoroides) do
+    for id, super in pairs(superMeteoroides) do
       love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, 0, super.escala, super.escala, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
     end
        

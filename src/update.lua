@@ -93,20 +93,20 @@ function inimigos(inimigos, metricas, dt)
       posicaoXAleatoria = math.random(0, screenWidth - metricas.img:getWidth())
       if umLadoOuOutro == 1 then
         -- Se "um lado" o meteoroide aparecerá no topo da tela até seu centro, aumentado o seu Y
-        novoInimigo = {id = metricas.id, x = posicaoXAleatoria, y = -metricas.img:getHeight(), posicao = "cima"}
+        novoInimigo = {x = posicaoXAleatoria, y = -metricas.img:getHeight(), posicao = "cima"}
       else
         -- Se "do outro" o meteoroide aparecerá no inferior da tela até seu centro, diminuindo o seu Y
-        novoInimigo = {id = metricas.id, x = posicaoXAleatoria, y = screenHeight + metricas.img:getHeight(), posicao = "baixo"}
+        novoInimigo = {x = posicaoXAleatoria, y = screenHeight + metricas.img:getHeight(), posicao = "baixo"}
       end
     else
       -- Se Y é aleatório, o meteoroide aparecerá na esquerda ou direita da tela
       posicaoYAleatoria = math.random(0, screenHeight - metricas.img:getHeight())
       if umLadoOuOutro == 1 then
         -- Se "um lado" o meteoroide aparecerá da esquerda até o centro da tela, aumentado o seu X
-        novoInimigo = {id = metricas.id, x = -metricas.img:getWidth(), y = posicaoYAleatoria, posicao = "esquerda"}
+        novoInimigo = {x = -metricas.img:getWidth(), y = posicaoYAleatoria, posicao = "esquerda"}
       else
         -- Se "do outro" o meteoroide aparecerá da direita até o centro da tela, diminuindo o seu X
-        novoInimigo = {id = metricas.id, x = screenWidth + metricas.img:getWidth(), y = posicaoYAleatoria, posicao = "direita"}
+        novoInimigo = {x = screenWidth + metricas.img:getWidth(), y = posicaoYAleatoria, posicao = "direita"}
       end
     end    
     
@@ -117,11 +117,11 @@ function inimigos(inimigos, metricas, dt)
     
     novoInimigo.colisaoAnterior = false
     
-    table.insert(inimigos, novoInimigo)
+    inimigos[metricas.id] = novoInimigo
   end
     
   -- Irá verificar se houve colisões dos inimigos e entre a Lua e Terra --
-  for i, inimigo in ipairs(inimigos) do
+  for id, inimigo in pairs(inimigos) do
     -- Movimenta os inimigos antes de verificar a colisão --
      movimentoMeteoroides(dt, inimigo, metricas)
      
@@ -136,14 +136,14 @@ function inimigos(inimigos, metricas, dt)
           inimigo.vidas = inimigo.vidas - 1
           inimigo.escala = inimigo.escala - 0.5
           -- Caso a colisão tenha sido com a habilidade o alvo é redefinido --
-          if isControleGravitacional and lua.meteoroideAlvo.id == inimigo.id then
-            lua.meteoroideAlvo.index = nil
+          if isControleGravitacional and lua.meteoroideAlvo.id == id then
+            lua.meteoroideAlvo.id = nil
             isControleGravitacional = false
             tempoControleGravitacional = intervaloControleGravitacional.valor 
           end          
           -- caso as vidas acabem ele é removido --
           if inimigo.vidas <= 0 then
-            table.remove(inimigos, i)
+            inimigos[id] = nil
             metricas.destruidos = metricas.destruidos + 1
           end        
           inimigo.colisaoAnterior = true
@@ -158,12 +158,12 @@ function inimigos(inimigos, metricas, dt)
         -- "transformar" meteoroide em detrito
         criarDetrito(inimigo.x, inimigo.y)
         -- Caso o meteoroide destruído tenha sido derrotado com a habilidade o alvo é redefinido --
-        if isControleGravitacional and lua.meteoroideAlvo.id == inimigo.id then
-          lua.meteoroideAlvo.index = nil
+        if isControleGravitacional and lua.meteoroideAlvo.id == id then
+          lua.meteoroideAlvo.id = nil
           isControleGravitacional = false
           tempoControleGravitacional = intervaloControleGravitacional.valor 
         end
-        table.remove(inimigos, i)
+        inimigos[id] = nil
         metricas.destruidos = metricas.destruidos + 1
         inimigo.colisaoAnterior = true
       else
@@ -175,14 +175,14 @@ function inimigos(inimigos, metricas, dt)
      if isColisao(inimigo.x, inimigo.y, (metricas.img:getHeight() / 2) * metricas.escala.valor, 
       terra.posX, terra.posY, terra.raio) then
        -- Caso o inimigo destruído pela Terra estava marcado pela habilidade ela é redefinida --
-      if isControleGravitacional and lua.meteoroideAlvo.id == inimigo.id then
-        lua.meteoroideAlvo.index = nil
+      if isControleGravitacional and lua.meteoroideAlvo.id == id then
+        lua.meteoroideAlvo.id = nil
         isControleGravitacional = false
         tempoControleGravitacional = intervaloControleGravitacional.valor 
       end
       vidasTerra.valor = vidasTerra.valor - metricas.dano.valor
       metricas.destruidos = metricas.destruidos + 1
-      table.remove(inimigos, i)
+      inimigos[id] = nil
      end
   end
     
@@ -214,7 +214,7 @@ function colisaoDetritos()
        table.remove(detritos, i)
      end
     
-    for j, meteoroide in ipairs(meteoroides) do
+    for id, meteoroide in pairs(meteoroides) do
       if isColisao(detrito.x, detrito.y, detritoImg:getHeight() / 2,
        meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2) then
        metricasDetrito.destruidos = metricasDetrito.destruidos + 1
@@ -286,22 +286,21 @@ function movimentoLua(dt)
   end
     
   -- Verifica se a habilidade está ativada e um novo alvo será escolhido --
-  if isControleGravitacional and lua.meteoroideAlvo.index == nil then
+  if isControleGravitacional and lua.meteoroideAlvo.id == nil then
     local menorDistMeteor = nil
     local menorDistSuperMeteor = nil
     
-    for i, meteoroide in ipairs(meteoroides) do
+    for id, meteoroide in pairs(meteoroides) do
       -- Calcula a distância entre o meteoroide e a Lua -- 
       distLua = distanciaDeDoisPontos(lua.posX, meteoroide.x, lua.posY, meteoroide.y)
       if menorDistMeteor == nil or distLua < menorDistMeteor then
         menorDistMeteor = distLua
         lua.meteoroideAlvo.tipo = 'normal'
-        lua.meteoroideAlvo.id = meteoroide.id
-        lua.meteoroideAlvo.index = i
+        lua.meteoroideAlvo.id = id
       end
     end
     
-    for i, super in ipairs(superMeteoroides) do
+    for id, super in pairs(superMeteoroides) do
       -- Calcula a distância entre o meteoroide e a Lua -- 
       distLua = distanciaDeDoisPontos(lua.posX, super.x, lua.posY, super.y)
       if menorDistSuperMeteor == nil or distLua < menorDistSuperMeteor then
@@ -309,30 +308,19 @@ function movimentoLua(dt)
         
         if menorDistMeteor == nil or menorDistSuperMeteor <= menorDistMeteor then
           lua.meteoroideAlvo.tipo = 'super'
-          lua.meteoroideAlvo.id = super.id
-          lua.meteoroideAlvo.index = i
+          lua.meteoroideAlvo.id = id
         end
       end
     end
     
     
   -- Habilidade está ativa e um alvo foi determinado -- 
-  elseif isControleGravitacional and  lua.meteoroideAlvo.index ~= nil then
+  elseif isControleGravitacional and  lua.meteoroideAlvo.id ~= nil then
     
     if lua.meteoroideAlvo.tipo == 'normal' then
-      for _, normal in ipairs(meteoroides) do
-        if normal.id == lua.meteoroideAlvo.id then
-          alvo = normal
-          break
-        end
-      end
+      alvo = meteoroides[lua.meteoroideAlvo.id]
     elseif lua.meteoroideAlvo.tipo == 'super' then
-      for _, super in ipairs(superMeteoroides) do
-        if super.id == lua.meteoroideAlvo.id then
-          alvo = super
-          break
-        end
-      end
+     alvo = superMeteoroides[lua.meteoroideAlvo.id]
     end
       
     if alvo ~= nil then
@@ -345,7 +333,7 @@ function movimentoLua(dt)
       end
     else
       isControleGravitacional = false
-      lua.meteoroideAlvo.index = nil
+      lua.meteoroideAlvo.id = nil
       tempoControleGravitacional = intervaloControleGravitacional.valor 
     end
   else

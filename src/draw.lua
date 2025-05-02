@@ -341,6 +341,13 @@ function telaInicial()
   love.graphics.print("Dois Jogadores", doisJogadoresX, doisJogadoresY)
   underlineTextHover(doisJogadoresX, doisJogadoresY, doisJogadoresWidth, doisJogadoresHeight)
   
+  -- Exibe o botão de opções --
+  local larguraOptionsIco = optionsIco:getWidth()
+  local alturaOptionsIco = optionsIco:getHeight()
+  local optionsIcoX = screenWidth - larguraOptionsIco -30
+  local optionsIcoY = screenHeight - alturaOptionsIco -30
+  love.graphics.draw(optionsIco, optionsIcoX, optionsIcoY, 0, 1, 1)
+  
   -- verifica se clicou sobre "Um Jogador"
   if isCliqueEmTexto(umJogadorX, umJogadorY, umJogadorWidth, umJogadorHeight) and botaoUmSolto then
     botaoUmSolto = false
@@ -352,6 +359,17 @@ function telaInicial()
     botaoUmSolto = false
     startGame = 2
   end  
+  
+  -- verifica se clicou sobre o "Botão de opções" -- 
+  if isCliqueEmTexto(optionsIcoX, optionsIcoY, larguraOptionsIco, alturaOptionsIco) and botaoUmSolto then
+    botaoUmSolto = false
+    telaDeOpcoes()
+  end  
+end
+
+function telaDeOpcoes()
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.print('TESTE')
 end
 
 function telaDePause()

@@ -24,6 +24,7 @@ function love.load()
   protetoraImg = love.graphics.newImage("assets/images/protetora.png")
   atracaoImg = love.graphics.newImage("assets/images/atracao.png")
   controleGravImg = love.graphics.newImage("assets/images/controle.png")
+  optionsIco = love.graphics.newImage("assets/images/options.png")
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
   introducao = false

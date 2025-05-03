@@ -45,7 +45,11 @@ function love.draw()
     
     -- Tela inicial
     if startGame == 0 then
-       telaInicial()
+      if optionsScreen then
+        telaDeOpcoes()
+      else
+        telaInicial() 
+      end
     end
     
     -- Exibe conteúdos que devem aparecer apenas durante o jogo --
@@ -363,13 +367,93 @@ function telaInicial()
   -- verifica se clicou sobre o "Botão de opções" -- 
   if isCliqueEmTexto(optionsIcoX, optionsIcoY, larguraOptionsIco, alturaOptionsIco) and botaoUmSolto then
     botaoUmSolto = false
-    telaDeOpcoes()
+    optionsScreen = true
   end  
 end
 
 function telaDeOpcoes()
+  desfoqueFundo(180)
+  love.graphics.setFont(fonteNegrito)
+  -- Exibe o texto da resolução da tela --
+  local resolucaoWidth = love.graphics.getFont():getWidth("Resolução: " .. screenWidth .. 'x' .. screenHeight)
+  local resolucaoHeight = love.graphics.getFont():getHeight("Resolução: " .. screenWidth .. 'x' .. screenHeight) - 10
+  local resolucaoX = centroJanelaX - resolucaoWidth / 2
+  local resolucaoY = centroJanelaY * 0.1
+  love.graphics.print("Resolução: " .. screenWidth .. 'x' .. screenHeight, resolucaoX, resolucaoY)
+  
+  -- Exibe o texto "Tela Cheia" --
+  local telaCheiaWidth = love.graphics.getFont():getWidth("Tela Cheia: ")
+  local telaCheiaHeight = love.graphics.getFont():getHeight("Tela Cheia: ") - 10
+  local telaCheiaX = centroJanelaX - telaCheiaWidth / 2
+  local telaCheiaY = centroJanelaY * 0.3
+  love.graphics.print("Tela Cheia: ", telaCheiaX, telaCheiaY)
+  -- Exibe ícone de status da "Tela Cheia"
+  if love.window.getFullscreen() then
+    love.graphics.draw(enableIco, telaCheiaX + telaCheiaWidth, telaCheiaY + 12)
+  else
+    love.graphics.draw(disabledIco, telaCheiaX + telaCheiaWidth, telaCheiaY + 12)
+  end
+ 
+ -- Exibe o texto de Volume -- 
+  local volumeWidth = love.graphics.getFont():getWidth("Volume: ")
+  local volumeHeight = love.graphics.getFont():getHeight("Volume: ") - 10
+  local volumeX = centroJanelaX - volumeWidth / 2
+  local volumeY = centroJanelaY * 0.5
+  love.graphics.print("Volume: ", volumeX, volumeY)
+  
+  -- Exibe a barra de ajuste de volume --
   love.graphics.setColor(255, 255, 255)
-  love.graphics.print('TESTE')
+  local barraVolX = volumeX + volumeWidth + 10
+  local barraVolY = volumeY + volumeHeight / 2 + 6
+  love.graphics.rectangle('fill', barraVolX, barraVolY, 200, 12)  
+  love.graphics.rectangle('fill', barraVolX - 20 + (200 * volumeGeral), barraVolY - 15, 40, 40)
+  
+  if isCliqueEmTexto(barraVolX - 20 + (200 * volumeGeral), barraVolY - 15, 40, 40) or 
+     isCliqueEmTexto(barraVolX, barraVolY, 200, 12) then
+    mouseX = love.mouse.getX()
+    local novoVolume = (mouseX - barraVolX) / 200
+    volumeGeral = math.max(0, math.min(1, novoVolume))
+  end
+
+  -- Exibe o texto de música habilitada --
+  local musicaWidth = love.graphics.getFont():getWidth("Musica: ")
+  local musicaHeight = love.graphics.getFont():getHeight("Musica: ") - 10
+  local musicaX = centroJanelaX - musicaWidth / 2
+  local musicaY = centroJanelaY * 0.7
+  love.graphics.print("Musica: ", musicaX, musicaY)
+  
+  -- Exibe o ícone de status da "Música"
+  if isGameMusic then
+    love.graphics.draw(enableIco, musicaX + musicaWidth, musicaY + 12)
+  else
+    love.graphics.draw(disabledIco, musicaX + musicaWidth, musicaY + 12)
+  end
+  
+  -- Exibe o botão de retorno --
+  local larguraReturnIco = returnIco:getWidth()
+  local alturaReturnIco = returnIco:getHeight()
+  local returnIcoX = screenWidth - larguraReturnIco -30
+  local returnIcoY = screenHeight - alturaReturnIco -30
+  love.graphics.draw(returnIco, returnIcoX, returnIcoY, 0, 1, 1)
+  
+  -- verifica se clicou sobre o "Botão de Tela Cheia" -- 
+  if isCliqueEmTexto(telaCheiaX + telaCheiaWidth, telaCheiaY + 12, enableIco:getWidth(), enableIco:getHeight()) and botaoUmSolto then
+    botaoUmSolto = false
+    toggleFullscreen()
+  end 
+  
+  -- verifica se clicou sobre o "Botão de Musica" -- 
+  if isCliqueEmTexto(musicaX + musicaWidth, musicaY + 12, enableIco:getWidth(), enableIco:getHeight()) and botaoUmSolto then
+    botaoUmSolto = false
+    isGameMusic = not isGameMusic
+  end 
+  
+  -- verifica se clicou sobre o "Botão de retorno" -- 
+  if isCliqueEmTexto(returnIcoX, returnIcoY, larguraReturnIco, alturaReturnIco) and botaoUmSolto then
+    botaoUmSolto = false
+    optionsScreen = false
+  end  
+  
 end
 
 function telaDePause()

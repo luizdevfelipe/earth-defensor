@@ -24,7 +24,10 @@ function love.load()
   protetoraImg = love.graphics.newImage("assets/images/protetora.png")
   atracaoImg = love.graphics.newImage("assets/images/atracao.png")
   controleGravImg = love.graphics.newImage("assets/images/controle.png")
-  optionsIco = love.graphics.newImage("assets/images/options.png")
+  optionsIco = love.graphics.newImage("assets/images/icons/options.png")
+  disabledIco = love.graphics.newImage("assets/images/icons/disabled.png")
+  enableIco = love.graphics.newImage("assets/images/icons/enable.png")
+  returnIco = love.graphics.newImage("assets/images/icons/return.png")
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
   introducao = false
@@ -50,6 +53,9 @@ function love.load()
   math.randomseed(os.time())
   resetaJogo()
   botaoUmSolto = true
+  optionsScreen = false
+  isGameMusic = true
+  volumeGeral = 0.5
   potencializadores = {
     {
       titulo = "Velocidade Lunar", 
@@ -128,7 +134,7 @@ function resetaJogo()
   
   intervaloAtracaoGravitacional = { valor = 2 * 60 } -- tempo padrão de espera para usar a habilidade
   tempoAtracaoGravitacional = intervaloAtracaoGravitacional.valor -- variável que calcula o tempo restante para poder usar a hab
-  duracaoAtracaoGravitacional = { valor = 8 * 60 } -- tempo padrão que a habilidade fica ativa
+  duracaoAtracaoGravitacional = { valor = 2 * 60 } -- tempo padrão que a habilidade fica ativa
   tempoAtracaoGravitacionalAtiva = duracaoAtracaoGravitacional.valor -- variável que calcula o tempo ativo da habilidade
   isAtracaoGravitacional = false
   velAtracaoGravitacional = { valor = 200 }

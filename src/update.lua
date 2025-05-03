@@ -465,6 +465,10 @@ function love.keypressed(key)
   if key == "q" and not isControleGravitacional and tempoControleGravitacional <= 0 then
     isControleGravitacional = true
   end
+  
+  if key == "f11" then
+    toggleFullscreen()
+  end
 end
 
 -- Função para retornar N valores aleatórios com probabilidades diferentes
@@ -500,6 +504,14 @@ function sortearUnicosComPeso(qtd, pesos)
   end
 
   return resultado
+end
+-- Função para alternar entre Tela Cheia e Modo Janela --
+function toggleFullscreen()
+    if love.window.getFullscreen() then
+        love.window.setFullscreen(false)
+    else
+        love.window.setFullscreen(true)
+    end
 end
 
 -- Variáveis que devem ser atualizadas durante a execução

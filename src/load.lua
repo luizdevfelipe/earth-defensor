@@ -6,6 +6,8 @@ function love.load()
   screenWidthAtual, screenHeightAtual = love.window.getMode()
   centroJanelaX = screenWidth / 2
   centroJanelaY = screenHeight / 2
+  local icon = love.image.newImageData("assets/images/icons/favicon.png")
+  love.window.setIcon(icon)
   -- Definição de variáveis com o tamanho da tela do jogo --
   -- Configurações para o cursor sdo mouse --
   love.mouse.setVisible(false)

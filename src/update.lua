@@ -35,6 +35,16 @@ function animacaoIntroducao(dt)
     introducao = false
   end
   
+  -- Lógica do tempo de interrupção da animação via tecla pressionada --  
+  if love.keyboard.isDown('return') and musicaIntroducao:isPlaying() then
+    tempoPularAnim = tempoPularAnim - 1 
+    if tempoPularAnim <= 0 then
+      musicaIntroducao:stop()
+    end
+  elseif tempoPularAnim < 150 and not love.keyboard.isDown('return') then
+    tempoPularAnim = 150    
+  end
+  
   if movimentoTerraAnim < 30 then
     movimentoTerraAnim = movimentoTerraAnim + 22 * dt
   end
@@ -131,6 +141,8 @@ function inimigos(inimigos, metricas, dt)
        -- Verifica se houve a colisao
       if isColisao(inimigo.x, inimigo.y, (metricas.img:getHeight() / 2) * metricas.escala.valor,
       lua.posX, lua.posY, lua.raio) then
+        somColisao:stop()
+        somColisao:play()
         if not inimigo.colisaoAnterior then
           -- faz com que seja apenas descontado vidas dele até a destruição
           inimigo.vidas = inimigo.vidas - 1
@@ -155,6 +167,8 @@ function inimigos(inimigos, metricas, dt)
       -- No caso de meteoroide
       if isColisao(inimigo.x, inimigo.y, metricas.img:getHeight() / 2,
       lua.posX, lua.posY, lua.raio) then
+        somColisao:stop()
+        somColisao:play()
         -- "transformar" meteoroide em detrito
         criarDetrito(inimigo.x, inimigo.y)
         -- Caso o meteoroide destruído tenha sido derrotado com a habilidade o alvo é redefinido --
@@ -174,6 +188,8 @@ function inimigos(inimigos, metricas, dt)
      -- Verificar colisão com a Terra
      if isColisao(inimigo.x, inimigo.y, (metricas.img:getHeight() / 2) * metricas.escala.valor, 
       terra.posX, terra.posY, terra.raio) then
+      somColisao:stop()
+      somColisao:play()
        -- Caso o inimigo destruído pela Terra estava marcado pela habilidade ela é redefinida --
       if isControleGravitacional and lua.meteoroideAlvo.id == id then
         lua.meteoroideAlvo.id = nil
@@ -407,7 +423,7 @@ function movimentoMeteoroides(dt, meteoroide, metrica)
     -- Calcula a distância entre o meteoroide e a Lua -- 
     distLua = distanciaDeDoisPontos(lua.posX, meteoroide.x, lua.posY, meteoroide.y)
     -- Se estiver no raio da habilidade ele será atraído --
-    if distLua > 1 and distLua < 500 then
+    if distLua > 1 and distLua < distanciaAtracaoGravitacional.valor then
       local dirX = (lua.posX - meteoroide.x) / distLua
       local dirY = (lua.posY - meteoroide.y) / distLua
       
@@ -455,7 +471,11 @@ function love.keypressed(key)
   end
   
   if key == "escape" and startGame ~= 0 and not gameOver then
-    pause = not pause
+    if optionsScreen then
+      optionsScreen = false
+    else
+      pause = not pause
+    end    
   end
   
   if key == "e" and not isAtracaoGravitacional and tempoAtracaoGravitacional <= 0 then
@@ -533,12 +553,21 @@ function carregamento(dt)
   --  Atributos Fundo  --
   
   -- Apresentação do movimento da Lua no menu --
+  if screenWidthAtual ~= screenWidth or screenHeightAtual ~= screenHeight then
+    terra.posX = centroJanelaX
+    terra.posY = centroJanelaY
+    
+    screenWidthAtual = screenWidth
+    screenHeightAtual = screenHeight
+  end
+  
   if startGame == 0 then
     terra.posX = centroJanelaX
     terra.posY = centroJanelaY
     
-     orbitaLua = orbitaLua + 0.5 * dt * 1
-     lua.posX, lua.posY = orbita(terra.posX, terra.posY, lua.distanciaTerra.valor, orbitaLua)
+    orbitaLua = orbitaLua + 0.5 * dt * 1
+    lua.posX, lua.posY = orbita(terra.posX, terra.posY, lua.distanciaTerra.valor, orbitaLua)
+  
   end
   -- Apresentação do movimento da Lua no menu --  
 end

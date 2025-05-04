@@ -35,23 +35,6 @@ function love.draw()
       love.graphics.print("Pressione W para alterar o movimento lunar", centroJanelaX - instrucaoWidth / 2, screenHeight * 0.8)
     end
     
-    if trocaDeFase  then
-      telaDePotencializadores()
-    end
-    
-    if gameOver then
-      telaGameOver()
-    end
-    
-    -- Tela inicial
-    if startGame == 0 then
-      if optionsScreen then
-        telaDeOpcoes()
-      else
-        telaInicial() 
-      end
-    end
-    
     -- Exibe conteúdos que devem aparecer apenas durante o jogo --
     if not gameOver and not trocaDeFase and startGame ~= 0 then
       -- Carregamento da Barra de Vida
@@ -68,10 +51,31 @@ function love.draw()
       love.graphics.print("Onda: " .. onda, centroJanelaX - love.graphics.getFont():getWidth("Onda: " .. onda) / 2, screenHeight - 45)
     end
     
-    --Tela de Pause
-     if pause then    
-      telaDePause() 
+    if trocaDeFase and not gameOver and not pause and not optionsScreen then
+      telaDePotencializadores()
     end
+    
+    if gameOver then
+      telaGameOver()
+    end
+    
+    -- Tela inicial
+    if startGame == 0 and not optionsScreen then
+      telaInicial() 
+    end
+    
+    -- Tela de opções --
+    if optionsScreen then
+      telaDeOpcoes()
+    end
+    
+    --Tela de Pause
+     if pause and not optionsScreen then    
+      telaDePause()
+    end
+    
+    -- função para rederizar um cursor personalizado --
+    mostraCursor()
   end
 end
 
@@ -85,6 +89,7 @@ function telaDePotencializadores()
   local interior1QuadradoX = centralizadoX - larguraRetangulo - espacoRetang + larguraBorda / 2
   local interior3QuadradoX = centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2
   local textoSelecionarY = centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10
+  local marginTopTexto = - 60
   
   desfoqueFundo(240)
   -- Exibe o texto "Escolha seu novo poder"
@@ -99,12 +104,12 @@ function telaDePotencializadores()
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", interior1QuadradoX, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
   -- Exibe o título da 1º habilidade --
-  love.graphics.setFont(fonteMenu50)
+  love.graphics.setFont(fonteMenu35)
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.print(
     potencializadores[potencializadoresSorteados[1]].titulo, 
     interior1QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth(potencializadores[potencializadoresSorteados[1]].titulo)) / 2, 
-    centralizadoY
+    centralizadoY + 10
   )
   -- Exibe o 1º texto da habilidade --
   love.graphics.setColor(255, 255, 255, 255)
@@ -112,7 +117,7 @@ function telaDePotencializadores()
   love.graphics.printf( 
     retornaTextoPotencializador(1),
     interior1QuadradoX, 
-    centroJanelaY - love.graphics.getFont():getHeight(retornaTextoPotencializador(1)) - 10,
+    centroJanelaY - love.graphics.getFont():getHeight(retornaTextoPotencializador(1)) + marginTopTexto,
     larguraRetangulo - larguraBorda,
     "justify"
   )
@@ -135,12 +140,12 @@ function telaDePotencializadores()
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", centralizadoX + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
   -- Exibe o título da 2º habilidade --
-  love.graphics.setFont(fonteMenu50)
+  love.graphics.setFont(fonteMenu35)
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.print(
     potencializadores[potencializadoresSorteados[2]].titulo, 
     centralizadoX + larguraBorda / 2 + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth(potencializadores[potencializadoresSorteados[2]].titulo)) / 2, 
-    centralizadoY
+    centralizadoY + 10
   )
   -- Exibe o 2º texto da habilidade --
   love.graphics.setColor(255, 255, 255, 255)
@@ -148,7 +153,7 @@ function telaDePotencializadores()
   love.graphics.printf( 
     retornaTextoPotencializador(2),
     centralizadoX + larguraBorda / 2,
-    centroJanelaY - love.graphics.getFont():getHeight(retornaTextoPotencializador(1)) - 10,
+    centroJanelaY - love.graphics.getFont():getHeight(retornaTextoPotencializador(1)) + marginTopTexto,
     larguraRetangulo - larguraBorda,
     "justify"
   )
@@ -173,12 +178,12 @@ function telaDePotencializadores()
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
   -- Exibe o título da 3º habilidade --
-  love.graphics.setFont(fonteMenu50)
+  love.graphics.setFont(fonteMenu35)
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.print(
     potencializadores[potencializadoresSorteados[3]].titulo, 
     interior3QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth(potencializadores[potencializadoresSorteados[3]].titulo)) / 2, 
-    centralizadoY
+    centralizadoY + 10
   )
   -- Exibe o 3º texto da habilidade --
   love.graphics.setColor(255, 255, 255, 255)
@@ -186,7 +191,7 @@ function telaDePotencializadores()
   love.graphics.printf( 
     retornaTextoPotencializador(3),
     interior3QuadradoX, 
-    centroJanelaY - love.graphics.getFont():getHeight(retornaTextoPotencializador(1)) - 10,
+    centroJanelaY - love.graphics.getFont():getHeight(retornaTextoPotencializador(1)) + marginTopTexto,
     larguraRetangulo - larguraBorda,
     "justify"
   )
@@ -308,6 +313,15 @@ function desenharIntroducao()
   local autorY = screenHeight * 0.85
   love.graphics.print("luizdevfelipe", autorX, autorY)
   
+  -- Botão de pular cutscene --
+  love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.draw(enterIco, screenWidth - enterIco:getWidth() - 30, screenHeight - enterIco:getHeight() - 50)
+  
+  if tempoPularAnim < 150 then
+    local largura = 150 - tempoPularAnim
+    love.graphics.rectangle('fill', screenWidth - enterIco:getWidth() - 30, screenHeight - 25, enterIco:getWidth() * (largura/149), 3)
+  end
+  
 end
 
 function barraDeVida()
@@ -345,12 +359,8 @@ function telaInicial()
   love.graphics.print("Dois Jogadores", doisJogadoresX, doisJogadoresY)
   underlineTextHover(doisJogadoresX, doisJogadoresY, doisJogadoresWidth, doisJogadoresHeight)
   
-  -- Exibe o botão de opções --
-  local larguraOptionsIco = optionsIco:getWidth()
-  local alturaOptionsIco = optionsIco:getHeight()
-  local optionsIcoX = screenWidth - larguraOptionsIco -30
-  local optionsIcoY = screenHeight - alturaOptionsIco -30
-  love.graphics.draw(optionsIco, optionsIcoX, optionsIcoY, 0, 1, 1)
+  -- Exibe e verifica se clicou sobre o botão --
+  botaoDeOpcoes()
   
   -- verifica se clicou sobre "Um Jogador"
   if isCliqueEmTexto(umJogadorX, umJogadorY, umJogadorWidth, umJogadorHeight) and botaoUmSolto then
@@ -363,6 +373,15 @@ function telaInicial()
     botaoUmSolto = false
     startGame = 2
   end  
+end
+
+function botaoDeOpcoes()
+  -- Exibe o botão de opções --
+  local larguraOptionsIco = optionsIco:getWidth()
+  local alturaOptionsIco = optionsIco:getHeight()
+  local optionsIcoX = screenWidth - larguraOptionsIco -30
+  local optionsIcoY = screenHeight - alturaOptionsIco -30
+  love.graphics.draw(optionsIco, optionsIcoX, optionsIcoY, 0, 1, 1)
   
   -- verifica se clicou sobre o "Botão de opções" -- 
   if isCliqueEmTexto(optionsIcoX, optionsIcoY, larguraOptionsIco, alturaOptionsIco) and botaoUmSolto then
@@ -413,6 +432,8 @@ function telaDeOpcoes()
     mouseX = love.mouse.getX()
     local novoVolume = (mouseX - barraVolX) / 200
     volumeGeral = math.max(0, math.min(1, novoVolume))
+    
+    alterarVolume()
   end
 
   -- Exibe o texto de música habilitada --
@@ -474,6 +495,8 @@ function telaDePause()
   local menuY = centroJanelaY 
   love.graphics.print("> Voltar ao Menu", menuX, menuY)
   underlineTextHover(menuX, menuY, menuWidth, menuHeight)
+  
+  botaoDeOpcoes()
   
   -- verifica se clicou sobre "Retomar"
   if isCliqueEmTexto(retomarX, retomarY, retomarWidth, retomarHeight) and botaoUmSolto then
@@ -614,4 +637,10 @@ function exibeBotaoControleGravitacional()
   end
   
   love.graphics.setColor(255, 255, 255, 255)
+end
+
+function mostraCursor()
+  if pause or trocaDeFase or startGame == 0 or gameOver then
+    love.graphics.draw(imagemCursor, love.mouse.getX(), love.mouse.getY(), 0, 1, 1, 0, imagemCursor:getHeight())
+  end
 end

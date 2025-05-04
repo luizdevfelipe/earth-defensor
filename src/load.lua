@@ -3,9 +3,13 @@
 function love.load() 
   -- Definição de variáveis com o tamanho da tela do jogo --
   screenWidth, screenHeight = love.window.getMode()
+  screenWidthAtual, screenHeightAtual = love.window.getMode()
   centroJanelaX = screenWidth / 2
   centroJanelaY = screenHeight / 2
   -- Definição de variáveis com o tamanho da tela do jogo --
+  -- Configurações para o cursor sdo mouse --
+  love.mouse.setVisible(false)
+  -- Configurações para o cursor sdo mouse --
   -- Carregamentos de arquivos da pasta assets --
   terraImg = love.graphics.newImage("assets/images/terra.png")
   luaImg = love.graphics.newImage("assets/images/lua.png")
@@ -16,10 +20,12 @@ function love.load()
   fonteNegrito = love.graphics.newFont("assets/fonts/SpecialGothicExpandedOne-Regular.ttf", 70)
   fonteMenu = love.graphics.newFont("assets/fonts/Probeta-SemiBoldItalic.ttf", 100)
   fonteMenu50 = love.graphics.newFont("assets/fonts/Probeta-SemiBoldItalic.ttf", 50)
+  fonteMenu35 = love.graphics.newFont("assets/fonts/Probeta-SemiBoldItalic.ttf", 35)
   fontNormal = love.graphics.newFont("assets/fonts/Roboto-VariableFont_wdth,wght.ttf", 40)
   fontNormal20 = love.graphics.newFont("assets/fonts/Roboto-VariableFont_wdth,wght.ttf", 20)
   detritoImg = love.graphics.newImage("assets/images/detrito.png")
   musicaIntroducao = love.audio.newSource("assets/audio/Midnight Trace - Jimena Contreras.mp3")
+  somColisao = love.audio.newSource("assets/audio/Big Explosion Distant.mp3")
   meteoroImg = love.graphics.newImage("assets/images/meteoro.png")
   protetoraImg = love.graphics.newImage("assets/images/protetora.png")
   atracaoImg = love.graphics.newImage("assets/images/atracao.png")
@@ -28,9 +34,12 @@ function love.load()
   disabledIco = love.graphics.newImage("assets/images/icons/disabled.png")
   enableIco = love.graphics.newImage("assets/images/icons/enable.png")
   returnIco = love.graphics.newImage("assets/images/icons/return.png")
+  imagemCursor = love.graphics.newImage("assets/images/icons/cursor.png")
+  enterIco = love.graphics.newImage("assets/images/icons/enter.png")
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
-  introducao = false
+  introducao = true  -- variável que indica que a animação ainda deve iniciar
+  tempoPularAnim = 150 -- variável que contém o tempo restante que a tecla deve ser pressionada
   movimentoTerraAnim = 0
   movimentoLuaAnim = 0
   transparenciaTerraAnim = 60
@@ -56,6 +65,7 @@ function love.load()
   optionsScreen = false
   isGameMusic = true
   volumeGeral = 0.5
+  alterarVolume() -- função que altera o volume de todos os aúdios
   potencializadores = {
     {
       titulo = "Velocidade Lunar", 
@@ -136,6 +146,7 @@ function resetaJogo()
   tempoAtracaoGravitacional = intervaloAtracaoGravitacional.valor -- variável que calcula o tempo restante para poder usar a hab
   duracaoAtracaoGravitacional = { valor = 2 * 60 } -- tempo padrão que a habilidade fica ativa
   tempoAtracaoGravitacionalAtiva = duracaoAtracaoGravitacional.valor -- variável que calcula o tempo ativo da habilidade
+  distanciaAtracaoGravitacional = { valor = 300 }
   isAtracaoGravitacional = false
   velAtracaoGravitacional = { valor = 200 }
   
@@ -200,4 +211,8 @@ function resetaRodada()
     metricasSupermeteoroides.qtd.valor = 3
     metricasMeteoroides.qtd.valor = 3 * onda
   end
+end
+
+function alterarVolume()
+  somColisao:setVolume(volumeGeral)
 end

@@ -309,26 +309,34 @@ function movimentoLua(dt)
     for id, meteoroide in pairs(meteoroides) do
       -- Calcula a distância entre o meteoroide e a Lua -- 
       distLua = distanciaDeDoisPontos(lua.posX, meteoroide.x, lua.posY, meteoroide.y)
-      if menorDistMeteor == nil or distLua < menorDistMeteor then
-        menorDistMeteor = distLua
-        lua.meteoroideAlvo.tipo = 'normal'
-        lua.meteoroideAlvo.id = id
+      if distLua <= distanciaControleGravitacional.valor then
+        if menorDistMeteor == nil or distLua < menorDistMeteor then
+          menorDistMeteor = distLua
+          lua.meteoroideAlvo.tipo = 'normal'
+          lua.meteoroideAlvo.id = id
+        end
       end
     end
     
     for id, super in pairs(superMeteoroides) do
       -- Calcula a distância entre o meteoroide e a Lua -- 
       distLua = distanciaDeDoisPontos(lua.posX, super.x, lua.posY, super.y)
-      if menorDistSuperMeteor == nil or distLua < menorDistSuperMeteor then
-        menorDistSuperMeteor = distLua
-        
-        if menorDistMeteor == nil or menorDistSuperMeteor <= menorDistMeteor then
-          lua.meteoroideAlvo.tipo = 'super'
-          lua.meteoroideAlvo.id = id
+      if distLua <= distanciaControleGravitacional.valor then
+        if menorDistSuperMeteor == nil or distLua < menorDistSuperMeteor then
+          menorDistSuperMeteor = distLua
+          
+          if menorDistMeteor == nil or menorDistSuperMeteor <= menorDistMeteor then
+            lua.meteoroideAlvo.tipo = 'super'
+            lua.meteoroideAlvo.id = id
+          end
         end
       end
     end
     
+    if lua.meteoroideAlvo.id == nil then
+      isControleGravitacional = false
+      tempoControleGravitacional = intervaloControleGravitacional.valor 
+    end
     
   -- Habilidade está ativa e um alvo foi determinado -- 
   elseif isControleGravitacional and  lua.meteoroideAlvo.id ~= nil then

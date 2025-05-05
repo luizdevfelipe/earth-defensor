@@ -141,10 +141,11 @@ function resetaJogo()
   isAtracaoGravitacional = false
   velAtracaoGravitacional = { valor = 200 }
   
-  intervaloControleGravitacional = { valor = 2 * 60 } -- tempo padrão de espera para usar a habilidade
+  intervaloControleGravitacional = { valor = 5 * 60 } -- tempo padrão de espera para usar a habilidade
   tempoControleGravitacional = intervaloControleGravitacional.valor -- variável que calcula o tempo restante para poder usar a hab
   isControleGravitacional = false
   velControleGravitacional = { valor = 400 }
+  distanciaControleGravitacional = { valor = 450 }
   
   direcaoOrbita = 1
   -- 0 não há jogo, 1 um jogador, 2 dois jogadores

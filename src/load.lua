@@ -85,6 +85,25 @@ function love.load()
       alvoDesvantagem = metricasMeteoroides.dano,
       peso = 5
     },
+    {
+      titulo = "Blindagem da Lua", 
+      descricao = "Uma camada extra de proteção adiciona %d%% mais resistência para a Lua contra detritos que causam lentidão, entretanto o peso adicional reduz sua velocidade em %d%%.", 
+      vantagem = 20, 
+      desvantagem = 1,
+      alvoVantagem = resistenciaLunar,
+      alvoDesvantagem = velocidadeOrbita,
+      peso = 5
+    },
+    {
+      titulo = "Construtores Lunares", 
+      descricao = "Construtores são enviados para Lua, isso aumenta a recuperação contra lentidão aplicada sobre ela em %d%%, com menos contrutores a recuperação da vida da Terra é reduzida em %d%%.", 
+      vantagem = 20, 
+      desvantagem = 15,
+      alvoVantagem = taxaReducaoTempoLentidaoLunar,
+      alvoDesvantagem = taxaRegeneracao,
+      peso = 5
+    },
+    
   }  
   -- Carregamento de variáveis que não se alteram com as partidas
 end

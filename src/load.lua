@@ -41,18 +41,7 @@ function love.load()
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
   introducao = true  -- variável que indica que a animação ainda deve iniciar
-  tempoPularAnim = 150 -- variável que contém o tempo restante que a tecla deve ser pressionada
-  movimentoTerraAnim = 0
-  movimentoLuaAnim = 0
-  transparenciaTerraAnim = 60
-  transparenciaMeteoroAnim = 0
-  intervaloMeteoroAnim = 70
-  transparenciaLuaAnim = 0
-  intervaloLuaAnim = 56
-  intervaloCreditosAnim = 40
-  transparenciaCreditosAnim = 0
-  transparenciaTextoInfo = 0
-  -- Carregamento das variáveis da Animação
+  resetaTemposAnimacaoIntro()
   -- Carregamento de variáveis para a Sombra da Lua
   sombrasAnim = {}
   sombraSprite = 1
@@ -213,6 +202,21 @@ function resetaRodada()
     metricasSupermeteoroides.qtd.valor = 3
     metricasMeteoroides.qtd.valor = 3 * onda
   end
+end
+
+function resetaTemposAnimacaoIntro()
+  tempoPularAnim = 150 -- variável que contém o tempo restante que a tecla deve ser pressionada
+  movimentoTerraAnim = 0
+  movimentoLuaAnim = 0
+  transparenciaTerraAnim = 60
+  transparenciaMeteoroAnim = 0
+  intervaloMeteoroAnim = 70
+  transparenciaLuaAnim = 0
+  intervaloLuaAnim = 56
+  intervaloCreditosAnim = 40
+  transparenciaCreditosAnim = 0
+  transparenciaTextoInfo = 0
+  -- Carregamento das variáveis da Animação  
 end
 
 function alterarVolume()

@@ -359,6 +359,15 @@ function telaInicial()
   love.graphics.print("Dois Jogadores", doisJogadoresX, doisJogadoresY)
   underlineTextHover(doisJogadoresX, doisJogadoresY, doisJogadoresWidth, doisJogadoresHeight)
   
+  -- Botão de créditos que reapresenta a animação inicial --
+  love.graphics.setFont(fontNormal)
+  local creditosWidth = love.graphics.getFont():getWidth("Créditos")
+  local creditosHeight = love.graphics.getFont():getHeight("Créditos") - 10
+  local creditosX = 30
+  local creditosY = screenHeight - creditosHeight - 30 
+  love.graphics.print("Créditos", creditosX, creditosY)
+  underlineTextHover(creditosX, creditosY, creditosWidth, creditosHeight + 5)
+  
   -- Exibe e verifica se clicou sobre o botão --
   botaoDeOpcoes()
   
@@ -373,6 +382,14 @@ function telaInicial()
     botaoUmSolto = false
     startGame = 2
   end  
+  
+  -- verifica se clicou sobre "Créditos"
+  if isCliqueEmTexto(creditosX, creditosY, creditosWidth, creditosHeight) and botaoUmSolto then
+    botaoUmSolto = false
+    introducao = true
+    resetaTemposAnimacaoIntro()
+  end
+  
 end
 
 function botaoDeOpcoes()

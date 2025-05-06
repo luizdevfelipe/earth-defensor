@@ -106,7 +106,7 @@ function telaDePotencializadores()
   local interior3QuadradoX = centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2
   local textoSelecionarY = centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10
   local marginTopTexto = - 60
-  
+    
   desfoqueFundo(240)
   -- Exibe o texto "Escolha seu novo poder"
   love.graphics.setFont(fonteNegrito)
@@ -115,6 +115,7 @@ function telaDePotencializadores()
   love.graphics.print("Escolha seu novo poder:", centroJanelaX - escolhaPoderWidth / 2, 60)
     
   -- Exibe o 1º quadrado com a habilidade --
+  corRaridadePotencializador(1)
   love.graphics.setLineWidth(larguraBorda)
   love.graphics.rectangle("line", centralizadoX - larguraRetangulo - espacoRetang, centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
@@ -127,6 +128,17 @@ function telaDePotencializadores()
     interior1QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth(potencializadores[potencializadoresSorteados[1]].titulo)) / 2, 
     centralizadoY + 10
   )
+  
+  -- Exibe a raridade do potencializador --
+  corRaridadePotencializador(1)
+  love.graphics.setFont(fonteNegrito)
+  love.graphics.print(
+    textoRaridadePotencializador(1), 
+    interior1QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth(textoRaridadePotencializador(1)) / 2) / 2, 
+    centralizadoY + love.graphics.getFont():getHeight(textoRaridadePotencializador(1)) / 2,
+    0, 0.5, 0.5
+  )
+  
   -- Exibe o 1º texto da habilidade --
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.setFont(fontNormal20)
@@ -621,6 +633,36 @@ end
 -- Função que retorna o texto da descrição dos potencializadores formatado de acordo com vantagens e desvantagens --
 function retornaTextoPotencializador(opcao)
   return string.format(potencializadores[potencializadoresSorteados[opcao]].descricao, potencializadores[potencializadoresSorteados[opcao]].vantagem, potencializadores[potencializadoresSorteados[opcao]].desvantagem)
+end
+
+-- Função que define a cor de desenho baseado na raridade do potencializador --
+function corRaridadePotencializador(opcao)
+  if potencializadores[potencializadoresSorteados[opcao]].peso == 10 then
+    love.graphics.setColor(111, 237, 35) -- comum
+  elseif potencializadores[potencializadoresSorteados[opcao]].peso == 6 then
+    love.graphics.setColor(28, 156, 21) -- incomum
+  elseif potencializadores[potencializadoresSorteados[opcao]].peso == 5 then
+    love.graphics.setColor(11, 130, 237) -- raro
+  elseif potencializadores[potencializadoresSorteados[opcao]].peso == 3 then
+    love.graphics.setColor(201, 29, 182) -- épico
+  elseif potencializadores[potencializadoresSorteados[opcao]].peso == 1 then
+    love.graphics.setColor(237, 196, 35) -- lendário
+  end
+end
+
+-- Função que retorna o texto relativo a raridade do potencializador --
+function textoRaridadePotencializador(opcao)
+  if potencializadores[potencializadoresSorteados[opcao]].peso == 10 then
+    return "Comum"
+  elseif potencializadores[potencializadoresSorteados[opcao]].peso == 6 then
+    return "Incomum"
+  elseif potencializadores[potencializadoresSorteados[opcao]].peso == 5 then
+    return "Raro"
+  elseif potencializadores[potencializadoresSorteados[opcao]].peso == 3 then
+    return "Épico"
+  elseif potencializadores[potencializadoresSorteados[opcao]].peso == 1 then
+    return "Lendário"
+  end
 end
 
 -- Função responsável por gerenciar o botão que ativa "Atração Gravitacional"

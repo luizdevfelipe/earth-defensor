@@ -74,7 +74,7 @@ function love.load()
       desvantagem = 5,
       alvoVantagem = vidasTerra,
       alvoDesvantagem = metricasMeteoroides.vel,
-      peso = 2
+      peso = 3
     },
     {
       titulo = "Máquinas Aceleradas", 
@@ -89,19 +89,28 @@ function love.load()
       titulo = "Blindagem da Lua", 
       descricao = "Uma camada extra de proteção adiciona %d%% mais resistência para a Lua contra detritos que causam lentidão, entretanto o peso adicional reduz sua velocidade em %d%%.", 
       vantagem = 20, 
-      desvantagem = 1,
+      desvantagem = -1,
       alvoVantagem = resistenciaLunar,
       alvoDesvantagem = velocidadeOrbita,
-      peso = 5
+      peso = 6
     },
     {
       titulo = "Construtores Lunares", 
       descricao = "Construtores são enviados para Lua, isso aumenta a recuperação contra lentidão aplicada sobre ela em %d%%, com menos contrutores a recuperação da vida da Terra é reduzida em %d%%.", 
       vantagem = 20, 
-      desvantagem = 15,
+      desvantagem = -15,
       alvoVantagem = taxaReducaoTempoLentidaoLunar,
       alvoDesvantagem = taxaRegeneracao,
-      peso = 5
+      peso = 10
+    },
+    {
+      titulo = "Impulso meteórico", 
+      descricao = "Alguns detritos passam a impulsionar a Lua o que reduz %d%% da lentidão aplicada sobre ela, mas quando implicam lentidão ela é mais forte aumentando %d%% do tempo de lentidão.", 
+      vantagem = -20, 
+      desvantagem = 10,
+      alvoVantagem = efeitoLentidao,
+      alvoDesvantagem = tempoLentidaoLunar,
+      peso = 10
     },
     
   }  

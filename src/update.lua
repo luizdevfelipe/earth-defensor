@@ -141,10 +141,10 @@ function inimigos(inimigos, metricas, dt)
        -- Verifica se houve a colisao
       if isColisao(inimigo.x, inimigo.y, (metricas.img:getHeight() / 2) * metricas.escala.valor,
       lua.posX, lua.posY, lua.raio) then
-        somColisao:stop()
-        somColisao:play()
-        table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10}) 
         if not inimigo.colisaoAnterior then
+          somColisao:stop()
+          somColisao:play()
+          table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10}) 
           -- faz com que seja apenas descontado vidas dele até a destruição
           inimigo.vidas = inimigo.vidas - 1
           inimigo.escala = inimigo.escala - 0.5
@@ -336,9 +336,9 @@ function movimentoLua(dt)
       end
     end
     
+    -- Caso nenhum inimigo seja válido, a habilidade é desativada sem tempo de espera --
     if lua.meteoroideAlvo.id == nil then
       isControleGravitacional = false
-      tempoControleGravitacional = intervaloControleGravitacional.valor 
     end
     
   -- Habilidade está ativa e um alvo foi determinado -- 
@@ -442,7 +442,6 @@ function movimentoMeteoroides(dt, meteoroide, metrica)
       meteoroide.y = meteoroide.y + dirY * velAtracaoGravitacional.valor * dt
     end
   end
-  
 end
 
 function distanciaDeDoisPontos(x1, x2, y1, y2)

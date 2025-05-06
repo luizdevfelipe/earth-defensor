@@ -171,6 +171,9 @@ function resetaJogo()
   startGame = 0
   gameOver = false
   pause = false
+  
+  -- x = posição X do inimigo, y = posição Y do inimigo, frame = o quadro a ser desenhado
+  animacoesColisoes = {}
  
   -- Variáveis dos Supermeteoroides --
   superMeteoroides = {}

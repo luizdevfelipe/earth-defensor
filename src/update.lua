@@ -143,6 +143,7 @@ function inimigos(inimigos, metricas, dt)
       lua.posX, lua.posY, lua.raio) then
         somColisao:stop()
         somColisao:play()
+        table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10}) 
         if not inimigo.colisaoAnterior then
           -- faz com que seja apenas descontado vidas dele até a destruição
           inimigo.vidas = inimigo.vidas - 1
@@ -169,6 +170,7 @@ function inimigos(inimigos, metricas, dt)
       lua.posX, lua.posY, lua.raio) then
         somColisao:stop()
         somColisao:play()
+       table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10}) 
         -- "transformar" meteoroide em detrito
         criarDetrito(inimigo.x, inimigo.y)
         -- Caso o meteoroide destruído tenha sido derrotado com a habilidade o alvo é redefinido --
@@ -190,6 +192,7 @@ function inimigos(inimigos, metricas, dt)
       terra.posX, terra.posY, terra.raio) then
       somColisao:stop()
       somColisao:play()
+      table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10}) 
        -- Caso o inimigo destruído pela Terra estava marcado pela habilidade ela é redefinida --
       if isControleGravitacional and lua.meteoroideAlvo.id == id then
         lua.meteoroideAlvo.id = nil

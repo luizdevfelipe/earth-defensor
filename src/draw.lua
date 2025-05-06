@@ -28,6 +28,22 @@ function love.draw()
       love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, 0, super.escala, super.escala, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
     end
        
+    -- Carregamento das animações de colisões --
+    for i, animacao in ipairs(animacoesColisoes) do
+      animacao.delay = animacao.delay - 1 
+      love.graphics.draw(colisaoAnimAtlas, colisaoMeteoroideFrames[animacao.frame], animacao.x, animacao.y)
+      
+      if animacao.delay <= 0 then
+        animacao.frame = animacao.frame + 1
+        animacao.delay = 10
+        
+        if animacao.frame > 3 then
+          table.remove(animacoesColisoes, i)
+        end
+        
+      end
+    end
+       
     if transparenciaTextoInfo < 255 then
       love.graphics.setFont(fontNormal)
       love.graphics.setColor(transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo)

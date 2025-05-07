@@ -164,6 +164,7 @@ function telaDePotencializadores()
   )
   
   -- Exibe o 2º quadrado com a habilidade --
+  corRaridadePotencializador(2)
   love.graphics.rectangle("line", centralizadoX, centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", centralizadoX + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
@@ -185,7 +186,19 @@ function telaDePotencializadores()
     larguraRetangulo - larguraBorda,
     "justify"
   )
+  
+  -- Exibe a raridade do 2º potencializador --
+  corRaridadePotencializador(2)
+  love.graphics.setFont(fonteNegrito)
+  love.graphics.print(
+    textoRaridadePotencializador(2), 
+    centralizadoX + larguraBorda / 2 + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth(textoRaridadePotencializador(2)) / 2) / 2,
+    centralizadoY + love.graphics.getFont():getHeight(textoRaridadePotencializador(2)) / 2,
+    0, 0.5, 0.5
+  )
+  
   -- Exibe o 2º botão de "Selecionar" --
+  love.graphics.setColor(255, 255, 255, 255)
   love.graphics.setFont(fonteMenu50)
   love.graphics.printf(
     "Selecionar", 
@@ -202,6 +215,7 @@ function telaDePotencializadores()
   )
  
  -- Exibe o 3º quadrado com a habilidade --
+ corRaridadePotencializador(3)
   love.graphics.rectangle("line", centralizadoX + larguraRetangulo + espacoRetang , centralizadoY, larguraRetangulo, alturaRetangulo)
   love.graphics.setColor(0, 0, 0, 220)
   love.graphics.rectangle("fill", centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2, centralizadoY + larguraBorda / 2, larguraRetangulo - larguraBorda , alturaRetangulo - larguraBorda)
@@ -213,6 +227,17 @@ function telaDePotencializadores()
     interior3QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth(potencializadores[potencializadoresSorteados[3]].titulo)) / 2, 
     centralizadoY + 10
   )
+  
+  -- Exibe a raridade do 3º potencializador --
+  corRaridadePotencializador(3)
+  love.graphics.setFont(fonteNegrito)
+  love.graphics.print(
+    textoRaridadePotencializador(3), 
+    interior3QuadradoX + (larguraRetangulo - larguraBorda - larguraBorda - love.graphics.getFont():getWidth(textoRaridadePotencializador(3)) / 2) / 2, 
+    centralizadoY + love.graphics.getFont():getHeight(textoRaridadePotencializador(3)) / 2,
+    0, 0.5, 0.5
+  )
+  
   -- Exibe o 3º texto da habilidade --
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.setFont(fontNormal20)

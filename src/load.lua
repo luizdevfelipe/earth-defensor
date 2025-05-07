@@ -38,9 +38,17 @@ function love.load()
   returnIco = love.graphics.newImage("assets/images/icons/return.png")
   imagemCursor = love.graphics.newImage("assets/images/icons/cursor.png")
   enterIco = love.graphics.newImage("assets/images/icons/enter.png")
+  colisaoAnimAtlas = love.graphics.newImage("assets/images/colisaoAnim.png")
+  musicaMenu = love.audio.newSource("assets/audio/Galactic Bass - John Patitucci.mp3")
+  -- Cada frame tem w:180 e h: 180
+  colisaoMeteoroideFrames = {
+    love.graphics.newQuad(0, 0, 160, 158, 498, 158),
+    love.graphics.newQuad(160, 0, 153, 158, 498, 158),
+    love.graphics.newQuad(313, 0, 185, 158, 498, 158)
+  }
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
-  introducao = true  -- variável que indica que a animação ainda deve iniciar
+  introducao = false  -- variável que indica que a animação ainda deve iniciar
   resetaTemposAnimacaoIntro()
   -- Carregamento de variáveis para a Sombra da Lua
   sombrasAnim = {}
@@ -61,7 +69,7 @@ function love.load()
     {
       titulo = "Velocidade Lunar", 
       descricao = "A Lua recebe um incremento de %d%% em sua velocidade, mas %d%% de Meteoroides extras aparecem.", 
-      vantagem = 5, 
+      vantagem = 80, 
       desvantagem = 6,
       alvoVantagem = velocidadeOrbita,
       alvoDesvantagem = metricasMeteoroides.qtd,
@@ -70,7 +78,7 @@ function love.load()
     {
       titulo = "Reconstrução da Terra", 
       descricao = "A Terra recebe %d%% da sua vida fundamental, em troca a velocidade dos inimigos aumenta em %d%%", 
-      vantagem = 20, 
+      vantagem = 30, 
       desvantagem = 5,
       alvoVantagem = vidasTerra,
       alvoDesvantagem = metricasMeteoroides.vel,
@@ -112,7 +120,15 @@ function love.load()
       alvoDesvantagem = tempoLentidaoLunar,
       peso = 10
     },
-    
+    {
+      titulo = "Impulso meteórico", 
+      descricao = "A lua passa por uma análise que aumenta sua eficiência isso reduz %d%% os danos causados por detritos. A análise feita custa recursos, o que reduz %d%% da taxa de regeneração terrestre.", 
+      vantagem = -20, 
+      desvantagem = -5,
+      alvoVantagem = taxaReducaoEficienciaLunar,
+      alvoDesvantagem = taxaRegeneracao,
+      peso = 10
+    },
   }  
   -- Carregamento de variáveis que não se alteram com as partidas
 end
@@ -155,7 +171,7 @@ function resetaJogo()
   velocidadeOrbita = { valor = 1.5 }
   resistenciaLunar = { valor = 10 } -- valor padrão que indica quantos meteoritos a Lua resiste colidir até ficar lenta
   eficienciaLunar = resistenciaLunar.valor -- variável durante o jogo, esse valor indica o momento de aplicar a lentidão
-  taxaReducaoEficienciaLunar = { valor = 1 }
+  taxaReducaoEficienciaLunar = { valor = 1 } -- valor padrão usado para "descontar" a eficiência quando colide
   tempoLentidaoLunar = { valor = 3.5 }  -- valor do tempo de lentidão aplicado sobre o cálculo da órbita lunar
   lentidaoLunarRestante = tempoLentidaoLunar.valor -- variável, indicará o tempo restante do efeito de Lentidão
   taxaReducaoTempoLentidaoLunar = { valor = 4 } -- valor usado para reduzir o tempo restante de lentidão
@@ -253,4 +269,5 @@ end
 
 function alterarVolume()
   somColisao:setVolume(volumeGeral)
+  musicaMenu:setVolume(volumeGeral)
 end

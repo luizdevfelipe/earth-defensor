@@ -31,7 +31,8 @@ function love.draw()
     -- Carregamento das animações de colisões --
     for i, animacao in ipairs(animacoesColisoes) do
       animacao.delay = animacao.delay - 1 
-      love.graphics.draw(colisaoAnimAtlas, colisaoMeteoroideFrames[animacao.frame], animacao.x, animacao.y)
+      -- math.pi compensa a imagem ser voltada para a esquerda e não para direita como é o padrão do Love para 0 rad
+      love.graphics.draw(colisaoAnimAtlas, colisaoMeteoroideFrames[animacao.frame], animacao.x, animacao.y, animacao.angulo)
       
       if animacao.delay <= 0 then
         animacao.frame = animacao.frame + 1

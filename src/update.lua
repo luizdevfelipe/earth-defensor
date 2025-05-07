@@ -3,6 +3,7 @@ function love.update(dt)
   if introducao or musicaIntroducao:isPlaying() then
     animacaoIntroducao(dt)
   else
+    gerenciamentoDasMusicas()
     if not pause and not trocaDeFase and startGame ~= 0 and not gameOver then    
       -- Execução de funções que fazem o processamento do jogo --
       verificaEficienciaLunar(dt)
@@ -103,20 +104,20 @@ function inimigos(inimigos, metricas, dt)
       posicaoXAleatoria = math.random(0, screenWidth - metricas.img:getWidth())
       if umLadoOuOutro == 1 then
         -- Se "um lado" o meteoroide aparecerá no topo da tela até seu centro, aumentado o seu Y
-        novoInimigo = {x = posicaoXAleatoria, y = -metricas.img:getHeight(), posicao = "cima"}
+        novoInimigo = {x = posicaoXAleatoria, y = -metricas.img:getHeight()}
       else
         -- Se "do outro" o meteoroide aparecerá no inferior da tela até seu centro, diminuindo o seu Y
-        novoInimigo = {x = posicaoXAleatoria, y = screenHeight + metricas.img:getHeight(), posicao = "baixo"}
+        novoInimigo = {x = posicaoXAleatoria, y = screenHeight + metricas.img:getHeight()}
       end
     else
       -- Se Y é aleatório, o meteoroide aparecerá na esquerda ou direita da tela
       posicaoYAleatoria = math.random(0, screenHeight - metricas.img:getHeight())
       if umLadoOuOutro == 1 then
         -- Se "um lado" o meteoroide aparecerá da esquerda até o centro da tela, aumentado o seu X
-        novoInimigo = {x = -metricas.img:getWidth(), y = posicaoYAleatoria, posicao = "esquerda"}
+        novoInimigo = {x = -metricas.img:getWidth(), y = posicaoYAleatoria}
       else
         -- Se "do outro" o meteoroide aparecerá da direita até o centro da tela, diminuindo o seu X
-        novoInimigo = {x = screenWidth + metricas.img:getWidth(), y = posicaoYAleatoria, posicao = "direita"}
+        novoInimigo = {x = screenWidth + metricas.img:getWidth(), y = posicaoYAleatoria}
       end
     end    
     
@@ -144,7 +145,7 @@ function inimigos(inimigos, metricas, dt)
         if not inimigo.colisaoAnterior then
           somColisao:stop()
           somColisao:play()
-          table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10}) 
+          table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10, angulo = math.atan2(inimigo.y - lua.posY, inimigo.x - lua.posX)}) 
           -- faz com que seja apenas descontado vidas dele até a destruição
           inimigo.vidas = inimigo.vidas - 1
           inimigo.escala = inimigo.escala - 0.5
@@ -170,7 +171,7 @@ function inimigos(inimigos, metricas, dt)
       lua.posX, lua.posY, lua.raio) then
         somColisao:stop()
         somColisao:play()
-       table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10}) 
+        table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10, angulo = math.atan2(inimigo.y - lua.posY, inimigo.x - lua.posX)})
         -- "transformar" meteoroide em detrito
         criarDetrito(inimigo.x, inimigo.y)
         -- Caso o meteoroide destruído tenha sido derrotado com a habilidade o alvo é redefinido --
@@ -192,7 +193,7 @@ function inimigos(inimigos, metricas, dt)
       terra.posX, terra.posY, terra.raio) then
       somColisao:stop()
       somColisao:play()
-      table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10}) 
+      table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10, angulo = math.atan2(inimigo.y - terra.posY, inimigo.x - terra.posX)}) 
        -- Caso o inimigo destruído pela Terra estava marcado pela habilidade ela é redefinida --
       if isControleGravitacional and lua.meteoroideAlvo.id == id then
         lua.meteoroideAlvo.id = nil
@@ -262,8 +263,15 @@ function potencializadorEscolhido(escolha)
   
   varVantagem = potencializadores[escolha].alvoVantagem
   varDesvantagem = potencializadores[escolha].alvoDesvantagem
+  
+  print('VantAntes:' .. varVantagem.valor)
+  print('DesvanAntes:' .. varDesvantagem.valor)
+  
   varVantagem.valor = varVantagem.valor + varVantagem.valor * (potencializadores[escolha].vantagem / 100)
   varDesvantagem.valor = varDesvantagem.valor + varDesvantagem.valor * (potencializadores[escolha].desvantagem / 100)
+  
+  print('VantDepois:' .. varVantagem.valor)
+  print('DesvanDepois:' .. varDesvantagem.valor)
 end
 
 -- Função para regeneração passiva da vida da Terra
@@ -542,6 +550,14 @@ function toggleFullscreen()
     else
         love.window.setFullscreen(true)
     end
+end
+
+-- Função que determina qual música deve ser tocada --
+function gerenciamentoDasMusicas()
+  if startGame == 0 and not musicaMenu:isPlaying() then
+    musicaMenu:play()
+    musicaMenu:setLooping(true)
+  end
 end
 
 -- Variáveis que devem ser atualizadas durante a execução

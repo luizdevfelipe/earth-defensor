@@ -40,6 +40,9 @@ function love.load()
   enterIco = love.graphics.newImage("assets/images/icons/enter.png")
   colisaoAnimAtlas = love.graphics.newImage("assets/images/colisaoAnim.png")
   musicaMenu = love.audio.newSource("assets/audio/Galactic Bass - John Patitucci.mp3")
+  musicaIntermediarios = love.audio.newSource("assets/audio/Pong the Atmosphere - Dan _Lebo_ Lebowitz, Tone Seeker.mp3")
+  musicaIniciais = love.audio.newSource("assets/audio/Smooth and Cool - Nico Staf.mp3")
+  musicaFinais = love.audio.newSource("assets/audio/Press Fuse - French Fuse.mp3")
   -- Cada frame tem w:180 e h: 180
   colisaoMeteoroideFrames = {
     love.graphics.newQuad(0, 0, 160, 158, 498, 158),
@@ -48,7 +51,7 @@ function love.load()
   }
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
-  introducao = false  -- variável que indica que a animação ainda deve iniciar
+  introducao = true  -- variável que indica que a animação ainda deve iniciar
   resetaTemposAnimacaoIntro()
   -- Carregamento de variáveis para a Sombra da Lua
   sombrasAnim = {}
@@ -121,13 +124,22 @@ function love.load()
       peso = 10
     },
     {
-      titulo = "Impulso meteórico", 
+      titulo = "Eficiência da Lua", 
       descricao = "A lua passa por uma análise que aumenta sua eficiência isso reduz %d%% os danos causados por detritos. A análise feita custa recursos, o que reduz %d%% da taxa de regeneração terrestre.", 
       vantagem = -20, 
       desvantagem = -5,
       alvoVantagem = taxaReducaoEficienciaLunar,
       alvoDesvantagem = taxaRegeneracao,
       peso = 10
+    },
+    {
+      titulo = "Magnetismo Lunar", 
+      descricao = "Uma melhoria feita na Lua faz com que a intensidade da Atração Gravitacional aumente %d%% puxando inimigos mais distântes. Essa melhoria interfere no intervalo da habilidade que aumenta em %d%%.", 
+      vantagem = 30, 
+      desvantagem = 10,
+      alvoVantagem = distanciaAtracaoGravitacional,
+      alvoDesvantagem = intervaloAtracaoGravitacional,
+      peso = 4
     },
   }  
   -- Carregamento de variáveis que não se alteram com as partidas
@@ -206,11 +218,11 @@ function resetaJogo()
     id = 0,
     tipo = "super",
     img = superImg,
-    vel = { valor = 100 },
+    vel = { valor = 1000 },
     qtd = { valor = 0 }, -- possibilita passagem por referência --
-    delay = 1, -- intervalo padrão de criação
+    delay = 0, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
-    dano = { valor = 1 },
+    dano = { valor = 0 },
     destruidos = 0,
     colisoes = 2,
     escala = { valor = 2 }
@@ -221,11 +233,11 @@ function resetaJogo()
     id = 0,
     tipo = "normal",
     img = meteoroideImg,
-    vel = { valor = 100 },
+    vel = { valor = 1000 },
     qtd = { valor = 2 }, -- tabela possibilita passagem por referência --
-    delay = 0.8,
+    delay = 0.0,
     contagem = 1,
-    dano = { valor =  0.3 },
+    dano = { valor =  0.0 },
     destruidos = 0,
     escala = { valor = 1 }
   }
@@ -268,6 +280,10 @@ function resetaTemposAnimacaoIntro()
 end
 
 function alterarVolume()
-  somColisao:setVolume(volumeGeral)
+  musicaIntroducao:setVolume(volumeGeral + 0.2)
+  somColisao:setVolume(volumeGeral + 0.2)
   musicaMenu:setVolume(volumeGeral)
+  musicaIniciais:setVolume(volumeGeral - 0.5)
+  musicaIntermediarios:setVolume(volumeGeral - 0.5)
+  musicaFinais:setVolume(volumeGeral - 0.5)
 end

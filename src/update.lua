@@ -1,9 +1,9 @@
 function love.update(dt)
   carregamento(dt)
+  gerenciamentoDasMusicas()
   if introducao or musicaIntroducao:isPlaying() then
     animacaoIntroducao(dt)
   else
-    gerenciamentoDasMusicas()
     if not pause and not trocaDeFase and startGame ~= 0 and not gameOver then    
       -- Execução de funções que fazem o processamento do jogo --
       verificaEficienciaLunar(dt)
@@ -554,9 +554,42 @@ end
 
 -- Função que determina qual música deve ser tocada --
 function gerenciamentoDasMusicas()
-  if startGame == 0 and not musicaMenu:isPlaying() then
-    musicaMenu:play()
-    musicaMenu:setLooping(true)
+  if isGameMusic then
+    
+    if startGame == 0 and not musicaIntroducao:isPlaying() then
+      musicaMenu:play()
+      musicaMenu:setLooping(true)
+    else      
+      musicaMenu:stop()
+    end
+    
+  
+    if startGame ~= 0 then 
+      if onda <= 10 then
+        if onda == 1 then
+          musicaFinais:stop()
+        end
+        musicaIniciais:play()
+        musicaIniciais:setLooping(true)
+      elseif onda <= 20 then
+        musicaIniciais:stop()
+        
+        musicaIntermediarios:play()
+        musicaIntermediarios:setLooping(true)
+      else
+        musicaIntermediarios:stop()
+        
+        musicaFinais:play()
+        musicaFinais:setLooping(true)
+      end
+    end
+      
+      
+  else
+    musicaMenu:pause()
+    musicaIniciais:pause()
+    musicaIntermediarios:pause()
+    musicaFinais:pause()
   end
 end
 

@@ -582,6 +582,10 @@ function gerenciamentoDasMusicas()
         musicaFinais:play()
         musicaFinais:setLooping(true)
       end
+    else
+      musicaIniciais:pause()
+      musicaIntermediarios:pause()
+      musicaFinais:pause()
     end
       
       

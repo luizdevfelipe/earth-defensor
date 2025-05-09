@@ -68,80 +68,6 @@ function love.load()
   isGameMusic = true
   volumeGeral = 0.5
   alterarVolume() -- função que altera o volume de todos os aúdios
-  potencializadores = {
-    {
-      titulo = "Velocidade Lunar", 
-      descricao = "A Lua recebe um incremento de %d%% em sua velocidade, mas %d%% de Meteoroides extras aparecem.", 
-      vantagem = 80, 
-      desvantagem = 6,
-      alvoVantagem = velocidadeOrbita,
-      alvoDesvantagem = metricasMeteoroides.qtd,
-      peso = 1
-    },
-    {
-      titulo = "Reconstrução da Terra", 
-      descricao = "A Terra recebe %d%% da sua vida fundamental, em troca a velocidade dos inimigos aumenta em %d%%", 
-      vantagem = 30, 
-      desvantagem = 5,
-      alvoVantagem = vidasTerra,
-      alvoDesvantagem = metricasMeteoroides.vel,
-      peso = 3
-    },
-    {
-      titulo = "Máquinas Aceleradas", 
-      descricao = "As máquinas usadas na recuperação de impactos passam a trabalhar %d%% mais rápido aumentando a taxa de regeneração, mas a poluição gerada contribui para os danos causados por Meteoroides em %d%%.", 
-      vantagem = 20, 
-      desvantagem = 25,
-      alvoVantagem = taxaRegeneracao,
-      alvoDesvantagem = metricasMeteoroides.dano,
-      peso = 5
-    },
-    {
-      titulo = "Blindagem da Lua", 
-      descricao = "Uma camada extra de proteção adiciona %d%% mais resistência para a Lua contra detritos que causam lentidão, entretanto o peso adicional reduz sua velocidade em %d%%.", 
-      vantagem = 20, 
-      desvantagem = -1,
-      alvoVantagem = resistenciaLunar,
-      alvoDesvantagem = velocidadeOrbita,
-      peso = 6
-    },
-    {
-      titulo = "Construtores Lunares", 
-      descricao = "Construtores são enviados para Lua, isso aumenta a recuperação contra lentidão aplicada sobre ela em %d%%, com menos contrutores a recuperação da vida da Terra é reduzida em %d%%.", 
-      vantagem = 20, 
-      desvantagem = -15,
-      alvoVantagem = taxaReducaoTempoLentidaoLunar,
-      alvoDesvantagem = taxaRegeneracao,
-      peso = 10
-    },
-    {
-      titulo = "Impulso meteórico", 
-      descricao = "Alguns detritos passam a impulsionar a Lua o que reduz %d%% da lentidão aplicada sobre ela, mas quando implicam lentidão ela é mais forte aumentando %d%% do tempo de lentidão.", 
-      vantagem = -20, 
-      desvantagem = 10,
-      alvoVantagem = efeitoLentidao,
-      alvoDesvantagem = tempoLentidaoLunar,
-      peso = 10
-    },
-    {
-      titulo = "Eficiência da Lua", 
-      descricao = "A lua passa por uma análise que aumenta sua eficiência isso reduz %d%% os danos causados por detritos. A análise feita custa recursos, o que reduz %d%% da taxa de regeneração terrestre.", 
-      vantagem = -20, 
-      desvantagem = -5,
-      alvoVantagem = taxaReducaoEficienciaLunar,
-      alvoDesvantagem = taxaRegeneracao,
-      peso = 10
-    },
-    {
-      titulo = "Magnetismo Lunar", 
-      descricao = "Uma melhoria feita na Lua faz com que a intensidade da Atração Gravitacional aumente %d%% puxando inimigos mais distântes. Essa melhoria interfere no intervalo da habilidade que aumenta em %d%%.", 
-      vantagem = 30, 
-      desvantagem = 10,
-      alvoVantagem = distanciaAtracaoGravitacional,
-      alvoDesvantagem = intervaloAtracaoGravitacional,
-      peso = 4
-    },
-  }  
   -- Carregamento de variáveis que não se alteram com as partidas
 end
 
@@ -248,6 +174,82 @@ function resetaJogo()
     destruidos = 0,
     qtd = 3
   }
+  
+  potencializadores = {
+    {
+      titulo = "Velocidade Lunar", 
+      descricao = "A Lua recebe um incremento de %d%% em sua velocidade, mas %d%% de Meteoroides extras aparecem.", 
+      vantagem = 80, 
+      desvantagem = 6,
+      alvoVantagem = velocidadeOrbita,
+      alvoDesvantagem = metricasMeteoroides.qtd,
+      peso = 1
+    },
+    {
+      titulo = "Reconstrução da Terra", 
+      descricao = "A Terra recebe %d%% da sua vida fundamental, em troca a velocidade dos inimigos aumenta em %d%%", 
+      vantagem = 30, 
+      desvantagem = 5,
+      alvoVantagem = vidasTerra,
+      alvoDesvantagem = metricasMeteoroides.vel,
+      peso = 3
+    },
+    {
+      titulo = "Máquinas Aceleradas", 
+      descricao = "As máquinas usadas na recuperação de impactos passam a trabalhar %d%% mais rápido aumentando a taxa de regeneração, mas a poluição gerada contribui para os danos causados por Meteoroides em %d%%.", 
+      vantagem = 20, 
+      desvantagem = 25,
+      alvoVantagem = taxaRegeneracao,
+      alvoDesvantagem = metricasMeteoroides.dano,
+      peso = 5
+    },
+    {
+      titulo = "Blindagem da Lua", 
+      descricao = "Uma camada extra de proteção adiciona %d%% mais resistência para a Lua contra detritos que causam lentidão, entretanto o peso adicional reduz sua velocidade em %d%%.", 
+      vantagem = 20, 
+      desvantagem = -1,
+      alvoVantagem = resistenciaLunar,
+      alvoDesvantagem = velocidadeOrbita,
+      peso = 6
+    },
+    {
+      titulo = "Construtores Lunares", 
+      descricao = "Construtores são enviados para Lua, isso aumenta a recuperação contra lentidão aplicada sobre ela em %d%%, com menos contrutores a recuperação da vida da Terra é reduzida em %d%%.", 
+      vantagem = 20, 
+      desvantagem = -15,
+      alvoVantagem = taxaReducaoTempoLentidaoLunar,
+      alvoDesvantagem = taxaRegeneracao,
+      peso = 10
+    },
+    {
+      titulo = "Impulso meteórico", 
+      descricao = "Alguns detritos passam a impulsionar a Lua o que reduz %d%% da lentidão aplicada sobre ela, mas quando implicam lentidão ela é mais forte aumentando %d%% do tempo de lentidão.", 
+      vantagem = -20, 
+      desvantagem = 10,
+      alvoVantagem = efeitoLentidao,
+      alvoDesvantagem = tempoLentidaoLunar,
+      peso = 10
+    },
+    {
+      titulo = "Eficiência da Lua", 
+      descricao = "A lua passa por uma análise que aumenta sua eficiência isso reduz %d%% os danos causados por detritos. A análise feita custa recursos, o que reduz %d%% da taxa de regeneração terrestre.", 
+      vantagem = -20, 
+      desvantagem = -5,
+      alvoVantagem = taxaReducaoEficienciaLunar,
+      alvoDesvantagem = taxaRegeneracao,
+      peso = 10
+    },
+    {
+      titulo = "Magnetismo Lunar", 
+      descricao = "Uma melhoria feita na Lua faz com que a intensidade da Atração Gravitacional aumente %d%% puxando inimigos mais distântes. Essa melhoria interfere no intervalo da habilidade que aumenta em %d%%.", 
+      vantagem = 30, 
+      desvantagem = 10,
+      alvoVantagem = distanciaAtracaoGravitacional,
+      alvoDesvantagem = intervaloAtracaoGravitacional,
+      peso = 6
+    },
+  }  
+  
 end
 
 function resetaRodada()  
@@ -283,7 +285,7 @@ function alterarVolume()
   musicaIntroducao:setVolume(volumeGeral + 0.2)
   somColisao:setVolume(volumeGeral + 0.2)
   musicaMenu:setVolume(volumeGeral)
-  musicaIniciais:setVolume(volumeGeral - 0.5)
-  musicaIntermediarios:setVolume(volumeGeral - 0.5)
-  musicaFinais:setVolume(volumeGeral - 0.5)
+  musicaIniciais:setVolume(volumeGeral - 0.35)
+  musicaIntermediarios:setVolume(volumeGeral - 0.25)
+  musicaFinais:setVolume(volumeGeral - 0.2)
 end

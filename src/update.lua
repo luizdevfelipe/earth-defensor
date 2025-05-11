@@ -14,14 +14,12 @@ function love.update(dt)
       regeneracaoPassiva(dt)
       verificaTrocaDeFase()
       gerenciarHabilidades(dt)
+      textoInformativo(dt)
       if startGame == 2 then
         movimentoTerra(dt)
       end
       
-      -- Apresenta o texto informativo --
-      if transparenciaTextoInfo < 255 then
-        transparenciaTextoInfo = transparenciaTextoInfo + 40 * dt
-      end
+     
     end
   
     if not love.mouse.isDown(1) then
@@ -464,10 +462,6 @@ function getAngulo(x1, y1, x2, y2)
   return a
 end
 
-function round(n)
-  return math.floor(n + 0.5)
-end
-
 -- função matemática para cálculo de posicionamento orbital
 function orbita(centroX, centroY, raio, angulo)
     local x = centroX + math.cos(angulo) * raio
@@ -594,6 +588,26 @@ function gerenciamentoDasMusicas()
     musicaIniciais:pause()
     musicaIntermediarios:pause()
     musicaFinais:pause()
+  end
+end
+
+-- Apresenta o texto informativo --
+function textoInformativo(dt)
+  if startGame ~= 0 and transparenciaTextoInfo > 0 then
+    if startGame == 1 then
+      if pressionouW then
+        transparenciaTextoInfo = transparenciaTextoInfo - 80 * dt
+      else
+        pressionouW = love.keyboard.isDown("w")
+      end
+    elseif startGame == 2 then
+      if pressionouW and pressionouSetas then
+        transparenciaTextoInfo = transparenciaTextoInfo - 80 * dt
+      else
+        pressionouW = love.keyboard.isDown("w")
+        pressionouSetas = love.keyboard.isDown("left") or love.keyboard.isDown("right") or love.keyboard.isDown("up") or love.keyboard.isDown("down")
+      end
+    end
   end
 end
 

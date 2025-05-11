@@ -45,11 +45,17 @@ function love.draw()
       end
     end
        
-    if transparenciaTextoInfo < 255 then
+    if transparenciaTextoInfo > 0 and startGame ~= 0 then
       love.graphics.setFont(fontNormal)
       love.graphics.setColor(transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo, transparenciaTextoInfo)
-      local instrucaoWidth = love.graphics.getFont():getWidth("Pressione W para alterar o movimento lunar")
-      love.graphics.print("Pressione W para alterar o movimento lunar", centroJanelaX - instrucaoWidth / 2, screenHeight * 0.8)
+      local instrucaoWidth = love.graphics.getFont():getWidth("Pressione W para alterar o movimento lunar:")
+      love.graphics.print("Pressione W para alterar o movimento lunar:", centroJanelaX - instrucaoWidth / 2, screenHeight * 0.8)
+      love.graphics.draw(wIco, (centroJanelaX - instrucaoWidth / 2) + instrucaoWidth + wIco:getWidth()/2 + 5, screenHeight * 0.8 + wIco:getWidth()/2, 0, 1, 1, wIco:getWidth()/2, wIco:getHeight()/2)
+      if startGame == 2 then
+        local instrucaoWidth = love.graphics.getFont():getWidth("Pressione as setas para controlar o movimento da Terra:")
+        love.graphics.print("Pressione as setas para controlar o movimento da Terra:", centroJanelaX - instrucaoWidth / 2, screenHeight * 0.85)
+        love.graphics.draw(setinhasIco, (centroJanelaX - instrucaoWidth / 2) + instrucaoWidth + setinhasIco:getWidth()/2, screenHeight * 0.85, 0, 1, 1, setinhasIco:getWidth()/2, setinhasIco:getHeight()/2)
+      end
     end
     
     -- Exibe conteúdos que devem aparecer apenas durante o jogo --
@@ -396,6 +402,14 @@ end
 
 function telaInicial()
   desfoqueFundo(180)
+  -- Exibe o texto Earth Defensor --
+  love.graphics.setFont(fonteNegrito)
+  local earthDefensorWidth = love.graphics.getFont():getWidth("Earth Defensor")
+  local earthDefensorHeight = love.graphics.getFont():getHeight("Earth Defensor") - 10
+  local earthDefensorX = centroJanelaX - earthDefensorWidth / 2
+  local earthDefensorY = centroJanelaY * 0.2
+  love.graphics.print("Earth Defensor", earthDefensorX, earthDefensorY)
+  
   -- Exibe o texto "Um Jogador"
   love.graphics.setFont(fonteMenu)
   local umJogadorWidth = love.graphics.getFont():getWidth("Um Jogador")
@@ -422,6 +436,15 @@ function telaInicial()
   love.graphics.print("Créditos", creditosX, creditosY)
   underlineTextHover(creditosX, creditosY, creditosWidth, creditosHeight + 5)
   
+  -- Botão de sair do jogo --
+  love.graphics.setFont(fonteMenu)
+  local sairWidth = love.graphics.getFont():getWidth("Sair") / 2
+  local sairHeight = love.graphics.getFont():getHeight("Sair") / 2 - 10
+  local sairX = centroJanelaX - sairWidth / 2
+  local sairY = screenHeight - sairHeight - 30 
+  love.graphics.print("Sair", sairX,  sairY, 0, 0.5, 0.5)
+  underlineTextHover(sairX, sairY, sairWidth, sairHeight + 5)
+  
   -- Exibe e verifica se clicou sobre o botão --
   botaoDeOpcoes()
   
@@ -442,6 +465,12 @@ function telaInicial()
     botaoUmSolto = false
     introducao = true
     resetaTemposAnimacaoIntro()
+  end
+  
+  -- verifica se clicou sobre "Sair"
+  if isCliqueEmTexto(sairX, sairY, sairWidth, sairHeight) and botaoUmSolto then
+    botaoUmSolto = false
+    love.event.quit()
   end
   
 end

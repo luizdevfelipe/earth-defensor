@@ -53,7 +53,7 @@ function love.load()
   }
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
-  introducao = false  -- variável que indica que a animação ainda deve iniciar
+  introducao = true  -- variável que indica que a animação ainda deve iniciar
   resetaTemposAnimacaoIntro()
   -- Carregamento de variáveis para a Sombra da Lua
   sombrasAnim = {}

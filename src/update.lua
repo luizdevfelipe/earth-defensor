@@ -376,19 +376,19 @@ function movimentoLua(dt)
 end
 -- Função que realiza o movimento da Terra no modo de Dois Jogadores
 function movimentoTerra(dt)
-  if love.keyboard.isDown("left") and (terra.posX - terra.vel.valor * dt) > lua.distanciaTerra.valor then
+  if love.keyboard.isDown("left") and (terra.posX - terra.raio) - terra.vel.valor * dt > 0 then
     terra.posX = terra.posX - terra.vel.valor * dt
   end
     
-  if love.keyboard.isDown("right") and (terra.posX + terra.vel.valor * dt) < screenWidth - lua.distanciaTerra.valor then
+  if love.keyboard.isDown("right") and (terra.posX + terra.raio) + terra.vel.valor * dt < screenWidth then
     terra.posX = terra.posX + terra.vel.valor * dt
   end
   
-  if love.keyboard.isDown("up") and (terra.posY - terra.vel.valor * dt) > lua.distanciaTerra.valor then
+  if love.keyboard.isDown("up") and (terra.posY - terra.raio) - terra.vel.valor * dt > 0 then
     terra.posY = terra.posY - terra.vel.valor * dt
   end
   
-  if love.keyboard.isDown("down") and (terra.posY + terra.vel.valor *dt) < screenHeight - lua.distanciaTerra.valor then
+  if love.keyboard.isDown("down") and (terra.posY + terra.raio) + terra.vel.valor *dt < screenHeight then
     terra.posY = terra.posY + terra.vel.valor *dt
   end
 end
@@ -429,10 +429,16 @@ function movimentoMeteoroides(dt, meteoroide, metrica)
 
   local distTerra = distanciaDeDoisPontos(terra.posX, meteoroide.x, terra.posY, meteoroide.y)
   if distTerra > 1 then
+    local desaceleracao = 0
+    
+    if (terra.posX - terra.raio) - terra.vel.valor * dt < 0 or (terra.posX + terra.raio) + terra.vel.valor * dt > screenWidth or (terra.posY - terra.raio) - terra.vel.valor * dt < 0 or (terra.posY + terra.raio) + terra.vel.valor *dt > screenHeight then
+      desaceleracao = metrica.vel.valor * 0.6
+    end
+      
     local dirX = (terra.posX - meteoroide.x) / distTerra
     local dirY = (terra.posY - meteoroide.y) / distTerra
-    meteoroide.x = meteoroide.x + dirX * metrica.vel.valor * dt
-    meteoroide.y = meteoroide.y + dirY * metrica.vel.valor * dt
+    meteoroide.x = meteoroide.x + dirX * (metrica.vel.valor - desaceleracao) * dt
+    meteoroide.y = meteoroide.y + dirY * (metrica.vel.valor - desaceleracao) * dt
   end
   
   -- Verifica se a habilidade está ativada --

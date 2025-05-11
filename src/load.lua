@@ -43,6 +43,8 @@ function love.load()
   musicaIntermediarios = love.audio.newSource("assets/audio/Pong the Atmosphere - Dan _Lebo_ Lebowitz, Tone Seeker.mp3")
   musicaIniciais = love.audio.newSource("assets/audio/Smooth and Cool - Nico Staf.mp3")
   musicaFinais = love.audio.newSource("assets/audio/Press Fuse - French Fuse.mp3")
+  setinhasIco = love.graphics.newImage("assets/images/icons/setinhas.png")
+  wIco = love.graphics.newImage("assets/images/icons/w.png")
   -- Cada frame tem w:180 e h: 180
   colisaoMeteoroideFrames = {
     love.graphics.newQuad(0, 0, 160, 158, 498, 158),
@@ -51,7 +53,7 @@ function love.load()
   }
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
-  introducao = true  -- variável que indica que a animação ainda deve iniciar
+  introducao = false  -- variável que indica que a animação ainda deve iniciar
   resetaTemposAnimacaoIntro()
   -- Carregamento de variáveis para a Sombra da Lua
   sombrasAnim = {}
@@ -72,6 +74,11 @@ function love.load()
 end
 
 function resetaJogo()
+  -- verifica se essas teclas foram pressionadas, apagando o texto auxiliar --
+  pressionouW = false
+  pressionouSetas = false
+  transparenciaTextoInfo = 255 -- transparência colocada sobre o texto --
+  
    --  Atributos da Terra --
   terra = {
       imagem = terraImg,
@@ -90,7 +97,7 @@ function resetaJogo()
     posX = 0,
     posY = 0,
     raio = luaImg:getWidth() / 2,
-    distanciaTerra = { valor = 250 },
+    distanciaTerra = { valor = 300 },
     oriX = luaImg:getWidth() / 2,
     oriY = luaImg:getHeight() / 2,
     meteoroideAlvo = { id = nil, tipo = nil },
@@ -144,11 +151,11 @@ function resetaJogo()
     id = 0,
     tipo = "super",
     img = superImg,
-    vel = { valor = 1000 },
+    vel = { valor = 85 },
     qtd = { valor = 0 }, -- possibilita passagem por referência --
-    delay = 0, -- intervalo padrão de criação
+    delay = 3, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
-    dano = { valor = 0 },
+    dano = { valor = 1 },
     destruidos = 0,
     colisoes = 2,
     escala = { valor = 2 }
@@ -159,11 +166,11 @@ function resetaJogo()
     id = 0,
     tipo = "normal",
     img = meteoroideImg,
-    vel = { valor = 1000 },
-    qtd = { valor = 2 }, -- tabela possibilita passagem por referência --
-    delay = 0.0,
+    vel = { valor = 120 },
+    qtd = { valor = 3 }, -- tabela possibilita passagem por referência --
+    delay = 2,
     contagem = 1,
-    dano = { valor =  0.0 },
+    dano = { valor =  0.15 },
     destruidos = 0,
     escala = { valor = 1 }
   }
@@ -179,7 +186,7 @@ function resetaJogo()
     {
       titulo = "Velocidade Lunar", 
       descricao = "A Lua recebe um incremento de %d%% em sua velocidade, mas %d%% de Meteoroides extras aparecem.", 
-      vantagem = 80, 
+      vantagem = 45, 
       desvantagem = 6,
       alvoVantagem = velocidadeOrbita,
       alvoDesvantagem = metricasMeteoroides.qtd,
@@ -242,28 +249,67 @@ function resetaJogo()
     {
       titulo = "Magnetismo Lunar", 
       descricao = "Uma melhoria feita na Lua faz com que a intensidade da Atração Gravitacional aumente %d%% puxando inimigos mais distântes. Essa melhoria interfere no intervalo da habilidade que aumenta em %d%%.", 
-      vantagem = 30, 
+      vantagem = 35, 
       desvantagem = 10,
       alvoVantagem = distanciaAtracaoGravitacional,
       alvoDesvantagem = intervaloAtracaoGravitacional,
-      peso = 6
+      peso = 1
+    },
+     {
+      titulo = "Frenesi da Lua", 
+      descricao = "A Lua fica muito agitada afetando sua gravidade que por consequência reduz %d%% do tempo da habilidade Atração Gravitacional, no entanto a agitação reduz sua eficiência em %d%%.", 
+      vantagem = -15, 
+      desvantagem = -4,
+      alvoVantagem = intervaloAtracaoGravitacional,
+      alvoDesvantagem = resistenciaLunar,
+      peso = 5
     },
   }  
   
 end
 
+-- Função chamada toda troca de onda --
 function resetaRodada()  
   -- Metricas Definidas de acordo com rodadas Fáceis, Médias e Difíceis --
   if onda <= 10 then
     metricasSupermeteoroides.qtd.valor = 1
-    metricasMeteoroides.qtd.valor = 3 + onda - 1
-  elseif onda <= 20 then
-    metricasSupermeteoroides.qtd.valor = 1
     metricasMeteoroides.qtd.valor = 3 + onda
+    percentualAumentoMetricas = 1 + (onda/100)
+  elseif onda <= 20 then
+    metricasSupermeteoroides.qtd.valor = 2 
+    metricasMeteoroides.qtd.valor = round(1.5 * onda)
+    percentualAumentoMetricas = 1 + ((onda+1)/100)
   else
     metricasSupermeteoroides.qtd.valor = 3
-    metricasMeteoroides.qtd.valor = 3 * onda
+    metricasMeteoroides.qtd.valor = round(2 * onda)
+    percentualAumentoMetricas = 1 + ((onda+5)/100)
   end
+  
+  terra.vel.valor = terra.vel.valor * percentualAumentoMetricas
+  
+  velocidadeRegeneracao = velocidadeRegeneracao * percentualAumentoMetricas
+  taxaRegeneracao.valor = taxaRegeneracao.valor * percentualAumentoMetricas
+  
+  velocidadeOrbita.valor = velocidadeOrbita.valor * percentualAumentoMetricas
+  resistenciaLunar.valor = resistenciaLunar.valor * percentualAumentoMetricas
+  taxaReducaoEficienciaLunar.valor = taxaReducaoEficienciaLunar.valor * percentualAumentoMetricas
+  tempoLentidaoLunar.valor = tempoLentidaoLunar.valor * percentualAumentoMetricas
+  taxaReducaoTempoLentidaoLunar.valor = taxaReducaoTempoLentidaoLunar.valor * percentualAumentoMetricas
+  efeitoLentidao.valor = efeitoLentidao.valor * percentualAumentoMetricas
+  
+  intervaloAtracaoGravitacional.valor = intervaloAtracaoGravitacional.valor * percentualAumentoMetricas
+  duracaoAtracaoGravitacional.valor = duracaoAtracaoGravitacional.valor * percentualAumentoMetricas
+  distanciaAtracaoGravitacional.valor = distanciaAtracaoGravitacional.valor * percentualAumentoMetricas
+  velAtracaoGravitacional.valor = velAtracaoGravitacional.valor * percentualAumentoMetricas
+  
+  intervaloControleGravitacional.valor = intervaloControleGravitacional.valor * percentualAumentoMetricas
+  velControleGravitacional.valor = velControleGravitacional.valor * percentualAumentoMetricas
+  distanciaControleGravitacional.valor = distanciaControleGravitacional.valor
+  
+  metricasMeteoroides.vel.valor = metricasMeteoroides.vel.valor  * percentualAumentoMetricas
+  metricasMeteoroides.dano.valor = metricasMeteoroides.dano.valor * percentualAumentoMetricas
+  metricasSupermeteoroides.vel.valor = metricasSupermeteoroides.vel.valor * percentualAumentoMetricas
+  
 end
 
 function resetaTemposAnimacaoIntro()
@@ -276,16 +322,20 @@ function resetaTemposAnimacaoIntro()
   transparenciaLuaAnim = 0
   intervaloLuaAnim = 56
   intervaloCreditosAnim = 40
-  transparenciaCreditosAnim = 0
-  transparenciaTextoInfo = 0
+  transparenciaCreditosAnim = 0  
   -- Carregamento das variáveis da Animação  
 end
 
 function alterarVolume()
-  musicaIntroducao:setVolume(volumeGeral + 0.2)
-  somColisao:setVolume(volumeGeral + 0.2)
+  musicaIntroducao:setVolume(volumeGeral)
+  somColisao:setVolume(volumeGeral)
   musicaMenu:setVolume(volumeGeral)
-  musicaIniciais:setVolume(volumeGeral - 0.35)
-  musicaIntermediarios:setVolume(volumeGeral - 0.25)
-  musicaFinais:setVolume(volumeGeral - 0.2)
+  musicaIniciais:setVolume(volumeGeral)
+  musicaIntermediarios:setVolume(volumeGeral)
+  musicaFinais:setVolume(volumeGeral)
+end
+
+
+function round(n)
+  return math.floor(n + 0.5)
 end

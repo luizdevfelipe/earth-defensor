@@ -121,15 +121,20 @@ function inimigos(inimigos, metricas, dt)
       novoInimigo.vidas = metricas.colisoes
       novoInimigo.escala = metricas.escala.valor
     elseif metricas.tipo == "normal" then
+      -- variáveis para carregamento de diferentes imagens --
       imagemMeteoroide = math.random(1, 3)
       local chaves = {}
       for k in pairs(meteoroidesImgs) do 
         table.insert(chaves, k)
       end
-      novoInimigo.img = meteoroidesImgs[chaves[imagemMeteoroide]]
+      novoInimigo.img = meteoroidesImgs[chaves[imagemMeteoroide]]      
+
     end
-    
+      
     novoInimigo.colisaoAnterior = false
+    -- variáveis para efeito de rotação sobre os inimigos --
+    novoInimigo.velocidadeRotacao = math.random(0.5, 4)
+    novoInimigo.rotacao = 0
     
     inimigos[metricas.id] = novoInimigo
   end
@@ -145,7 +150,7 @@ function inimigos(inimigos, metricas, dt)
        -- Verifica se houve a colisao
       if isColisao(inimigo.x, inimigo.y, (metricas.img:getHeight() / 2) * metricas.escala.valor,
       lua.posX, lua.posY, lua.raio) then
-        if not inimigo.colisaoAnterior then
+        if not inimigo.colisaoAnterior or lua.meteoroideAlvo.id == id then
           somColisao:stop()
           somColisao:play()
           table.insert(animacoesColisoes, {x = inimigo.x, y = inimigo.y, frame = 1, delay = 10, angulo = math.atan2(inimigo.y - lua.posY, inimigo.x - lua.posX)}) 
@@ -436,7 +441,10 @@ function movimentoMeteoroides(dt, meteoroide, metrica)
   if distTerra > 1 then
     local desaceleracao = 0
     
-    if (terra.posX - terra.raio) - terra.vel.valor * dt < 0 or (terra.posX + terra.raio) + terra.vel.valor * dt > screenWidth or (terra.posY - terra.raio) - terra.vel.valor * dt < 0 or (terra.posY + terra.raio) + terra.vel.valor *dt > screenHeight then
+    if ((terra.posX - terra.raio) - terra.vel.valor * dt < 0 and love.keyboard.isDown('left')) or 
+       ((terra.posX + terra.raio) + terra.vel.valor * dt > screenWidth and love.keyboard.isDown('right')) or 
+       ((terra.posY - terra.raio) - terra.vel.valor * dt < 0 and love.keyboard.isDown('up')) or 
+       ((terra.posY + terra.raio) + terra.vel.valor *dt > screenHeight and love.keyboard.isDown('down')) then
       desaceleracao = metrica.vel.valor * 0.6
     end
       

@@ -23,12 +23,16 @@ function love.draw()
     
     -- Carregamento das imagens de meteoroides --
     for id, meteoroide in pairs(meteoroides) do
-      love.graphics.draw(meteoroide.img, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroidesImgs.meteoroideImg:getWidth() / 2, meteoroidesImgs.meteoroideImg:getHeight() / 2)
+      meteoroide.rotacao = meteoroide.rotacao + meteoroide.velocidadeRotacao
+      if meteoroide.rotacao >= 360 then meteoroide.rotacao = 0 end
+      love.graphics.draw(meteoroide.img, meteoroide.x, meteoroide.y, math.rad(meteoroide.rotacao), 1, 1, meteoroidesImgs.meteoroideImg:getWidth() / 2, meteoroidesImgs.meteoroideImg:getHeight() / 2)
     end
     
     -- Carregamento das imagens de SuperMeteoroides --
     for id, super in pairs(superMeteoroides) do
-      love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, 0, super.escala, super.escala, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
+      super.rotacao = super.rotacao + 0.5
+      if super.rotacao >= 360 then super.rotacao = 0 end
+      love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, math.rad(super.rotacao), super.escala, super.escala, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
     end
        
     -- Carregamento das animações de colisões --

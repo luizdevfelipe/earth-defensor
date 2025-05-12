@@ -17,7 +17,11 @@ function love.load()
   luaImg = love.graphics.newImage("assets/images/lua.png")
   sombra = love.graphics.newImage("assets/images/sombra.png")
   fundoImg = love.graphics.newImage("assets/images/fundo.jpeg")
-  meteoroideImg = love.graphics.newImage("assets/images/meteoroide.png")
+  meteoroidesImgs = {
+    meteoroideImg = love.graphics.newImage("assets/images/meteoroide.png"),
+    meteoroide_darkImg = love.graphics.newImage("assets/images/meteoroide_dark.png"),
+    meteoroide2Img = love.graphics.newImage("assets/images/meteoroide2.png")
+  }
   superImg = love.graphics.newImage("assets/images/super.png")
   fonteNegrito = love.graphics.newFont("assets/fonts/SpecialGothicExpandedOne-Regular.ttf", 70)
   fonteMenu = love.graphics.newFont("assets/fonts/Probeta-SemiBoldItalic.ttf", 100)
@@ -45,16 +49,16 @@ function love.load()
   musicaFinais = love.audio.newSource("assets/audio/Press Fuse - French Fuse.mp3")
   setinhasIco = love.graphics.newImage("assets/images/icons/setinhas.png")
   wIco = love.graphics.newImage("assets/images/icons/w.png")
-  -- Cada frame tem w:180 e h: 180
+  -- Carregamentos de arquivos da pasta assets --
+  -- Carregamento das variáveis da Animação
   colisaoMeteoroideFrames = {
+    -- Cada frame tem w:180 e h: 180
     love.graphics.newQuad(0, 0, 160, 158, 498, 158),
     love.graphics.newQuad(160, 0, 153, 158, 498, 158),
     love.graphics.newQuad(313, 0, 185, 158, 498, 158)
   }
-  -- Carregamentos de arquivos da pasta assets --
-  -- Carregamento das variáveis da Animação
-  introducao = true  -- variável que indica que a animação ainda deve iniciar
   resetaTemposAnimacaoIntro()
+  carregamentoEstrelas()
   -- Carregamento de variáveis para a Sombra da Lua
   sombrasAnim = {}
   sombraSprite = 1
@@ -97,7 +101,7 @@ function resetaJogo()
     posX = 0,
     posY = 0,
     raio = luaImg:getWidth() / 2,
-    distanciaTerra = { valor = 300 },
+    distanciaTerra = { valor = 265 },
     oriX = luaImg:getWidth() / 2,
     oriY = luaImg:getHeight() / 2,
     meteoroideAlvo = { id = nil, tipo = nil },
@@ -153,7 +157,7 @@ function resetaJogo()
     img = superImg,
     vel = { valor = 85 },
     qtd = { valor = 0 }, -- possibilita passagem por referência --
-    delay = 3, -- intervalo padrão de criação
+    delay = { valor = 3 }, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
     dano = { valor = 1 },
     destruidos = 0,
@@ -165,10 +169,10 @@ function resetaJogo()
   metricasMeteoroides = {
     id = 0,
     tipo = "normal",
-    img = meteoroideImg,
+    img = meteoroidesImgs.meteoroideImg,
     vel = { valor = 120 },
     qtd = { valor = 3 }, -- tabela possibilita passagem por referência --
-    delay = 2,
+    delay = { valor = 2 },
     contagem = 1,
     dano = { valor =  0.15 },
     destruidos = 0,
@@ -257,12 +261,21 @@ function resetaJogo()
     },
      {
       titulo = "Frenesi da Lua", 
-      descricao = "A Lua fica muito agitada afetando sua gravidade que por consequência reduz %d%% do tempo da habilidade Atração Gravitacional, no entanto a agitação reduz sua eficiência em %d%%.", 
+      descricao = "A Lua fica muito agitada afetando sua gravidade que por consequência reduz %d%% do tempo de intervalo da habilidade Atração Gravitacional, no entanto a agitação reduz sua eficiência em %d%%.", 
       vantagem = -15, 
       desvantagem = -4,
       alvoVantagem = intervaloAtracaoGravitacional,
       alvoDesvantagem = resistenciaLunar,
       peso = 5
+    },
+     {
+      titulo = "Mais Atrativo", 
+      descricao = "A máquina de controle lunar recebe melhorias na duração da Atração Gravitacional que aumenta %d%%, isso atrai corpos celestes distantes reduzindo o intervalo com que aparecem em %d%%.", 
+      vantagem = 18, 
+      desvantagem = -5,
+      alvoVantagem = duracaoAtracaoGravitacional,
+      alvoDesvantagem = metricasMeteoroides.delay,
+      peso = 3
     },
   }  
   
@@ -338,4 +351,19 @@ end
 
 function round(n)
   return math.floor(n + 0.5)
+end
+
+function carregamentoEstrelas()
+  estrelasBrilhantes = {}
+  for i = 1, 35, 1 do
+    table.insert(estrelasBrilhantes, {x = math.random(10, screenWidth), y = math.random(10, screenHeight), brilhoMax = math.random(100, 245), brilhoAtual = 0, estado = 'acendendo'})
+  end
+  
+  estrelaCadente = {x = math.random(200, screenWidth - 200), y = math.random(50, screenHeight - 50), brilhoMax = math.random(100, 245)}
+  if estrelaCadente.x > screenWidth / 2 then
+    estrelaCadente.direcao = 'left'
+  else
+    estrelaCadente.direcao = 'right'
+  end
+  
 end

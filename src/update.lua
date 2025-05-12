@@ -18,8 +18,6 @@ function love.update(dt)
       if startGame == 2 then
         movimentoTerra(dt)
       end
-      
-     
     end
   
     if not love.mouse.isDown(1) then
@@ -90,13 +88,13 @@ function inimigos(inimigos, metricas, dt)
   metricas.contagem = metricas.contagem - 1 * dt
   -- Irá criar um novo inimigo dentro do jogo --
   if metricas.contagem < 0 and round(metricas.qtd.valor) > 0 then
-    metricas.contagem = metricas.delay
+    metricas.contagem = metricas.delay.valor
     metricas.qtd.valor = round(metricas.qtd.valor) - 1
     metricas.id = metricas.id + 1
     
     cimaOuBaixo = math.random(0, 1)
     umLadoOuOutro = math.random(0, 1)
-    
+        
     if cimaOuBaixo == 1 then
       -- Se X é aleatório, o meteoroide aparecerá na parte inferior ou superior da tela
       posicaoXAleatoria = math.random(0, screenWidth - metricas.img:getWidth())
@@ -122,6 +120,13 @@ function inimigos(inimigos, metricas, dt)
     if metricas.tipo == "super" then
       novoInimigo.vidas = metricas.colisoes
       novoInimigo.escala = metricas.escala.valor
+    elseif metricas.tipo == "normal" then
+      imagemMeteoroide = math.random(1, 3)
+      local chaves = {}
+      for k in pairs(meteoroidesImgs) do 
+        table.insert(chaves, k)
+      end
+      novoInimigo.img = meteoroidesImgs[chaves[imagemMeteoroide]]
     end
     
     novoInimigo.colisaoAnterior = false
@@ -234,7 +239,7 @@ function colisaoDetritos()
     
     for id, meteoroide in pairs(meteoroides) do
       if isColisao(detrito.x, detrito.y, detritoImg:getHeight() / 2,
-       meteoroide.x, meteoroide.y, meteoroideImg:getHeight() / 2) then
+       meteoroide.x, meteoroide.y, meteoroidesImgs.meteoroideImg:getHeight() / 2) then
        metricasDetrito.destruidos = metricasDetrito.destruidos + 1
        table.remove(detritos, i)
      end
@@ -635,11 +640,15 @@ function carregamento(dt)
   }
   --  Atributos Fundo  --
   
-  -- Apresentação do movimento da Lua no menu --
+  
+  -- Verifica se houve troca de resolução --
   if screenWidthAtual ~= screenWidth or screenHeightAtual ~= screenHeight then
+    -- Apresentação do movimento da Lua no menu --
     terra.posX = centroJanelaX
     terra.posY = centroJanelaY
-    
+    -- Recarregamento das estrelas do fundo --
+    carregamentoEstrelas()
+  
     screenWidthAtual = screenWidth
     screenHeightAtual = screenHeight
   end

@@ -5,6 +5,9 @@ function love.draw()
     --  Carregamento da imagem da Galáxia  --
     love.graphics.draw(fundo.imagem, fundo.posX, fundo.posY, 0, fundo.tamX, fundo.tamY, fundo.oriX, fundo.oriY)
     
+    -- Carregamento das estrelas no céu --
+    efeitoEstrelas()
+    
     --  Carregamento da imagem da Terra  --
     love.graphics.draw(terra.imagem, terra.posX, terra.posY, 0, 1, 1, terra.oriX, terra.oriY)
     
@@ -20,7 +23,7 @@ function love.draw()
     
     -- Carregamento das imagens de meteoroides --
     for id, meteoroide in pairs(meteoroides) do
-      love.graphics.draw(meteoroideImg, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroideImg:getWidth() / 2, meteoroideImg:getHeight() / 2)
+      love.graphics.draw(meteoroide.img, meteoroide.x, meteoroide.y, 0, 1, 1, meteoroidesImgs.meteoroideImg:getWidth() / 2, meteoroidesImgs.meteoroideImg:getHeight() / 2)
     end
     
     -- Carregamento das imagens de SuperMeteoroides --
@@ -54,7 +57,7 @@ function love.draw()
       if startGame == 2 then
         local instrucaoWidth = love.graphics.getFont():getWidth("Pressione as setas para controlar o movimento da Terra:")
         love.graphics.print("Pressione as setas para controlar o movimento da Terra:", centroJanelaX - instrucaoWidth / 2, screenHeight * 0.85)
-        love.graphics.draw(setinhasIco, (centroJanelaX - instrucaoWidth / 2) + instrucaoWidth + setinhasIco:getWidth()/2, screenHeight * 0.85, 0, 1, 1, setinhasIco:getWidth()/2, setinhasIco:getHeight()/2)
+        love.graphics.draw(setinhasIco, (centroJanelaX - instrucaoWidth / 2) + instrucaoWidth + setinhasIco:getWidth()/2, screenHeight * 0.85 + 10, 0, 1, 1, setinhasIco:getWidth()/2, setinhasIco:getHeight()/2)
       end
     end
     
@@ -100,6 +103,69 @@ function love.draw()
     -- função para rederizar um cursor personalizado --
     mostraCursor()
   end
+end
+
+function efeitoEstrelas()
+  for i, estrela in ipairs(estrelasBrilhantes) do
+    if estrela.estado == 'acendendo' then
+      estrela.brilhoAtual = estrela.brilhoAtual + 1
+      if estrela.brilhoAtual >= estrela.brilhoMax then
+        estrela.estado = 'apagando'
+      end
+    elseif estrela.estado == 'apagando' then
+      estrela.brilhoAtual = estrela.brilhoAtual - 1
+      if estrela.brilhoAtual <= 0 then
+        estrela.estado = 'acendendo'
+      end
+    end
+    
+    love.graphics.setColor(200, 200, 200, estrela.brilhoAtual)
+    love.graphics.circle('fill', estrela.x, estrela.y, 5.5, 255)
+    
+    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.circle('fill', estrela.x, estrela.y, 3, 255)
+  end
+  
+  if estrelaCadente.direcao == 'left' then
+    deslocamento = 1
+  elseif estrelaCadente.direcao == 'right' then
+    deslocamento = -1
+  end
+  
+  love.graphics.setColor(255, 255, 255, estrelaCadente.brilhoMax)
+  
+  love.graphics.setLineWidth(7)
+  love.graphics.line(estrelaCadente.x, estrelaCadente.y, estrelaCadente.x + 4*deslocamento, estrelaCadente.y)
+
+  love.graphics.setLineWidth(6)
+  love.graphics.line(estrelaCadente.x + 4*deslocamento, estrelaCadente.y, estrelaCadente.x + 8*deslocamento, estrelaCadente.y)
+
+  love.graphics.setLineWidth(5)
+  love.graphics.line(estrelaCadente.x + 8*deslocamento, estrelaCadente.y, estrelaCadente.x + 12*deslocamento, estrelaCadente.y)
+
+  love.graphics.setLineWidth(4)
+  love.graphics.line(estrelaCadente.x + 12*deslocamento, estrelaCadente.y, estrelaCadente.x + 16*deslocamento, estrelaCadente.y)
+
+  love.graphics.setLineWidth(3)
+  love.graphics.line(estrelaCadente.x + 16*deslocamento, estrelaCadente.y, estrelaCadente.x + 24*deslocamento, estrelaCadente.y)
+
+  love.graphics.setLineWidth(2)
+  love.graphics.line(estrelaCadente.x + 24*deslocamento, estrelaCadente.y, estrelaCadente.x + 32*deslocamento, estrelaCadente.y)
+
+    
+  estrelaCadente.x = estrelaCadente.x + 5*deslocamento*-1
+  estrelaCadente.brilhoMax = estrelaCadente.brilhoMax  - 1
+  
+  if estrelaCadente.brilhoMax <= 0 then
+    estrelaCadente = {x = math.random(200, screenWidth - 200), y = math.random(50, screenHeight - 50), brilhoMax = math.random(100, 245)}
+    if estrelaCadente.x > screenWidth / 2 then
+      estrelaCadente.direcao = 'left'
+    else
+      estrelaCadente.direcao = 'right'
+    end
+  end
+  
+  love.graphics.setColor(255, 255, 255, 255)
 end
 
 function telaDePotencializadores()

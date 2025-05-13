@@ -18,20 +18,19 @@ function love.draw()
     
      -- Carregamento dos detritos --
     for i, detrito in ipairs(detritos) do
-      love.graphics.draw(detritoImg, detrito.x, detrito.y, 0, 1, 1, detritoImg:getWidth() / 2, detritoImg:getHeight() / 2)
+      rotacaoInimigo(detrito)
+      love.graphics.draw(detritoImg, detrito.x, detrito.y,  math.rad(detrito.rotacao), 1, 1, detritoImg:getWidth() / 2, detritoImg:getHeight() / 2)
     end
     
     -- Carregamento das imagens de meteoroides --
     for id, meteoroide in pairs(meteoroides) do
-      meteoroide.rotacao = meteoroide.rotacao + meteoroide.velocidadeRotacao
-      if meteoroide.rotacao >= 360 then meteoroide.rotacao = 0 end
+      rotacaoInimigo(meteoroide)
       love.graphics.draw(meteoroide.img, meteoroide.x, meteoroide.y, math.rad(meteoroide.rotacao), 1, 1, meteoroidesImgs.meteoroideImg:getWidth() / 2, meteoroidesImgs.meteoroideImg:getHeight() / 2)
     end
     
     -- Carregamento das imagens de SuperMeteoroides --
     for id, super in pairs(superMeteoroides) do
-      super.rotacao = super.rotacao + 0.5
-      if super.rotacao >= 360 then super.rotacao = 0 end
+      rotacaoInimigo(super, 0.3)
       love.graphics.draw(metricasSupermeteoroides.img, super.x, super.y, math.rad(super.rotacao), super.escala, super.escala, metricasSupermeteoroides.img:getWidth() / 2, metricasSupermeteoroides.img:getHeight() / 2)
     end
        
@@ -797,19 +796,19 @@ function exibeBotaoAtracaoGravitacional()
   love.graphics.draw(atracaoImg, 300, screenHeight - 300, 0, 1, 1, atracaoImg:getWidth() / 2, atracaoImg:getHeight() / 2)
   -- Define os valores para exibir o texto -- 
   love.graphics.setColor(255, 255, 255, 255)
-  love.graphics.setFont(fontNormal20)
+  love.graphics.setFont(fonteNegrito)
   
   if (tempoAtracaoGravitacional > 0) then
     love.graphics.print(
       string.format("%.1f", tempoAtracaoGravitacional / 60) .. 's', 
       300, screenHeight - 300, 
-      0, 1, 1, 
+      0, 0.4, 0.4, 
       love.graphics.getFont():getWidth(string.format("%.1f", tempoAtracaoGravitacional / 60) .. 's') / 2,
       love.graphics.getFont():getHeight(string.format("%.1f", tempoAtracaoGravitacional / 60) .. 's') / 2)
   elseif isAtracaoGravitacional then
-    love.graphics.print('--', 300, screenHeight - 300, 0, 1.9, 1.9, love.graphics.getFont():getWidth('--') / 2, love.graphics.getFont():getHeight('--') / 2)
+    love.graphics.print('--', 300, screenHeight - 300, 0, 0.4, 0.4, love.graphics.getFont():getWidth('--') / 2, love.graphics.getFont():getHeight('--') / 2)
   else
-    love.graphics.print('E', 300, screenHeight - 300, 0, 1, 1, love.graphics.getFont():getWidth('E') / 2, love.graphics.getFont():getHeight('E') / 2)
+    love.graphics.print('E', 300, screenHeight - 300, 0, 0.4, 0.4, love.graphics.getFont():getWidth('E') / 2, love.graphics.getFont():getHeight('E') / 2)
   end
   
   love.graphics.setColor(255, 255, 255, 255)
@@ -821,19 +820,19 @@ function exibeBotaoControleGravitacional()
   love.graphics.draw(controleGravImg, 150, screenHeight - 400, 0, 1, 1, controleGravImg:getWidth() / 2, controleGravImg:getHeight() / 2)
   -- Define os valores para exibir o texto -- 
   love.graphics.setColor(255, 255, 255, 255)
-  love.graphics.setFont(fontNormal20)
+  love.graphics.setFont(fonteNegrito)
   
   if (tempoControleGravitacional > 0) then
     love.graphics.print(
       string.format("%.1f", tempoControleGravitacional / 60) .. 's', 
       150, screenHeight - 400, 
-      0, 1, 1, 
+      0, 0.4, 0.4, 
       love.graphics.getFont():getWidth(string.format("%.1f", tempoControleGravitacional / 60) .. 's') / 2,
       love.graphics.getFont():getHeight(string.format("%.1f", tempoControleGravitacional / 60) .. 's') / 2)
   elseif isControleGravitacional then
-    love.graphics.print('--', 150, screenHeight - 400, 0, 1.9, 1.9, love.graphics.getFont():getWidth('--') / 2, love.graphics.getFont():getHeight('--') / 2)
+    love.graphics.print('--', 150, screenHeight - 400, 0, 0.4, 0.4, love.graphics.getFont():getWidth('--') / 2, love.graphics.getFont():getHeight('--') / 2)
   else
-    love.graphics.print('Q', 150, screenHeight - 400, 0, 1, 1, love.graphics.getFont():getWidth('Q') / 2, love.graphics.getFont():getHeight('Q') / 2)
+    love.graphics.print('Q', 150, screenHeight - 400, 0, 0.4, 0.4, love.graphics.getFont():getWidth('Q') / 2, love.graphics.getFont():getHeight('Q') / 2)
   end
   
   love.graphics.setColor(255, 255, 255, 255)
@@ -842,5 +841,13 @@ end
 function mostraCursor()
   if pause or trocaDeFase or startGame == 0 or gameOver then
     love.graphics.draw(imagemCursor, love.mouse.getX(), love.mouse.getY(), 0, 1, 1, 0, imagemCursor:getHeight())
+  end
+end
+
+function rotacaoInimigo(inimigo, vel)
+  if not pause and not trocaDeFase and startGame ~= 0 and not gameOver then
+    if vel == nil then vel = inimigo.velocidadeRotacao end
+    inimigo.rotacao = inimigo.rotacao + vel
+    if inimigo.rotacao >= 360 then inimigo.rotacao = 0 end
   end
 end

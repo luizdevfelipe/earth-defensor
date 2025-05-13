@@ -8,6 +8,7 @@ function love.update(dt)
       -- Execução de funções que fazem o processamento do jogo --
       verificaEficienciaLunar(dt)
       movimentoLua(dt)
+      movimentoDetrito(dt)
       inimigos(meteoroides, metricasMeteoroides, dt)    
       inimigos(superMeteoroides, metricasSupermeteoroides, dt)
       colisaoDetritos()
@@ -216,10 +217,50 @@ function inimigos(inimigos, metricas, dt)
     
 end
 
+-- Função para movimentar detritos --
+function movimentoDetrito(dt)
+  for i, detrito in ipairs(detritos) do
+    if detrito.lado == 'right' then
+      pontaX = screenWidth
+    elseif detrito.lado == 'left' then
+      pontaX = 0
+    end
+  
+    if detrito.nivel == 'up' then
+      pontaY = screenHeight
+    elseif detrito.nivel == 'down' then
+      pontaY = 0
+    end
+    
+    distPonta = distanciaDeDoisPontos(pontaX, detrito.x, pontaY, detrito.y)
+    if distPonta > 1 then
+      local dirX = (pontaX - detrito.x) / distPonta
+      local dirY = (pontaY - detrito.y) / distPonta
+      
+      detrito.x = detrito.x + dirX * metricasDetrito.vel.valor * dt
+      detrito.y = detrito.y + dirY * metricasDetrito.vel.valor * dt
+    else
+      table.remove(detritos, i)
+    end
+  end
+end
+
 -- Função para o criação dos Detritos
 function criarDetrito(x, y)
   for i = 1, metricasDetrito.qtd, 1 do
     novoDetrito = {x = x + math.random(-40 - i^2, 40 + i^2), y = y + math.random(-40 - i^2, 40 + i^2)}
+    if novoDetrito.x >= screenWidth / 2 then
+      novoDetrito.lado = 'right'
+    else
+      novoDetrito.lado = 'left'
+    end
+    if novoDetrito.y >= screenHeight / 2 then
+      novoDetrito.nivel = 'up'
+    else
+      novoDetrito.nivel = 'down'
+    end
+    novoDetrito.velocidadeRotacao = math.random(0.5, 2)
+    novoDetrito.rotacao = 0
     table.insert(detritos, novoDetrito)
   end
 end
@@ -272,14 +313,8 @@ function potencializadorEscolhido(escolha)
   varVantagem = potencializadores[escolha].alvoVantagem
   varDesvantagem = potencializadores[escolha].alvoDesvantagem
   
-  print('VantAntes:' .. varVantagem.valor)
-  print('DesvanAntes:' .. varDesvantagem.valor)
-  
   varVantagem.valor = varVantagem.valor + varVantagem.valor * (potencializadores[escolha].vantagem / 100)
   varDesvantagem.valor = varDesvantagem.valor + varDesvantagem.valor * (potencializadores[escolha].desvantagem / 100)
-  
-  print('VantDepois:' .. varVantagem.valor)
-  print('DesvanDepois:' .. varDesvantagem.valor)
 end
 
 -- Função para regeneração passiva da vida da Terra

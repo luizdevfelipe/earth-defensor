@@ -57,6 +57,7 @@ function love.load()
     love.graphics.newQuad(160, 0, 153, 158, 498, 158),
     love.graphics.newQuad(313, 0, 185, 158, 498, 158)
   }
+  introducao = false  -- variável que indica que a animação ainda deve iniciar
   resetaTemposAnimacaoIntro()
   carregamentoEstrelas()
   -- Carregamento de variáveis para a Sombra da Lua
@@ -183,14 +184,15 @@ function resetaJogo()
   metricasDetrito = {
     img = detritoImg,
     destruidos = 0,
-    qtd = 3
+    qtd = 3,
+    vel = { valor = 50 }
   }
   
   potencializadores = {
     {
       titulo = "Velocidade Lunar", 
       descricao = "A Lua recebe um incremento de %d%% em sua velocidade, mas %d%% de Meteoroides extras aparecem.", 
-      vantagem = 45, 
+      vantagem = 40, 
       desvantagem = 6,
       alvoVantagem = velocidadeOrbita,
       alvoDesvantagem = metricasMeteoroides.qtd,
@@ -204,6 +206,15 @@ function resetaJogo()
       alvoVantagem = vidasTerra,
       alvoDesvantagem = metricasMeteoroides.vel,
       peso = 3
+    },
+    {
+      titulo = "Recuperação Total", 
+      descricao = "A Terra recebe toda da sua vida fundamental, como consequência a velocidade de inimigos dobra", 
+      vantagem = 1000, 
+      desvantagem = 100,
+      alvoVantagem = vidasTerra,
+      alvoDesvantagem = metricasMeteoroides.vel,
+      peso = 10
     },
     {
       titulo = "Máquinas Aceleradas", 
@@ -277,13 +288,43 @@ function resetaJogo()
       alvoDesvantagem = metricasMeteoroides.delay,
       peso = 3
     },
+    {
+      titulo = "Atração Veloz", 
+      descricao = "A cada novo impacto a Lua absorve parte da energia, com isso a velocidade de Atração Gravitacional tem um ganho de %d%%, porém a duração do efeito é reduzida em %d%%.", 
+      vantagem = 15, 
+      desvantagem = -3,
+      alvoVantagem = velAtracaoGravitacional,
+      alvoDesvantagem = duracaoAtracaoGravitacional,
+      peso = 6
+    },
+    {
+      titulo = "Lua Guiada", 
+      descricao = "O sistema de Controle Gravitacional é completamente refeito, com isso há ganho de %d%% na distância de atuação, como consequência o seu intervalo é aumentado em %d%%.", 
+      vantagem = 35, 
+      desvantagem = 5,
+      alvoVantagem = distanciaControleGravitacional,
+      alvoDesvantagem = intervaloControleGravitacional,
+      peso = 1
+    },
+    {
+    titulo = "Recarga Rápida", 
+    descricao = "Otimizações no sistema de Controle Gravitacional reduzem o tempo de recarga da habilidade em %d%%, mas %d%% da sua velocidade também é reduzida.", 
+    vantagem = -15, 
+    desvantagem = -5,
+    alvoVantagem = intervaloControleGravitacional,
+    alvoDesvantagem = velControleGravitacional,
+    peso = 3
+    },
   }  
-  
 end
 
 -- Função chamada toda troca de onda --
 function resetaRodada()  
   -- Metricas Definidas de acordo com rodadas Fáceis, Médias e Difíceis --
+  if startGame == 2 then
+    -- caso seja 2 jogadores uma dificuldade a mais
+  end
+  
   if onda <= 10 then
     metricasSupermeteoroides.qtd.valor = 1
     metricasMeteoroides.qtd.valor = 3 + onda
@@ -298,9 +339,7 @@ function resetaRodada()
     percentualAumentoMetricas = 1 + ((onda+5)/100)
   end
   
-  terra.vel.valor = terra.vel.valor * percentualAumentoMetricas
-  
-  velocidadeRegeneracao = velocidadeRegeneracao * percentualAumentoMetricas
+  terra.vel.valor = terra.vel.valor * percentualAumentoMetricas  
   taxaRegeneracao.valor = taxaRegeneracao.valor * percentualAumentoMetricas
   
   velocidadeOrbita.valor = velocidadeOrbita.valor * percentualAumentoMetricas
@@ -310,12 +349,10 @@ function resetaRodada()
   taxaReducaoTempoLentidaoLunar.valor = taxaReducaoTempoLentidaoLunar.valor * percentualAumentoMetricas
   efeitoLentidao.valor = efeitoLentidao.valor * percentualAumentoMetricas
   
-  intervaloAtracaoGravitacional.valor = intervaloAtracaoGravitacional.valor * percentualAumentoMetricas
   duracaoAtracaoGravitacional.valor = duracaoAtracaoGravitacional.valor * percentualAumentoMetricas
   distanciaAtracaoGravitacional.valor = distanciaAtracaoGravitacional.valor * percentualAumentoMetricas
   velAtracaoGravitacional.valor = velAtracaoGravitacional.valor * percentualAumentoMetricas
   
-  intervaloControleGravitacional.valor = intervaloControleGravitacional.valor * percentualAumentoMetricas
   velControleGravitacional.valor = velControleGravitacional.valor * percentualAumentoMetricas
   distanciaControleGravitacional.valor = distanciaControleGravitacional.valor
   

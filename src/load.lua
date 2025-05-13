@@ -49,6 +49,7 @@ function love.load()
   musicaFinais = love.audio.newSource("assets/audio/Press Fuse - French Fuse.mp3")
   setinhasIco = love.graphics.newImage("assets/images/icons/setinhas.png")
   wIco = love.graphics.newImage("assets/images/icons/w.png")
+  brilhoEstrela = love.graphics.newImage("assets/images/brilho.png")
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
   colisaoMeteoroideFrames = {
@@ -392,8 +393,8 @@ end
 
 function carregamentoEstrelas()
   estrelasBrilhantes = {}
-  for i = 1, 35, 1 do
-    table.insert(estrelasBrilhantes, {x = math.random(10, screenWidth), y = math.random(10, screenHeight), brilhoMax = math.random(100, 245), brilhoAtual = 0, estado = 'acendendo'})
+  for i = 1, 25, 1 do
+    table.insert(estrelasBrilhantes, {x = math.random(10, screenWidth), y = math.random(10, screenHeight), brilhoMax = math.random(100, 245), brilhoAtual = 0, estado = 'acendendo', rotacao = math.random(0, 360)})
   end
   
   estrelaCadente = {x = math.random(200, screenWidth - 200), y = math.random(50, screenHeight - 50), brilhoMax = math.random(100, 245)}

@@ -122,11 +122,12 @@ function efeitoEstrelas()
       end
     end
     
-    love.graphics.setColor(200, 200, 200, estrela.brilhoAtual)
-    love.graphics.circle('fill', estrela.x, estrela.y, 5.5, 255)
+    estrela.rotacao = estrela.rotacao + 0.01
+    if estrela.rotacao >= 360 then estrela.rotacao = 0 end
     
-    love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.circle('fill', estrela.x, estrela.y, 3, 255)
+    love.graphics.setColor(255, 255, 255, estrela.brilhoAtual)
+    love.graphics.draw(brilhoEstrela, estrela.x, estrela.y, estrela.rotacao, 0.1, 0.1, brilhoEstrela:getWidth()/2, brilhoEstrela:getHeight()/2)
+    
   end
   
   if estrelaCadente.direcao == 'left' then
@@ -456,16 +457,16 @@ end
 function barraDeVida()
   -- Fundo da barra de Vida
   love.graphics.setColor(255,255,255)
-  love.graphics.rectangle("fill", centroJanelaX - 103, 60, 206, 26)
+  love.graphics.rectangle("fill", centroJanelaX - 203, 60, 406, 29)
   -- Barra de Vida em si
   love.graphics.setColor(34, 177, 76)
   if vidasTerra.valor > 3 then vidasTerra.valor = 3 end
   if vidasTerra.valor < 0 then vidasTerra.valor = 0 end
-  love.graphics.rectangle("fill", centroJanelaX - 100, 63, (vidasTerra.valor * 200) / 3, 20)
+  love.graphics.rectangle("fill", centroJanelaX - 200, 63, (vidasTerra.valor * 400) / 3, 23)
   -- Recortes nas vidas principais
   love.graphics.setColor(0,0,0)
-  love.graphics.rectangle("fill", centroJanelaX - 100 / 3, 60, 4, 26)
-  love.graphics.rectangle("fill", centroJanelaX + 100 / 3, 60, 4, 26)
+  love.graphics.rectangle("fill", centroJanelaX - 200 / 3, 60, 4, 29)
+  love.graphics.rectangle("fill", centroJanelaX + 200 / 3, 60, 4, 29)
   love.graphics.setColor(255,255,255)
 end
 

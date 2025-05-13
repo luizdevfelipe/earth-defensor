@@ -1,7 +1,7 @@
 function love.conf(t)  
   t.identity = nil
   t.version = "0.10.1"
-  t.console = true
+  t.console = false
   t.accelerometerjoystick = true
   t.externalstorage = false
   t.gammacorrect = true

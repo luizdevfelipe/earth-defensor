@@ -12,7 +12,11 @@ function love.draw()
     love.graphics.draw(terra.imagem, terra.posX, terra.posY, 0, 1, 1, terra.oriX, terra.oriY)
     
     --  Carregamento da imagem da Lua  --
-    love.graphics.draw(lua.imagem, lua.posX, lua.posY, 0, 1, 1, lua.oriX, lua.oriY)
+    if rachaduraSprite >= 1 then
+      love.graphics.draw(rachaduraAnim[rachaduraSprite], lua.posX - lua.oriX, lua.posY - lua.oriY, 0, escalaLuaImg, escalaLuaImg)
+    else
+      love.graphics.draw(lua.imagem, lua.posX - lua.oriX, lua.posY - lua.oriY, 0, escalaLuaImg, escalaLuaImg)
+    end
     -- Carregamento da Sombra da Lua --
     desenhoSombraLua(lua.posX, lua.posY, lua.oriX, lua.oriY, getAngulo(terra.posX, terra.posY, lua.posX, lua.posY))
     
@@ -726,7 +730,7 @@ function desenhoSombraLua(x, y, oriX, oriY, angulo)
   end
   
   if sombraSprite > 0 then
-    love.graphics.draw(sombrasAnim[sombraSprite], x, y, 0, 1, 1, oriX, oriY)
+    love.graphics.draw(sombrasAnim[sombraSprite], x + 2, y + 2, 0, 1, 1, oriX, oriY)
   end 
   sombraSprite = 0
 end

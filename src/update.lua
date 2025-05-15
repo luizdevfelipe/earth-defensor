@@ -440,12 +440,30 @@ end
 
 function verificaEficienciaLunar(dt)
   if eficienciaLunar <= 0 then
+    -- Está lenta, reduz o tempo da lentidão até passar o efeito --
     if lentidaoLunarRestante > 0 then
       lentidaoLunarRestante = lentidaoLunarRestante - taxaReducaoTempoLentidaoLunar.valor * dt
+      
+      if lentidaoLunarRestante <= (taxaReducaoTempoLentidaoLunar.valor * 0.3) then
+        rachaduraSprite = 0
+      elseif lentidaoLunarRestante <= (taxaReducaoTempoLentidaoLunar.valor * 0.5)then
+        rachaduraSprite = 1
+      elseif lentidaoLunarRestante <= (taxaReducaoTempoLentidaoLunar.valor * 0.7) then
+        rachaduraSprite = 2
+      end
+      
     else
+      -- O efeito de lentidão já passou --
       lentidaoLunarRestante = tempoLentidaoLunar.valor
       eficienciaLunar = resistenciaLunar.valor
+      rachaduraSprite = 0
     end
+  elseif eficienciaLunar <= (resistenciaLunar.valor * 0.3) then
+    rachaduraSprite = 3
+  elseif eficienciaLunar <= (resistenciaLunar.valor * 0.5) then
+    rachaduraSprite = 2
+  elseif eficienciaLunar <= (resistenciaLunar.valor * 0.8) then
+    rachaduraSprite = 1
   end
 end
 

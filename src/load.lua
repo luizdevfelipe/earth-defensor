@@ -68,6 +68,13 @@ function love.load()
     sombrasAnim[i] = love.graphics.newImage("assets/images/sombras/" .. i .. ".png")
   end
   -- Carregamento de variáveis para a Sombra da Lua
+  -- Carregamento de variáveis de "rachadura" da Lua --
+  rachaduraAnim = {}
+  rachaduraSprite = 0
+  for i = 1, 3, 1 do
+    rachaduraAnim[i] = love.graphics.newImage("assets/images/rachaduras/" .. i .. ".png")
+  end
+  -- Carregamento de variáveis de "rachadura" da Lua --
   -- Carregamento de variáveis que não se alteram com as partidas
   math.randomseed(os.time())
   resetaJogo()
@@ -97,15 +104,16 @@ function resetaJogo()
   }
   --  Atributos da Terra --
   
-  --  Atributos Lua  --
+  --  Atributos Lua  0.097--
+  escalaLuaImg = 0.097
   lua = {
     imagem = luaImg,
     posX = 0,
     posY = 0,
-    raio = luaImg:getWidth() / 2,
+    raio = (luaImg:getWidth()*escalaLuaImg) / 2,
     distanciaTerra = { valor = 265 },
-    oriX = luaImg:getWidth() / 2,
-    oriY = luaImg:getHeight() / 2,
+    oriX = (luaImg:getWidth()*escalaLuaImg) / 2,
+    oriY = (luaImg:getHeight()*escalaLuaImg) / 2,
     meteoroideAlvo = { id = nil, tipo = nil },
   }
   --  Atributos Lua  --
@@ -385,7 +393,6 @@ function alterarVolume()
   musicaIntermediarios:setVolume(volumeGeral)
   musicaFinais:setVolume(volumeGeral)
 end
-
 
 function round(n)
   return math.floor(n + 0.5)

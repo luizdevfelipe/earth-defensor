@@ -75,6 +75,13 @@ function love.load()
     rachaduraAnim[i] = love.graphics.newImage("assets/images/rachaduras/" .. i .. ".png")
   end
   -- Carregamento de variáveis de "rachadura" da Lua --
+    -- Carregamento de variáveis da Terra Destruída --
+  terraDestruidaAnim = {}
+  terraDestruidaSprite = 0
+  for i = 1, 2, 1 do
+    terraDestruidaAnim[i] = love.graphics.newImage("assets/images/terras/" .. i .. ".png")
+  end
+  -- Carregamento de variáveis da Terra Destruída --
   -- Carregamento de variáveis que não se alteram com as partidas
   math.randomseed(os.time())
   resetaJogo()
@@ -93,18 +100,19 @@ function resetaJogo()
   transparenciaTextoInfo = 255 -- transparência colocada sobre o texto --
   
    --  Atributos da Terra --
+  escalaTerraImg = 0.35
   terra = {
       imagem = terraImg,
       posX = centroJanelaX,
       posY = centroJanelaY,
-      raio = terraImg:getWidth() / 2,
-      oriX = terraImg:getWidth() / 2 ,
-      oriY = terraImg:getHeight() / 2,
+      raio = (terraImg:getWidth()*escalaTerraImg) / 2,
+      oriX = (terraImg:getWidth()*escalaTerraImg) / 2 ,
+      oriY = (terraImg:getHeight()*escalaTerraImg) / 2,
       vel = { valor = 400 }
   }
   --  Atributos da Terra --
   
-  --  Atributos Lua  0.097--
+  --  Atributos Lua --
   escalaLuaImg = 0.097
   lua = {
     imagem = luaImg,

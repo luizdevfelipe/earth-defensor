@@ -9,7 +9,11 @@ function love.draw()
     efeitoEstrelas()
     
     --  Carregamento da imagem da Terra  --
-    love.graphics.draw(terra.imagem, terra.posX, terra.posY, 0, 1, 1, terra.oriX, terra.oriY)
+    if terraDestruidaSprite >= 1 then
+      love.graphics.draw(terraDestruidaAnim[terraDestruidaSprite], terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
+    else
+      love.graphics.draw(terra.imagem, terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
+    end
     
     --  Carregamento da imagem da Lua  --
     if rachaduraSprite >= 1 then

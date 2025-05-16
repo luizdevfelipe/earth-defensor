@@ -329,15 +329,18 @@ function regeneracaoPassiva(dt)
   if tempoRegeneracao <= 0 then
     if vidasTerra.valor <= 3 and vidasTerra.valor > 2 then
       vidasTerra.valor = vidasTerra.valor + taxaRegeneracao.valor
+      terraDestruidaSprite = 0
       if vidasTerra.valor > 3 then
         vidasTerra.valor = 3
       end
     elseif vidasTerra.valor > 1 then
+      terraDestruidaSprite = 1
       vidasTerra.valor = vidasTerra.valor + taxaRegeneracao.valor
       if vidasTerra.valor > 2 then
         vidasTerra.valor = 2
       end  
     else 
+      terraDestruidaSprite = 2
       vidasTerra.valor = vidasTerra.valor + taxaRegeneracao.valor
       if vidasTerra.valor > 1 then
         vidasTerra.valor = 1

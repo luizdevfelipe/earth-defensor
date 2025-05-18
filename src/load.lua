@@ -100,6 +100,7 @@ function resetaJogo()
   transparenciaTextoInfo = 255 -- transparência colocada sobre o texto --
   
    --  Atributos da Terra --
+  terraDestruidaSprite = 0
   escalaTerraImg = 0.35
   terra = {
       imagem = terraImg,
@@ -113,6 +114,7 @@ function resetaJogo()
   --  Atributos da Terra --
   
   --  Atributos Lua --
+  rachaduraSprite = 0
   escalaLuaImg = 0.097
   lua = {
     imagem = luaImg,

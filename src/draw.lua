@@ -429,7 +429,7 @@ function desenharIntroducao()
   love.graphics.setBackgroundColor(0,0,0)
   --  Carregamento da imagem da Terra  --
   love.graphics.setColor(transparenciaTerraAnim,transparenciaTerraAnim,transparenciaTerraAnim,transparenciaTerraAnim)
-  love.graphics.draw(terra.imagem, centroJanelaX - 100, centroJanelaY + 30 - movimentoTerraAnim, 0, 1, 1, terra.oriX, terra.oriY)
+  love.graphics.draw(terra.imagem, centroJanelaX - terra.oriX - 100, centroJanelaY - terra.oriY + 30 - movimentoTerraAnim, 0, escalaTerraImg, escalaTerraImg)
   --  Carregamento da imagem da Lua  --
   love.graphics.setColor(transparenciaLuaAnim, transparenciaLuaAnim, transparenciaLuaAnim, transparenciaLuaAnim)
   love.graphics.draw(protetoraImg, centroJanelaX - 100 + terra.raio, centroJanelaY - 60 - movimentoLuaAnim, 0, 1, 1, protetoraImg:getWidth() / 2, protetoraImg:getHeight() / 2)

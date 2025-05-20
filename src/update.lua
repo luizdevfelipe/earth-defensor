@@ -478,6 +478,9 @@ function gerenciarHabilidades(dt)
     if tempoAtracaoGravitacionalAtiva <= 0 then
       isAtracaoGravitacional = false
       tempoAtracaoGravitacional = intervaloAtracaoGravitacional.valor
+      if  duracaoAtracaoGravitacional.valor > tempoAtivoAtracaoGravLimite then
+        duracaoAtracaoGravitacional.valor = tempoAtivoAtracaoGravLimite
+      end
       tempoAtracaoGravitacionalAtiva = duracaoAtracaoGravitacional.valor
     end
   else
@@ -515,7 +518,12 @@ function movimentoMeteoroides(dt, meteoroide, metrica)
     -- Calcula a distância entre o meteoroide e a Lua -- 
     distLua = distanciaDeDoisPontos(lua.posX, meteoroide.x, lua.posY, meteoroide.y)
     -- Se estiver no raio da habilidade ele será atraído --
-    if distLua > 1 and distLua < distanciaAtracaoGravitacional.valor then
+    if distanciaAtracaoGravitacional.valor >= distAtracaoGravLimite then 
+      distAtracao = distAtracaoGravLimite 
+    else 
+      distAtracao = distanciaAtracaoGravitacional.valor 
+    end
+    if distLua > 1 and distLua < distAtracao then
       local dirX = (lua.posX - meteoroide.x) / distLua
       local dirY = (lua.posY - meteoroide.y) / distLua
       
@@ -652,9 +660,9 @@ function gerenciamentoDasMusicas()
         musicaFinais:setLooping(true)
       end
     else
-      musicaIniciais:pause()
-      musicaIntermediarios:pause()
-      musicaFinais:pause()
+      musicaIniciais:stop()
+      musicaIntermediarios:stop()
+      musicaFinais:stop()
     end
       
       

@@ -465,6 +465,10 @@ end
 function barraDeVida()
   -- Fundo da barra de Vida
   love.graphics.setColor(255,255,255)
+  local vidaBarX = centroJanelaX - 55 - moldura_vida:getWidth() / 2
+  local vidaBarY =  60 + 15 - moldura_vida:getHeight()*0.5 / 2
+  love.graphics.draw(terra_vida_bar, vidaBarX + 50, vidaBarY, 0, 0.6, 0.6)
+  love.graphics.draw(moldura_vida, vidaBarX, vidaBarY, 0, 1, 0.5)
   love.graphics.rectangle("fill", centroJanelaX - 203, 60, 406, 29)
   -- Barra de Vida em si
   love.graphics.setColor(34, 177, 76)

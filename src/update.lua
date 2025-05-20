@@ -323,6 +323,7 @@ function regeneracaoPassiva(dt)
   if vidasTerra.valor <= 0 then
     vidasTerra.valor = 0
     gameOver = true
+    recordPontuacao()
   end
   -- Lógica de regeneração da vida da Terra
   tempoRegeneracao = tempoRegeneracao - dt
@@ -694,6 +695,33 @@ function textoInformativo(dt)
   end
 end
 
+-- função para armazenar o record do jogador --
+function recordPontuacao()
+  if love.filesystem.exists("pontos.txt") then
+    pontuacao = love.filesystem.read("pontos.txt")
+    
+    local valores = {}
+    for valor in string.gmatch(pontuacao, "([^;]+)") do
+      table.insert(valores, tonumber(valor))
+    end
+    
+    if startGame == 1 then
+      if valores[1] < onda then
+        love.filesystem.write("pontos.txt", onda..';'..valores[2])
+      end
+    elseif startGame == 2 then
+      love.filesystem.write("pontos.txt", valores[1]..';'..onda)
+    end
+ 
+  else
+    if startGame == 1 then
+      love.filesystem.write("pontos.txt", onda..';'..'0')    
+    elseif startGame == 2 then
+      love.filesystem.write("pontos.txt", '0'..';'..onda)    
+    end
+  end
+end
+
 -- Variáveis que devem ser atualizadas durante a execução
 function carregamento(dt)  
   screenWidth, screenHeight = love.window.getMode()
@@ -711,8 +739,7 @@ function carregamento(dt)
     oriY = fundoImg:getHeight() / 2
   }
   --  Atributos Fundo  --
-  
-  
+    
   -- Verifica se houve troca de resolução --
   if screenWidthAtual ~= screenWidth or screenHeightAtual ~= screenHeight then
     -- Apresentação do movimento da Lua no menu --

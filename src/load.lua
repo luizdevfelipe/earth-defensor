@@ -50,6 +50,8 @@ function love.load()
   setinhasIco = love.graphics.newImage("assets/images/icons/setinhas.png")
   wIco = love.graphics.newImage("assets/images/icons/w.png")
   brilhoEstrela = love.graphics.newImage("assets/images/brilho.png")
+  moldura_vida = love.graphics.newImage("assets/images/moldura_vida.png")
+  terra_vida_bar = love.graphics.newImage("assets/images/terra_vida_bar.png")
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
   colisaoMeteoroideFrames = {
@@ -109,7 +111,7 @@ function resetaJogo()
       raio = (terraImg:getWidth()*escalaTerraImg) / 2,
       oriX = (terraImg:getWidth()*escalaTerraImg) / 2 ,
       oriY = (terraImg:getHeight()*escalaTerraImg) / 2,
-      vel = { valor = 400 }
+      vel = { valor = 200 }
   }
   --  Atributos da Terra --
   
@@ -138,7 +140,7 @@ function resetaJogo()
   orbitaLua = 0 -- valor usado para definir a posição atual da Lua
   
   velocidadeOrbita = { valor = 1.5 }
-  resistenciaLunar = { valor = 10 } -- valor padrão que indica quantos meteoritos a Lua resiste colidir até ficar lenta
+  resistenciaLunar = { valor = 16 } -- valor padrão que indica quantos meteoritos a Lua resiste colidir até ficar lenta
   eficienciaLunar = resistenciaLunar.valor -- variável durante o jogo, esse valor indica o momento de aplicar a lentidão
   taxaReducaoEficienciaLunar = { valor = 1 } -- valor padrão usado para "descontar" a eficiência quando colide
   tempoLentidaoLunar = { valor = 3.5 }  -- valor do tempo de lentidão aplicado sobre o cálculo da órbita lunar
@@ -151,6 +153,8 @@ function resetaJogo()
   duracaoAtracaoGravitacional = { valor = 2 * 60 } -- tempo padrão que a habilidade fica ativa
   tempoAtracaoGravitacionalAtiva = duracaoAtracaoGravitacional.valor -- variável que calcula o tempo ativo da habilidade
   distanciaAtracaoGravitacional = { valor = 300 }
+  distAtracaoGravLimite = 430
+  tempoAtivoAtracaoGravLimite = 4 * 60
   isAtracaoGravitacional = false
   velAtracaoGravitacional = { valor = 200 }
   
@@ -175,9 +179,9 @@ function resetaJogo()
     id = 0,
     tipo = "super",
     img = superImg,
-    vel = { valor = 85 },
+    vel = { valor = 45 },
     qtd = { valor = 0 }, -- possibilita passagem por referência --
-    delay = { valor = 3 }, -- intervalo padrão de criação
+    delay = { valor = 1.5 }, -- intervalo padrão de criação
     contagem = 1, -- variável de "cronometro" para uma nova criação
     dano = { valor = 1 },
     destruidos = 0,
@@ -190,9 +194,9 @@ function resetaJogo()
     id = 0,
     tipo = "normal",
     img = meteoroidesImgs.meteoroideImg,
-    vel = { valor = 120 },
+    vel = { valor = 60 },
     qtd = { valor = 3 }, -- tabela possibilita passagem por referência --
-    delay = { valor = 2 },
+    delay = { valor = 0.5 },
     contagem = 1,
     dano = { valor =  0.15 },
     destruidos = 0,
@@ -227,19 +231,28 @@ function resetaJogo()
       peso = 3
     },
     {
+      titulo = "Reconstrução Emergencial", 
+      descricao = "Pequenos reparos concedem %d%% da vida fundamental da Terra, isso afeta %d%% do tempo de recarga do Controle Gravitacional.", 
+      vantagem = 10, 
+      desvantagem = 5,
+      alvoVantagem = vidasTerra,
+      alvoDesvantagem = intervaloControleGravitacional,
+      peso = 6
+    },
+    {
       titulo = "Recuperação Total", 
-      descricao = "A Terra recebe toda da sua vida fundamental, como consequência a velocidade de inimigos dobra", 
+      descricao = "A Terra recebe toda da sua vida fundamental, como consequência a velocidade aumenta em 10%%", 
       vantagem = 1000, 
-      desvantagem = 100,
+      desvantagem = 10,
       alvoVantagem = vidasTerra,
       alvoDesvantagem = metricasMeteoroides.vel,
-      peso = 10
+      peso = 1
     },
     {
       titulo = "Máquinas Aceleradas", 
       descricao = "As máquinas usadas na recuperação de impactos passam a trabalhar %d%% mais rápido aumentando a taxa de regeneração, mas a poluição gerada contribui para os danos causados por Meteoroides em %d%%.", 
-      vantagem = 20, 
-      desvantagem = 25,
+      vantagem = 25, 
+      desvantagem = 5,
       alvoVantagem = taxaRegeneracao,
       alvoDesvantagem = metricasMeteoroides.dano,
       peso = 5
@@ -283,8 +296,8 @@ function resetaJogo()
     {
       titulo = "Magnetismo Lunar", 
       descricao = "Uma melhoria feita na Lua faz com que a intensidade da Atração Gravitacional aumente %d%% puxando inimigos mais distântes. Essa melhoria interfere no intervalo da habilidade que aumenta em %d%%.", 
-      vantagem = 35, 
-      desvantagem = 10,
+      vantagem = 20, 
+      desvantagem = 5,
       alvoVantagem = distanciaAtracaoGravitacional,
       alvoDesvantagem = intervaloAtracaoGravitacional,
       peso = 1
@@ -340,10 +353,6 @@ end
 -- Função chamada toda troca de onda --
 function resetaRodada()  
   -- Metricas Definidas de acordo com rodadas Fáceis, Médias e Difíceis --
-  if startGame == 2 then
-    -- caso seja 2 jogadores uma dificuldade a mais
-  end
-  
   if onda <= 10 then
     metricasSupermeteoroides.qtd.valor = 1
     metricasMeteoroides.qtd.valor = 3 + onda
@@ -358,6 +367,11 @@ function resetaRodada()
     percentualAumentoMetricas = 1 + ((onda+5)/100)
   end
   
+  -- caso seja 2 jogadores uma dificuldade a mais
+  if startGame == 2 then
+    percentualAumentoMetricas = percentualAumentoMetricas + (onda/100)
+  end
+    
   terra.vel.valor = terra.vel.valor * percentualAumentoMetricas  
   taxaRegeneracao.valor = taxaRegeneracao.valor * percentualAumentoMetricas
   
@@ -377,8 +391,8 @@ function resetaRodada()
   
   metricasMeteoroides.vel.valor = metricasMeteoroides.vel.valor  * percentualAumentoMetricas
   metricasMeteoroides.dano.valor = metricasMeteoroides.dano.valor * percentualAumentoMetricas
+  metricasMeteoroides.delay.valor = metricasMeteoroides.delay.valor * percentualAumentoMetricas
   metricasSupermeteoroides.vel.valor = metricasSupermeteoroides.vel.valor * percentualAumentoMetricas
-  
 end
 
 function resetaTemposAnimacaoIntro()

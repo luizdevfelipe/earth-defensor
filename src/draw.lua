@@ -400,6 +400,25 @@ function telaGameOver()
   local ondaX = centroJanelaX - ondaWidth / 2
   local ondaY = centroJanelaY * 0.6
   love.graphics.print("Onda Alcançada: " .. onda, ondaX, ondaY)
+  
+  -- Exibe o texto "Recorde" --
+  love.graphics.setFont(fontNormal)
+  local pontuacao = love.filesystem.read("pontos.txt")
+  local valores = {}
+  for valor in string.gmatch(pontuacao, "([^;]+)") do
+    table.insert(valores, tonumber(valor))
+  end
+  if startGame == 1 then
+    record = valores[1]
+  elseif startGame == 2 then
+    record = valores[2]
+  end
+  local recordWidth = love.graphics.getFont():getWidth("Máxima alcançada: " .. record)
+  local recordHeight = love.graphics.getFont():getHeight("Máxima alcançada: " .. record) - 10
+  local recordX = centroJanelaX - recordWidth / 2
+  local recordY = (centroJanelaY * 0.6) + 100
+  love.graphics.print("Máxima alcançada: " .. record, recordX, recordY)
+  
   -- Estatísticas da partida --
   love.graphics.setFont(fontNormal)
   local destruidosWidth = love.graphics.getFont():getWidth("Foram destruídos:")

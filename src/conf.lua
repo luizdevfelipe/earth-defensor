@@ -1,5 +1,5 @@
 function love.conf(t)  
-  t.identity = nil
+  t.identity = "earth_defensor/save"
   t.version = "0.10.1"
   t.console = false
   t.accelerometerjoystick = true

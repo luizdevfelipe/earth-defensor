@@ -241,11 +241,18 @@ function telaDePotencializadores()
     interior1QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
     textoSelecionarY
   )
-  underlineTextHover(
+  local hover1 = underlineTextHover(
     interior1QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
     textoSelecionarY - 8,
     love.graphics.getFont():getWidth("Selecionar"), 
     love.graphics.getFont():getHeight("Selecionar")
+  )
+  if hover1 then botaoSelectPotencializador = 1 end
+  keyboardSelectedText(
+    interior1QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
+    textoSelecionarY - 8, 
+    love.graphics.getFont():getWidth("Selecionar"),
+    botaoSelectPotencializador == 1
   )
   
   -- Exibe o 2º quadrado com a habilidade --
@@ -292,11 +299,18 @@ function telaDePotencializadores()
     larguraRetangulo - larguraBorda, 
     "center"
   )
-  underlineTextHover(
+  local hover2 = underlineTextHover(
     centralizadoX + larguraBorda / 2 + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
     textoSelecionarY - 8,
     love.graphics.getFont():getWidth("Selecionar"), 
     love.graphics.getFont():getHeight("Selecionar")
+  )
+  if hover2 then botaoSelectPotencializador = 2 end
+  keyboardSelectedText(
+    centralizadoX + larguraBorda / 2 + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
+    textoSelecionarY - 8, 
+    love.graphics.getFont():getWidth("Selecionar"),
+    botaoSelectPotencializador == 2
   )
  
  -- Exibe o 3º quadrado com a habilidade --
@@ -342,11 +356,18 @@ function telaDePotencializadores()
     larguraRetangulo - larguraBorda, 
     "center"
   )
-  underlineTextHover(
+  local hover3 = underlineTextHover(
     interior3QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
     textoSelecionarY - 8,
     love.graphics.getFont():getWidth("Selecionar"), 
     love.graphics.getFont():getHeight("Selecionar")
+  )
+  if hover3 then botaoSelectPotencializador = 3 end
+  keyboardSelectedText(
+    interior3QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
+    textoSelecionarY - 8, 
+    love.graphics.getFont():getWidth("Selecionar"),
+    botaoSelectPotencializador == 3
   )
  
   -- Verifica se selecionou a 1º habilidade -- 
@@ -518,7 +539,9 @@ function telaInicial()
   local umJogadorX = centroJanelaX - umJogadorWidth / 2
   local umJogadorY = centroJanelaY * 0.6
   love.graphics.print("Um Jogador", umJogadorX, umJogadorY)
-  underlineTextHover(umJogadorX, umJogadorY, umJogadorWidth, umJogadorHeight)
+  local hover1P = underlineTextHover(umJogadorX, umJogadorY, umJogadorWidth, umJogadorHeight)
+  if hover1P then botaoSelectModo = true end
+  keyboardSelectedText(umJogadorX, umJogadorY, umJogadorWidth, botaoSelectModo)
   
   -- Exibe o texto de "Dois Jogadores"
   local doisJogadoresWidth = love.graphics.getFont():getWidth("Dois Jogadores")
@@ -526,7 +549,9 @@ function telaInicial()
   local doisJogadoresX = centroJanelaX - doisJogadoresWidth / 2
   local doisJogadoresY = centroJanelaY 
   love.graphics.print("Dois Jogadores", doisJogadoresX, doisJogadoresY)
-  underlineTextHover(doisJogadoresX, doisJogadoresY, doisJogadoresWidth, doisJogadoresHeight)
+  local hover2P = underlineTextHover(doisJogadoresX, doisJogadoresY, doisJogadoresWidth, doisJogadoresHeight)
+  if hover2P then botaoSelectModo = false end
+  keyboardSelectedText(doisJogadoresX, doisJogadoresY, doisJogadoresWidth, not botaoSelectModo)
   
   -- Botão de créditos que reapresenta a animação inicial --
   love.graphics.setFont(fontNormal)
@@ -776,7 +801,9 @@ function underlineTextHover(x, y, w, h)
   if xMouse >= x and xMouse < x + w and yMouse >= y and yMouse < y + h then
     love.graphics.setColor(255, 255, 255)
     love.graphics.rectangle("fill", x, y + h, w, 5)
+    return true
   end
+  return false
 end
 
 -- Apresenta o "desfoque de fundo"
@@ -881,5 +908,12 @@ function rotacaoInimigo(inimigo, vel)
     if vel == nil then vel = inimigo.velocidadeRotacao end
     inimigo.rotacao = inimigo.rotacao + vel
     if inimigo.rotacao >= 360 then inimigo.rotacao = 0 end
+  end
+end
+
+function keyboardSelectedText(x, y, width, active)
+  if active then
+    love.graphics.print("|", x - love.graphics.getFont():getWidth('|'), y)
+    love.graphics.print("|", x + width + 5, y)
   end
 end

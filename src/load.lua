@@ -100,6 +100,8 @@ function resetaJogo()
   pressionouW = false
   pressionouSetas = false
   transparenciaTextoInfo = 255 -- transparência colocada sobre o texto --
+  botaoSelectModo = true -- varia entre os modos de jogo no menu usando teclado
+  botaoSelectPotencializador = 2 -- varia entre a escolha de um novo potencializador
   
    --  Atributos da Terra --
   terraDestruidaSprite = 0
@@ -391,7 +393,6 @@ function resetaRodada()
   
   metricasMeteoroides.vel.valor = metricasMeteoroides.vel.valor  * percentualAumentoMetricas
   metricasMeteoroides.dano.valor = metricasMeteoroides.dano.valor * percentualAumentoMetricas
-  metricasMeteoroides.delay.valor = metricasMeteoroides.delay.valor * percentualAumentoMetricas
   metricasSupermeteoroides.vel.valor = metricasSupermeteoroides.vel.valor * percentualAumentoMetricas
 end
 

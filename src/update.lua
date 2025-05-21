@@ -285,9 +285,14 @@ function colisaoDetritos()
     
     for id, meteoroide in pairs(meteoroides) do
       if isColisao(detrito.x, detrito.y, detritoImg:getHeight() / 2,
-       meteoroide.x, meteoroide.y, meteoroidesImgs.meteoroideImg:getHeight() / 2) then
-       metricasDetrito.destruidos = metricasDetrito.destruidos + 1
-       table.remove(detritos, i)
+        meteoroide.x, meteoroide.y, meteoroidesImgs.meteoroideImg:getHeight() / 2) then
+        metricasDetrito.destruidos = metricasDetrito.destruidos + 1
+        somColisao:stop()
+        somColisao:play()
+        table.remove(detritos, i)
+        meteoroides[id] = nil
+        metricasMeteoroides.destruidos = metricasMeteoroides.destruidos + 1
+        table.insert(animacoesColisoes, {x = meteoroide.x, y = meteoroide.y, frame = 1, delay = 10, angulo = math.atan2(meteoroide.y - detrito.y, meteoroide.x - detrito.x)}) 
      end
     end    
   end
@@ -585,6 +590,57 @@ function love.keypressed(key)
   if key == "f11" then
     toggleFullscreen()
   end
+  
+  if key == "down" then
+    if startGame == 0 then
+      botaoSelectModo = false
+    end
+  end
+  
+  if key == "up" then
+    if startGame == 0 then
+      botaoSelectModo = true      
+    end
+  end
+  
+  if key == "left" then
+    if trocaDeFase then
+      if botaoSelectPotencializador > 1 then
+        botaoSelectPotencializador = botaoSelectPotencializador -1
+      else
+        botaoSelectPotencializador = 3
+      end
+    end
+  end
+  
+  if key == "right" then
+    if trocaDeFase then
+      if botaoSelectPotencializador < 3 then
+        botaoSelectPotencializador = botaoSelectPotencializador +1
+      else
+        botaoSelectPotencializador = 1
+      end
+    end
+  end
+  
+  if key == "return" then
+    if startGame == 0 then
+      if botaoSelectModo then
+        startGame = 1
+      else
+        startGame = 2
+      end
+    elseif trocaDeFase and not pause then
+      if botaoSelectPotencializador == 1 then
+        potencializadorEscolhido(potencializadoresSorteados[1])
+      elseif botaoSelectPotencializador == 2 then
+        potencializadorEscolhido(potencializadoresSorteados[2])
+      else
+        potencializadorEscolhido(potencializadoresSorteados[3])
+      end
+    end
+  end
+    
 end
 
 -- Função para retornar N valores aleatórios com probabilidades diferentes

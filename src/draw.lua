@@ -913,7 +913,7 @@ end
 
 function keyboardSelectedText(x, y, width, active)
   if active then
-    love.graphics.print("|", x - love.graphics.getFont():getWidth('|'), y)
-    love.graphics.print("|", x + width + 5, y)
+    love.graphics.print("-|", x - love.graphics.getFont():getWidth('-|'), y)
+    love.graphics.print("|-", x + width + 5, y)
   end
 end

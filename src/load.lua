@@ -1,6 +1,7 @@
 -- Carregamento de variáveis que serão utilizadas de maneira constante
 -- Ou devem ser resetadas após a finalização do jogo
 function love.load() 
+  debug = false -- variável que permite pular de fase com "j"
   -- Definição de variáveis com o tamanho da tela do jogo --
   screenWidth, screenHeight = love.window.getMode()
   screenWidthAtual, screenHeightAtual = love.window.getMode()
@@ -102,6 +103,7 @@ function resetaJogo()
   transparenciaTextoInfo = 255 -- transparência colocada sobre o texto --
   botaoSelectModo = true -- varia entre os modos de jogo no menu usando teclado
   botaoSelectPotencializador = 2 -- varia entre a escolha de um novo potencializador
+  tonVermelho = 255 -- aplica filtro de cor vermelha em rodadas mais difíceis
   
    --  Atributos da Terra --
   terraDestruidaSprite = 0
@@ -367,20 +369,28 @@ function resetaRodada()
   if onda <= 10 then
     metricasSupermeteoroides.qtd.valor = 1
     metricasMeteoroides.qtd.valor = 3 + onda
-    percentualAumentoMetricas = 1 + (onda/100)
+    percentualAumentoMetricas = 1
   elseif onda <= 20 then
     metricasSupermeteoroides.qtd.valor = 2 
-    metricasMeteoroides.qtd.valor = round(1.5 * onda)
-    percentualAumentoMetricas = 1 + ((onda+1)/100)
+    metricasMeteoroides.qtd.valor = round(1.2 * onda)
+    percentualAumentoMetricas = 1 + (2/100)
+    
+    if tonVermelho > 10 then
+      tonVermelho = tonVermelho - 10
+     end 
   else
     metricasSupermeteoroides.qtd.valor = 3
     metricasMeteoroides.qtd.valor = round(2 * onda)
-    percentualAumentoMetricas = 1 + ((onda+5)/100)
+    percentualAumentoMetricas = 1 + (5/100)
+    
+    if tonVermelho > 10 then
+      tonVermelho = tonVermelho - 10
+     end 
   end
   
   -- caso seja 2 jogadores uma dificuldade a mais
   if startGame == 2 then
-    percentualAumentoMetricas = percentualAumentoMetricas + (onda/100)
+    percentualAumentoMetricas = percentualAumentoMetricas + (1/100)
   end
     
   terra.vel.valor = terra.vel.valor * percentualAumentoMetricas  
@@ -388,10 +398,10 @@ function resetaRodada()
   
   velocidadeOrbita.valor = velocidadeOrbita.valor * percentualAumentoMetricas
   resistenciaLunar.valor = resistenciaLunar.valor * percentualAumentoMetricas
-  taxaReducaoEficienciaLunar.valor = taxaReducaoEficienciaLunar.valor * percentualAumentoMetricas
-  tempoLentidaoLunar.valor = tempoLentidaoLunar.valor * percentualAumentoMetricas
+  taxaReducaoEficienciaLunar.valor = taxaReducaoEficienciaLunar.valor * percentualAumentoMetricas -- nerf
+  tempoLentidaoLunar.valor = tempoLentidaoLunar.valor * percentualAumentoMetricas -- nerf
   taxaReducaoTempoLentidaoLunar.valor = taxaReducaoTempoLentidaoLunar.valor * percentualAumentoMetricas
-  efeitoLentidao.valor = efeitoLentidao.valor * percentualAumentoMetricas
+  efeitoLentidao.valor = efeitoLentidao.valor * percentualAumentoMetricas -- nerf
   
   duracaoAtracaoGravitacional.valor = duracaoAtracaoGravitacional.valor * percentualAumentoMetricas
   distanciaAtracaoGravitacional.valor = distanciaAtracaoGravitacional.valor * percentualAumentoMetricas

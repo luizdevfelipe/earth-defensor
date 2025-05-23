@@ -299,7 +299,7 @@ function colisaoDetritos()
 end
 
 function verificaTrocaDeFase()
-  if (round(metricasSupermeteoroides.qtd.valor) == 0 and next(superMeteoroides) == nil) and (round(metricasMeteoroides.qtd.valor) == 0 and next(meteoroides) == nil) then
+  if ((love.keyboard.isDown('j') and debug) or ( round(metricasSupermeteoroides.qtd.valor) == 0 and next(superMeteoroides) == nil) and (round(metricasMeteoroides.qtd.valor) == 0 and next(meteoroides) == nil)) then
     trocaDeFase = true
     
     for i = 1, #potencializadores do 
@@ -327,7 +327,7 @@ function regeneracaoPassiva(dt)
   -- Verifica se o jogador perdeu
   if vidasTerra.valor <= 0 then
     vidasTerra.valor = 0
-    gameOver = true
+    gameOver = not debug  
     recordPontuacao()
   end
   -- Lógica de regeneração da vida da Terra

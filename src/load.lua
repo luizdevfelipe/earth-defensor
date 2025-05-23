@@ -269,6 +269,15 @@ function resetaJogo()
       peso = 6
     },
     {
+      titulo = "Blindagem da Terra", 
+      descricao = "Uma camada extra de proteção reduz %d%% dos dados causados por meteoroides, os esforços dedicados a sua construção afetam %d%% da taxa de recuperação de vida.", 
+      vantagem = -15, 
+      desvantagem = -4,
+      alvoVantagem = metricasMeteoroides.dano,
+      alvoDesvantagem = taxaRegeneracao,
+      peso = 5
+    },
+    {
       titulo = "Construtores Lunares", 
       descricao = "Construtores são enviados para Lua, isso aumenta a recuperação contra lentidão aplicada sobre ela em %d%%, com menos contrutores a recuperação da vida da Terra é reduzida em %d%%.", 
       vantagem = 20, 

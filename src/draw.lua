@@ -3,6 +3,7 @@ function love.draw()
     desenharIntroducao()
   else 
     --  Carregamento da imagem da Galáxia  --
+    love.graphics.setColor(255, tonVermelho, tonVermelho)
     love.graphics.draw(fundo.imagem, fundo.posX, fundo.posY, 0, fundo.tamX, fundo.tamY, fundo.oriX, fundo.oriY)
     
     -- Carregamento das estrelas no céu --
@@ -133,7 +134,7 @@ function efeitoEstrelas()
     estrela.rotacao = estrela.rotacao + 0.01
     if estrela.rotacao >= 360 then estrela.rotacao = 0 end
     
-    love.graphics.setColor(255, 255, 255, estrela.brilhoAtual)
+    love.graphics.setColor(255, tonVermelho, tonVermelho, estrela.brilhoAtual)
     love.graphics.draw(brilhoEstrela, estrela.x, estrela.y, estrela.rotacao, 0.1, 0.1, brilhoEstrela:getWidth()/2, brilhoEstrela:getHeight()/2)
     
   end

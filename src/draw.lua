@@ -2,8 +2,8 @@ function love.draw()
   if musicaIntroducao:isPlaying() then
     desenharIntroducao()
   else 
-    --  Carregamento da imagem da Galáxia  --
-    love.graphics.setColor(255, tonVermelho, tonVermelho)
+    --  Carregamento da imagem da Galáxia  --    
+    love.graphics.setColor(255, (vidasTerra.valor * 255) / 3, (vidasTerra.valor * 255) / 3)
     love.graphics.draw(fundo.imagem, fundo.posX, fundo.posY, 0, fundo.tamX, fundo.tamY, fundo.oriX, fundo.oriY)
     
     -- Carregamento das estrelas no céu --
@@ -134,7 +134,7 @@ function efeitoEstrelas()
     estrela.rotacao = estrela.rotacao + 0.01
     if estrela.rotacao >= 360 then estrela.rotacao = 0 end
     
-    love.graphics.setColor(255, tonVermelho, tonVermelho, estrela.brilhoAtual)
+    love.graphics.setColor(255, (vidasTerra.valor * 255) / 3, (vidasTerra.valor * 255) / 3, estrela.brilhoAtual)
     love.graphics.draw(brilhoEstrela, estrela.x, estrela.y, estrela.rotacao, 0.1, 0.1, brilhoEstrela:getWidth()/2, brilhoEstrela:getHeight()/2)
     
   end
@@ -192,6 +192,7 @@ function telaDePotencializadores()
   local interior3QuadradoX = centralizadoX + larguraRetangulo + espacoRetang + larguraBorda / 2
   local textoSelecionarY = centroJanelaY + alturaRetangulo / 2 - love.graphics.getFont():getHeight("Selecionar") - 10
   local marginTopTexto = - 60
+  local cycleImgY = screenHeight - cycleIco:getHeight() + 30
     
   desfoqueFundo(240)
   -- Exibe o texto "Escolha seu novo poder"
@@ -371,6 +372,17 @@ function telaDePotencializadores()
     botaoSelectPotencializador == 3
   )
  
+  -- Exibe o botão de troca de Habilidades --
+  if canCycle then
+    if isMouseHover(centroJanelaX - cycleIco:getWidth()/2, cycleImgY - cycleIco:getHeight()/2, cycleIco:getWidth(), cycleIco:getHeight()) then 
+      cycleRot = 90 
+    else
+      cycleRot = 0
+    end
+    love.graphics.draw(cycleIco, centroJanelaX, cycleImgY, math.rad(cycleRot), 1, 1, cycleIco:getWidth()/2, cycleIco:getHeight()/2)
+  end
+  
+ 
   -- Verifica se selecionou a 1º habilidade -- 
   if isCliqueEmTexto(
     interior1QuadradoX + (larguraRetangulo - larguraBorda - love.graphics.getFont():getWidth("Selecionar")) / 2, 
@@ -403,7 +415,19 @@ function telaDePotencializadores()
     botaoUmSolto = false
     potencializadorEscolhido(potencializadoresSorteados[3])
   end 
- 
+  
+  -- Verifica se selecionou a "Novas habilidades" --   
+  if isCliqueEmTexto(
+    centroJanelaX - cycleIco:getWidth()/2, 
+    cycleImgY - cycleIco:getHeight()/2,
+    cycleIco:getWidth(), 
+    cycleIco:getHeight()
+    ) and botaoUmSolto and canCycle then
+    botaoUmSolto = false
+    potencializadoresSorteados = sortearUnicosComPeso(3, pesos)
+    canCycle = false
+  end 
+  
   love.graphics.setColor(255, 255, 255, 255)
 end
 
@@ -797,11 +821,18 @@ end
 
 -- função que adiciona um "underline" sobre o texto que o usuário passa o mouse
 function underlineTextHover(x, y, w, h)
+  if isMouseHover(x, y, w, h) then
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.rectangle("fill", x, y + h, w, 5)
+    return true
+  end
+  return false
+end
+
+function isMouseHover(x, y, w, h)
   xMouse = love.mouse.getX()
   yMouse = love.mouse.getY()
   if xMouse >= x and xMouse < x + w and yMouse >= y and yMouse < y + h then
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.rectangle("fill", x, y + h, w, 5)
     return true
   end
   return false

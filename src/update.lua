@@ -299,8 +299,9 @@ function colisaoDetritos()
 end
 
 function verificaTrocaDeFase()
-  if ((love.keyboard.isDown('j') and debug) or ( round(metricasSupermeteoroides.qtd.valor) == 0 and next(superMeteoroides) == nil) and (round(metricasMeteoroides.qtd.valor) == 0 and next(meteoroides) == nil)) then
+  if ((love.keyboard.isDown('j') and debug) or (round(metricasSupermeteoroides.qtd.valor) == 0 and next(superMeteoroides) == nil) and (round(metricasMeteoroides.qtd.valor) == 0 and next(meteoroides) == nil)) then
     trocaDeFase = true
+    canCycle = true
     
     for i = 1, #potencializadores do 
       pesos[i] = potencializadores[i].peso

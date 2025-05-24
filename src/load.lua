@@ -1,7 +1,7 @@
 -- Carregamento de variáveis que serão utilizadas de maneira constante
 -- Ou devem ser resetadas após a finalização do jogo
 function love.load() 
-  debug = false -- variável que permite pular de fase com "j"
+  debug = true -- variável que permite pular de fase com "j"
   -- Definição de variáveis com o tamanho da tela do jogo --
   screenWidth, screenHeight = love.window.getMode()
   screenWidthAtual, screenHeightAtual = love.window.getMode()
@@ -53,6 +53,7 @@ function love.load()
   brilhoEstrela = love.graphics.newImage("assets/images/brilho.png")
   moldura_vida = love.graphics.newImage("assets/images/moldura_vida.png")
   terra_vida_bar = love.graphics.newImage("assets/images/terra_vida_bar.png")
+  cycleIco = love.graphics.newImage("assets/images/icons/cycle.png")
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
   colisaoMeteoroideFrames = {
@@ -103,7 +104,8 @@ function resetaJogo()
   transparenciaTextoInfo = 255 -- transparência colocada sobre o texto --
   botaoSelectModo = true -- varia entre os modos de jogo no menu usando teclado
   botaoSelectPotencializador = 2 -- varia entre a escolha de um novo potencializador
-  tonVermelho = 255 -- aplica filtro de cor vermelha em rodadas mais difíceis
+  cycleRot = 0 -- variável de rotação suave do botão de ciclo de habilidades
+  canCycle = false -- variável que permite fazer a troca de potencializadores
   
    --  Atributos da Terra --
   terraDestruidaSprite = 0
@@ -245,8 +247,8 @@ function resetaJogo()
     },
     {
       titulo = "Recuperação Total", 
-      descricao = "A Terra recebe toda da sua vida fundamental, como consequência a velocidade aumenta em 10%%", 
-      vantagem = 1000, 
+      descricao = "A Terra recebe toda da sua vida fundamental, como consequência a velocidade de inimigos aumenta em 10%%", 
+      vantagem = 3000, 
       desvantagem = 10,
       alvoVantagem = vidasTerra,
       alvoDesvantagem = metricasMeteoroides.vel,
@@ -374,18 +376,10 @@ function resetaRodada()
     metricasSupermeteoroides.qtd.valor = 2 
     metricasMeteoroides.qtd.valor = round(1.2 * onda)
     percentualAumentoMetricas = 1 + (2/100)
-    
-    if tonVermelho > 10 then
-      tonVermelho = tonVermelho - 10
-     end 
   else
     metricasSupermeteoroides.qtd.valor = 3
     metricasMeteoroides.qtd.valor = round(2 * onda)
     percentualAumentoMetricas = 1 + (5/100)
-    
-    if tonVermelho > 10 then
-      tonVermelho = tonVermelho - 10
-     end 
   end
   
   -- caso seja 2 jogadores uma dificuldade a mais

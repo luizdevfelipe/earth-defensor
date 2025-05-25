@@ -1,7 +1,7 @@
 -- Carregamento de variáveis que serão utilizadas de maneira constante
 -- Ou devem ser resetadas após a finalização do jogo
 function love.load() 
-  debug = true -- variável que permite pular de fase com "j"
+  debug = false -- variável que permite pular de fase com "j"
   -- Definição de variáveis com o tamanho da tela do jogo --
   screenWidth, screenHeight = love.window.getMode()
   screenWidthAtual, screenHeightAtual = love.window.getMode()
@@ -62,7 +62,7 @@ function love.load()
     love.graphics.newQuad(160, 0, 153, 158, 498, 158),
     love.graphics.newQuad(313, 0, 185, 158, 498, 158)
   }
-  introducao = false  -- variável que indica que a animação ainda deve iniciar
+  introducao = true  -- variável que indica que a animação ainda deve iniciar
   resetaTemposAnimacaoIntro()
   carregamentoEstrelas()
   -- Carregamento de variáveis para a Sombra da Lua
@@ -383,11 +383,10 @@ function resetaRodada()
   end
   
   -- caso seja 2 jogadores uma dificuldade a mais
-  if startGame == 2 then
+  if startGame == 2 and onda >= 11 then
     percentualAumentoMetricas = percentualAumentoMetricas + (1/100)
   end
     
-  terra.vel.valor = terra.vel.valor * percentualAumentoMetricas  
   taxaRegeneracao.valor = taxaRegeneracao.valor * percentualAumentoMetricas
   
   velocidadeOrbita.valor = velocidadeOrbita.valor * percentualAumentoMetricas

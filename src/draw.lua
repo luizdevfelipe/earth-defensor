@@ -98,7 +98,7 @@ function love.draw()
     end
     
     -- Tela inicial
-    if startGame == 0 and not optionsScreen then
+    if startGame == 0 and not optionsScreen and not skinScreen then
       telaInicial() 
     end
     
@@ -107,6 +107,11 @@ function love.draw()
       telaDeOpcoes()
     end
     
+    -- Tela de Skins --
+    if skinScreen then
+      telaDeSkins()
+    end  
+        
     --Tela de Pause
      if pause and not optionsScreen then    
       telaDePause()
@@ -599,6 +604,9 @@ function telaInicial()
   -- Exibe e verifica se clicou sobre o botão --
   botaoDeOpcoes()
   
+  -- Exibe e verifica se cicou sobre o botão --
+  botaoDeSkins()
+  
   -- verifica se clicou sobre "Um Jogador"
   if isCliqueEmTexto(umJogadorX, umJogadorY, umJogadorWidth, umJogadorHeight) and botaoUmSolto then
     botaoUmSolto = false
@@ -638,6 +646,21 @@ function botaoDeOpcoes()
   if isCliqueEmTexto(optionsIcoX, optionsIcoY, larguraOptionsIco, alturaOptionsIco) and botaoUmSolto then
     botaoUmSolto = false
     optionsScreen = true
+  end  
+end
+
+function botaoDeSkins()
+  -- Exibe o botão de opções --
+  local larguraSkinIco = skinIco:getWidth()
+  local alturaSkinIco = skinIco:getHeight()
+  local skinIcoX = screenWidth - larguraSkinIco - 180
+  local skinIcoY = screenHeight - alturaSkinIco -30
+  love.graphics.draw(skinIco, skinIcoX, skinIcoY, 0, 1, 1)
+  
+  -- verifica se clicou sobre o "Botão de opções" -- 
+  if isCliqueEmTexto(skinIcoX, skinIcoY, larguraSkinIco, alturaSkinIco) and botaoUmSolto then
+    botaoUmSolto = false
+    skinScreen = true
   end  
 end
 
@@ -726,6 +749,217 @@ function telaDeOpcoes()
     optionsScreen = false
   end  
   
+end
+
+-- Exibe a tela de escolha de skins para personagens
+function telaDeSkins()
+  desfoqueFundo(180)
+  local largura = 300
+  local altura = 200
+  
+  local retanguloPosX = centroJanelaX - largura*2 
+  local retanguloPosY = 250
+  
+  local retangulo2PosX =  centroJanelaX - largura/2
+  local skinLua2PosX = retangulo2PosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
+  
+  local retangulo3PosX = centroJanelaX + largura
+  local skinLua3PosX = retangulo3PosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
+  
+  local retangulo2PosY = 500
+  local skinSegundaLinhaY = retangulo2PosY + lua.imagem:getHeight()*escalaLuaImg/2
+  
+  local skinLuaPosX = retanguloPosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
+  local skinLuaPosY = retanguloPosY + lua.imagem:getHeight()*escalaLuaImg/2
+  
+  love.graphics.setFont(fonteNegrito)
+  -- Exibe o texto "Skins" --
+  local skinsWidth = love.graphics.getFont():getWidth("Skins")
+  local skinsHeight = love.graphics.getFont():getHeight("Skins") - 10
+  local skinsX = centroJanelaX - skinsWidth / 2
+  local skinsY = centroJanelaY * 0.1
+  love.graphics.print("Skins", skinsX, skinsY)
+  
+  -- Texto LUA SANGUE --
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setLineWidth(8)
+  love.graphics.rectangle('line', retanguloPosX, retanguloPosY, largura, altura)
+  love.graphics.setColor(0, 0, 0, 220)
+  love.graphics.rectangle('fill', retanguloPosX+4, retanguloPosY+4, largura-8, altura-8)
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  love.graphics.printf( 
+    'Lua de Sangue',
+    retanguloPosX + 10,
+    retanguloPosY + 10,
+    largura - 10,
+    "center"
+  )
+  
+  love.graphics.setColor(180, 0, 0)
+  love.graphics.draw(lua.imagem, skinLuaPosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
+  love.graphics.setColor(255, 255, 255)
+  
+  love.graphics.printf( 
+    'Mínimo Onda: 15',
+    retanguloPosX + 10,
+    retanguloPosY + altura - 25,
+    largura - 10,
+    "center"
+  )
+  
+  -- Texto LUA AZUL -- 
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setLineWidth(8)
+  love.graphics.rectangle('line', retangulo2PosX, retanguloPosY, largura, altura)
+  love.graphics.setColor(0, 0, 0, 220)
+  love.graphics.rectangle('fill', retangulo2PosX+4, retanguloPosY+4, largura-8, altura-8)
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  love.graphics.printf( 
+    'Lua Azul',
+    retangulo2PosX + 10,
+    retanguloPosY + 10,
+    largura - 10,
+    "center"
+  )
+  
+  love.graphics.setColor(50, 50, 130)
+  love.graphics.draw(lua.imagem, skinLua2PosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
+  love.graphics.setColor(255, 255, 255)
+  
+  love.graphics.printf( 
+    'Mínimo Onda: 25',
+    retangulo2PosX + 10,
+    retanguloPosY + altura - 25,
+    largura - 10,
+    "center"
+  )
+  
+  -- Texto LUA RADIOATIVA -- 
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setLineWidth(8)
+  love.graphics.rectangle('line', retangulo3PosX, retanguloPosY, largura, altura)
+  love.graphics.setColor(0, 0, 0, 220)
+  love.graphics.rectangle('fill', retangulo3PosX+4, retanguloPosY+4, largura-8, altura-8)
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  love.graphics.printf( 
+    'Lua Radioativa',
+    retangulo3PosX + 10,
+    retanguloPosY + 10,
+    largura - 10,
+    "center"
+  )
+  
+  love.graphics.setColor(100, 230, 100)
+  love.graphics.draw(lua.imagem, skinLua3PosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
+  love.graphics.setColor(255, 255, 255)
+  
+  love.graphics.printf( 
+    'Mínimo Onda: 35',
+    retangulo3PosX + 10,
+    retanguloPosY + altura - 25,
+    largura - 10,
+    "center"
+  )
+  
+  -- Texto TERRA GELADA -- 
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setLineWidth(8)
+  love.graphics.rectangle('line', retanguloPosX, retangulo2PosY, largura, altura)
+  love.graphics.setColor(0, 0, 0, 220)
+  love.graphics.rectangle('fill', retanguloPosX+4, retangulo2PosY+4, largura-8, altura-8)
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  love.graphics.printf( 
+    'Terra Gelada',
+    retanguloPosX + 10,
+    retangulo2PosY + 10,
+    largura - 10,
+    "center"
+  )
+  
+  love.graphics.setColor(100, 230, 100)
+  love.graphics.draw(terra.imagem, skinLuaPosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
+  love.graphics.setColor(255, 255, 255)
+  
+  love.graphics.printf( 
+    'Mínimo Onda: 20',
+    retanguloPosX + 10,
+    retangulo2PosY + altura - 25,
+    largura - 10,
+    "center"
+  )
+  
+  -- Texto TERRA SUBMERSA -- 
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setLineWidth(8)
+  love.graphics.rectangle('line', retangulo2PosX, retangulo2PosY, largura, altura)
+  love.graphics.setColor(0, 0, 0, 220)
+  love.graphics.rectangle('fill', retangulo2PosX+4, retangulo2PosY+4, largura-8, altura-8)
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  love.graphics.printf( 
+    'Terra Submersa',
+    retangulo2PosX + 10,
+    retangulo2PosY + 10,
+    largura - 10,
+    "center"
+  )
+  
+  love.graphics.setColor(100, 230, 100)
+  love.graphics.draw(terra.imagem, skinLua2PosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
+  love.graphics.setColor(255, 255, 255)
+  
+  love.graphics.printf( 
+    'Mínimo Onda: 35',
+    retangulo2PosX + 10,
+    retangulo2PosY + altura - 25,
+    largura - 10,
+    "center"
+  )
+  
+   -- Texto TERRA EM CHAMAS -- 
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setLineWidth(8)
+  love.graphics.rectangle('line', retangulo3PosX, retangulo2PosY, largura, altura)
+  love.graphics.setColor(0, 0, 0, 220)
+  love.graphics.rectangle('fill', retangulo3PosX+4, retangulo2PosY+4, largura-8, altura-8)
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  love.graphics.printf( 
+    'Terra em Chamas',
+    retangulo3PosX + 10,
+    retangulo2PosY + 10,
+    largura - 10,
+    "center"
+  )
+  
+  love.graphics.setColor(100, 230, 100)
+  love.graphics.draw(terra.imagem, skinLua3PosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
+  love.graphics.setColor(255, 255, 255)
+  
+  love.graphics.printf( 
+    'Mínimo Onda: 45',
+    retangulo3PosX + 10,
+    retangulo2PosY + altura - 25,
+    largura - 10,
+    "center"
+  )
+  
+  -- Exibe o botão de retorno --
+  local larguraReturnIco = returnIco:getWidth()
+  local alturaReturnIco = returnIco:getHeight()
+  local returnIcoX = screenWidth - larguraReturnIco -30
+  local returnIcoY = screenHeight - alturaReturnIco -30
+  love.graphics.draw(returnIco, returnIcoX, returnIcoY, 0, 1, 1)
+  
+  -- verifica se clicou sobre o "Botão de retorno" -- 
+  if isCliqueEmTexto(returnIcoX, returnIcoY, larguraReturnIco, alturaReturnIco) and botaoUmSolto then
+    botaoUmSolto = false
+    skinScreen = false
+  end  
 end
 
 function telaDePause()

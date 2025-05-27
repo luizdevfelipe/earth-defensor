@@ -54,6 +54,7 @@ function love.load()
   moldura_vida = love.graphics.newImage("assets/images/moldura_vida.png")
   terra_vida_bar = love.graphics.newImage("assets/images/terra_vida_bar.png")
   cycleIco = love.graphics.newImage("assets/images/icons/cycle.png")
+  skinIco = love.graphics.newImage("assets/images/icons/skin.png")
   -- Carregamentos de arquivos da pasta assets --
   -- Carregamento das variáveis da Animação
   colisaoMeteoroideFrames = {
@@ -91,6 +92,7 @@ function love.load()
   resetaJogo()
   botaoUmSolto = true
   optionsScreen = false
+  skinScreen = false
   isGameMusic = true
   volumeGeral = 0.5
   alterarVolume() -- função que altera o volume de todos os aúdios

@@ -462,11 +462,7 @@ function telaGameOver()
   
   -- Exibe o texto "Recorde" --
   love.graphics.setFont(fontNormal)
-  local pontuacao = love.filesystem.read("pontos.txt")
-  local valores = {}
-  for valor in string.gmatch(pontuacao, "([^;]+)") do
-    table.insert(valores, tonumber(valor))
-  end
+  local valores = leituraPontuacao()
   if startGame == 1 then
     record = valores[1]
   elseif startGame == 2 then
@@ -763,6 +759,9 @@ end
 function telaDeSkins()
   desfoqueFundo(180)
   
+  valores = leituraPontuacao()
+  local maiorOnda = valores[1]
+ 
   local largura = 300
   local altura = 180
   
@@ -799,6 +798,35 @@ function telaDeSkins()
   local skinLuaPosX = retanguloPosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
   local skinLuaPosY = retanguloPosY + lua.imagem:getHeight()*escalaLuaImg/2
   
+  function isSkinSelecionadaTexto(skinSelecionada, posicaoSkin, ondaMinima, posX, posY)
+    if skinSelecionada == posicaoSkin then
+      love.graphics.setColor(34, 177, 76)
+      love.graphics.printf( 
+        'Selecionado',
+        posX + 10,
+        posY + altura - 25,
+        largura - 10,
+        "center"
+      )
+    elseif maiorOnda >= ondaMinima then
+      love.graphics.printf( 
+        'Selecionar',
+        posX + 10,
+        posY + altura - 25,
+        largura - 10,
+        "center"
+      )
+    else 
+      love.graphics.printf( 
+      'Mínimo Onda: '..ondaMinima,
+      posX + 10,
+      posY + altura - 25,
+      largura - 10,
+      "center"
+      )
+    end
+  end
+  
   love.graphics.setFont(fonteNegrito)
   -- Exibe o texto "Skins" --
   local skinsWidth = love.graphics.getFont():getWidth("Skins")
@@ -827,13 +855,7 @@ function telaDeSkins()
   love.graphics.draw(lua.imagem, skinLuaPosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  love.graphics.printf( 
-    'Mínimo Onda: 15',
-    retanguloPosX + 10,
-    retanguloPosY + altura - 25,
-    largura - 10,
-    "center"
-  )
+  isSkinSelecionadaTexto(skinLua, 1, 15, retanguloPosX, retanguloPosY)
   
   -- Texto LUA AZUL -- 
   love.graphics.setColor(255, 255, 255)
@@ -855,13 +877,7 @@ function telaDeSkins()
   love.graphics.draw(lua.imagem, skinLua2PosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  love.graphics.printf( 
-    'Mínimo Onda: 25',
-    retangulo2PosX + 10,
-    retanguloPosY + altura - 25,
-    largura - 10,
-    "center"
-  )
+  isSkinSelecionadaTexto(skinLua, 2, 25, retangulo2PosX, retanguloPosY)
   
   -- Texto LUA DOURADA -- 
   love.graphics.setColor(255, 255, 255)
@@ -883,13 +899,7 @@ function telaDeSkins()
   love.graphics.draw(lua.imagem, skinLua3PosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  love.graphics.printf( 
-    'Mínimo Onda: 35',
-    retangulo3PosX + 10,
-    retanguloPosY + altura - 25,
-    largura - 10,
-    "center"
-  )
+  isSkinSelecionadaTexto(skinLua, 3, 35, retangulo3PosX, retanguloPosY)
   
   -- Texto TERRA GELADA -- 
   love.graphics.setColor(255, 255, 255)
@@ -911,13 +921,7 @@ function telaDeSkins()
   love.graphics.draw(terra.imagem, skinLuaPosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  love.graphics.printf( 
-    'Mínimo Onda: 20',
-    retanguloPosX + 10,
-    retangulo2PosY + altura - 25,
-    largura - 10,
-    "center"
-  )
+  isSkinSelecionadaTexto(skinTerra, 1, 20, retanguloPosX, retangulo2PosY)
   
   -- Texto TERRA SUBMERSA -- 
   love.graphics.setColor(255, 255, 255)
@@ -939,13 +943,7 @@ function telaDeSkins()
   love.graphics.draw(terra.imagem, skinLua2PosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  love.graphics.printf( 
-    'Mínimo Onda: 35',
-    retangulo2PosX + 10,
-    retangulo2PosY + altura - 25,
-    largura - 10,
-    "center"
-  )
+  isSkinSelecionadaTexto(skinTerra, 2, 30, retangulo2PosX, retangulo2PosY)
   
    -- Texto TERRA RADIOATIVA -- 
   love.graphics.setColor(255, 255, 255)
@@ -967,13 +965,7 @@ function telaDeSkins()
   love.graphics.draw(terra.imagem, skinLua3PosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  love.graphics.printf( 
-    'Mínimo Onda: 45',
-    retangulo3PosX + 10,
-    retangulo2PosY + altura - 25,
-    largura - 10,
-    "center"
-  )
+  isSkinSelecionadaTexto(skinTerra, 3, 45, retangulo3PosX, retangulo2PosY)
   
   -- Texto LUA PADRÃO -- 
   love.graphics.setColor(255, 255, 255)
@@ -992,15 +984,8 @@ function telaDeSkins()
   )
   
   love.graphics.draw(lua.imagem, skinLuaPadraoPosX, skinPadraoPosY, 0, escalaLuaImg, escalaLuaImg)
-  
-  love.graphics.setColor(34, 177, 76)
-  love.graphics.printf( 
-    'Selecionado',
-    retanguloLuaPadraoPosX + 10,
-    retanguloPadraoPosY + altura - 25,
-    largura - 10,
-    "center"
-  )
+     
+  isSkinSelecionadaTexto(skinLua, 0, 0, retanguloLuaPadraoPosX, retanguloPadraoPosY)
   
    -- Texto TERRA PADRÃO-- 
   love.graphics.setColor(255, 255, 255)
@@ -1020,14 +1005,7 @@ function telaDeSkins()
   
   love.graphics.draw(terra.imagem, skinTerraPadraoPosX, skinPadraoPosY, 0, escalaLuaImg, escalaLuaImg)
   
-  love.graphics.setColor(34, 177, 76)
-  love.graphics.printf( 
-    'Selecionado',
-    retanguloTerraPadraoPosX + 10,
-    retanguloPadraoPosY + altura - 25,
-    largura - 10,
-    "center"
-  )
+  isSkinSelecionadaTexto(skinTerra, 0, 0, retanguloTerraPadraoPosX, retanguloPadraoPosY)
   love.graphics.setColor(255, 255, 255)
   
   -- Exibe o botão de retorno --
@@ -1043,7 +1021,7 @@ function telaDeSkins()
     retanguloPosY,
     largura, 
     altura
-    ) and botaoUmSolto then
+    ) and botaoUmSolto and maiorOnda >= 15 then
     botaoUmSolto = false
     skinLua = 1
   end 
@@ -1054,7 +1032,7 @@ function telaDeSkins()
     retanguloPosY,
     largura, 
     altura
-    ) and botaoUmSolto then
+    ) and botaoUmSolto and maiorOnda >= 25 then
     botaoUmSolto = false
     skinLua = 2
   end 
@@ -1065,7 +1043,7 @@ function telaDeSkins()
     retanguloPosY,
     largura, 
     altura
-    ) and botaoUmSolto then
+    ) and botaoUmSolto and maiorOnda >= 35 then
     botaoUmSolto = false
     skinLua = 3
   end 
@@ -1076,7 +1054,7 @@ function telaDeSkins()
     retangulo2PosY,
     largura, 
     altura
-    ) and botaoUmSolto then
+    ) and botaoUmSolto and maiorOnda >= 20 then
     botaoUmSolto = false
     skinTerra = 1
   end 
@@ -1087,7 +1065,7 @@ function telaDeSkins()
     retangulo2PosY,
     largura, 
     altura
-    ) and botaoUmSolto then
+    ) and botaoUmSolto and maiorOnda >= 30 then
     botaoUmSolto = false
     skinTerra = 2
   end 
@@ -1098,7 +1076,7 @@ function telaDeSkins()
     retangulo2PosY,
     largura, 
     altura
-    ) and botaoUmSolto then
+    ) and botaoUmSolto and maiorOnda >= 45 then
     botaoUmSolto = false
     skinTerra = 3
   end 

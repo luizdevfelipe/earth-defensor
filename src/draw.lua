@@ -10,18 +10,26 @@ function love.draw()
     efeitoEstrelas()
     
     --  Carregamento da imagem da Terra  --
+    if skinTerra > 0 then
+      love.graphics.setColor(valoresCoresSkins.terra[skinTerra][1], valoresCoresSkins.terra[skinTerra][2], valoresCoresSkins.terra[skinTerra][3])
+    end
     if terraDestruidaSprite >= 1 then
       love.graphics.draw(terraDestruidaAnim[terraDestruidaSprite], terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
     else
       love.graphics.draw(terra.imagem, terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
     end
+    love.graphics.setColor(255, 255, 255)
     
     --  Carregamento da imagem da Lua  --
+    if skinLua > 0 then
+      love.graphics.setColor(valoresCoresSkins.lua[skinLua][1], valoresCoresSkins.lua[skinLua][2], valoresCoresSkins.lua[skinLua][3])
+    end
     if rachaduraSprite >= 1 then
       love.graphics.draw(rachaduraAnim[rachaduraSprite], lua.posX - lua.oriX, lua.posY - lua.oriY, 0, escalaLuaImg, escalaLuaImg)
     else
       love.graphics.draw(lua.imagem, lua.posX - lua.oriX, lua.posY - lua.oriY, 0, escalaLuaImg, escalaLuaImg)
     end
+    love.graphics.setColor(255, 255, 255)
     -- Carregamento da Sombra da Lua --
     desenhoSombraLua(lua.posX, lua.posY, lua.oriX, lua.oriY, getAngulo(terra.posX, terra.posY, lua.posX, lua.posY))
     
@@ -754,20 +762,39 @@ end
 -- Exibe a tela de escolha de skins para personagens
 function telaDeSkins()
   desfoqueFundo(180)
+  
   local largura = 300
-  local altura = 200
+  local altura = 180
+  
+  local retanguloPosY = 250
+  local retangulo2PosY = 500
+  local retanguloPadraoPosY = screenHeight - altura - 100
+  
+  if screenHeight <= 990 then
+    largura = 200
+    altura = 160
+    retanguloPosY = 155
+    retangulo2PosY = 355
+    retanguloPadraoPosY = 570
+  end
   
   local retanguloPosX = centroJanelaX - largura*2 
-  local retanguloPosY = 250
   
   local retangulo2PosX =  centroJanelaX - largura/2
   local skinLua2PosX = retangulo2PosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
   
   local retangulo3PosX = centroJanelaX + largura
   local skinLua3PosX = retangulo3PosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
-  
-  local retangulo2PosY = 500
+ 
   local skinSegundaLinhaY = retangulo2PosY + lua.imagem:getHeight()*escalaLuaImg/2
+  
+  local retanguloLuaPadraoPosX = (centroJanelaX - largura*2) + largura/2
+  
+  local skinLuaPadraoPosX = retanguloLuaPadraoPosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
+  local skinPadraoPosY = retanguloPadraoPosY + lua.imagem:getHeight()*escalaLuaImg/2
+  
+  local retanguloTerraPadraoPosX = (centroJanelaX + largura) - largura/2
+  local skinTerraPadraoPosX = retanguloTerraPadraoPosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
   
   local skinLuaPosX = retanguloPosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
   local skinLuaPosY = retanguloPosY + lua.imagem:getHeight()*escalaLuaImg/2
@@ -796,7 +823,7 @@ function telaDeSkins()
     "center"
   )
   
-  love.graphics.setColor(180, 0, 0)
+  love.graphics.setColor(valoresCoresSkins.lua[1][1], valoresCoresSkins.lua[1][2], valoresCoresSkins.lua[1][3])
   love.graphics.draw(lua.imagem, skinLuaPosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
@@ -824,7 +851,7 @@ function telaDeSkins()
     "center"
   )
   
-  love.graphics.setColor(50, 50, 130)
+  love.graphics.setColor(valoresCoresSkins.lua[2][1], valoresCoresSkins.lua[2][2], valoresCoresSkins.lua[2][3])
   love.graphics.draw(lua.imagem, skinLua2PosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
@@ -836,7 +863,7 @@ function telaDeSkins()
     "center"
   )
   
-  -- Texto LUA RADIOATIVA -- 
+  -- Texto LUA DOURADA -- 
   love.graphics.setColor(255, 255, 255)
   love.graphics.setLineWidth(8)
   love.graphics.rectangle('line', retangulo3PosX, retanguloPosY, largura, altura)
@@ -845,14 +872,14 @@ function telaDeSkins()
   love.graphics.setColor(255, 255, 255)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
-    'Lua Radioativa',
+    'Lua Dourada',
     retangulo3PosX + 10,
     retanguloPosY + 10,
     largura - 10,
     "center"
   )
   
-  love.graphics.setColor(100, 230, 100)
+  love.graphics.setColor(valoresCoresSkins.lua[3][1], valoresCoresSkins.lua[3][2], valoresCoresSkins.lua[3][3])
   love.graphics.draw(lua.imagem, skinLua3PosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
@@ -880,7 +907,7 @@ function telaDeSkins()
     "center"
   )
   
-  love.graphics.setColor(100, 230, 100)
+  love.graphics.setColor(valoresCoresSkins.terra[1][1], valoresCoresSkins.terra[1][2], valoresCoresSkins.terra[1][3])
   love.graphics.draw(terra.imagem, skinLuaPosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
@@ -908,7 +935,7 @@ function telaDeSkins()
     "center"
   )
   
-  love.graphics.setColor(100, 230, 100)
+  love.graphics.setColor(valoresCoresSkins.terra[2][1], valoresCoresSkins.terra[2][2], valoresCoresSkins.terra[2][3])
   love.graphics.draw(terra.imagem, skinLua2PosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
@@ -920,7 +947,7 @@ function telaDeSkins()
     "center"
   )
   
-   -- Texto TERRA EM CHAMAS -- 
+   -- Texto TERRA RADIOATIVA -- 
   love.graphics.setColor(255, 255, 255)
   love.graphics.setLineWidth(8)
   love.graphics.rectangle('line', retangulo3PosX, retangulo2PosY, largura, altura)
@@ -929,14 +956,14 @@ function telaDeSkins()
   love.graphics.setColor(255, 255, 255)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
-    'Terra em Chamas',
+    'Terra Radioativa',
     retangulo3PosX + 10,
     retangulo2PosY + 10,
     largura - 10,
     "center"
   )
   
-  love.graphics.setColor(100, 230, 100)
+  love.graphics.setColor(valoresCoresSkins.terra[3][1], valoresCoresSkins.terra[3][2], valoresCoresSkins.terra[3][3])
   love.graphics.draw(terra.imagem, skinLua3PosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
@@ -948,12 +975,155 @@ function telaDeSkins()
     "center"
   )
   
+  -- Texto LUA PADRÃO -- 
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setLineWidth(8)
+  love.graphics.rectangle('line', retanguloLuaPadraoPosX, retanguloPadraoPosY, largura, altura)
+  love.graphics.setColor(0, 0, 0, 220)
+  love.graphics.rectangle('fill', retanguloLuaPadraoPosX+4, retanguloPadraoPosY+4, largura-8, altura-8)
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  love.graphics.printf( 
+    'Lua Padrão',
+    retanguloLuaPadraoPosX + 10,
+    retanguloPadraoPosY + 10,
+    largura - 10,
+    "center"
+  )
+  
+  love.graphics.draw(lua.imagem, skinLuaPadraoPosX, skinPadraoPosY, 0, escalaLuaImg, escalaLuaImg)
+  
+  love.graphics.setColor(34, 177, 76)
+  love.graphics.printf( 
+    'Selecionado',
+    retanguloLuaPadraoPosX + 10,
+    retanguloPadraoPosY + altura - 25,
+    largura - 10,
+    "center"
+  )
+  
+   -- Texto TERRA PADRÃO-- 
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setLineWidth(8)
+  love.graphics.rectangle('line', retanguloTerraPadraoPosX, retanguloPadraoPosY, largura, altura)
+  love.graphics.setColor(0, 0, 0, 220)
+  love.graphics.rectangle('fill', retanguloTerraPadraoPosX+4, retanguloPadraoPosY+4, largura-8, altura-8)
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.setFont(fontNormal20)
+  love.graphics.printf( 
+    'Terra Padrão',
+    retanguloTerraPadraoPosX + 10,
+    retanguloPadraoPosY + 10,
+    largura - 10,
+    "center"
+  )
+  
+  love.graphics.draw(terra.imagem, skinTerraPadraoPosX, skinPadraoPosY, 0, escalaLuaImg, escalaLuaImg)
+  
+  love.graphics.setColor(34, 177, 76)
+  love.graphics.printf( 
+    'Selecionado',
+    retanguloTerraPadraoPosX + 10,
+    retanguloPadraoPosY + altura - 25,
+    largura - 10,
+    "center"
+  )
+  love.graphics.setColor(255, 255, 255)
+  
   -- Exibe o botão de retorno --
   local larguraReturnIco = returnIco:getWidth()
   local alturaReturnIco = returnIco:getHeight()
   local returnIcoX = screenWidth - larguraReturnIco -30
   local returnIcoY = screenHeight - alturaReturnIco -30
   love.graphics.draw(returnIco, returnIcoX, returnIcoY, 0, 1, 1)
+  
+  -- Verifica se selecionou a 1º Skin -- 
+  if isCliqueEmTexto(
+    retanguloPosX, 
+    retanguloPosY,
+    largura, 
+    altura
+    ) and botaoUmSolto then
+    botaoUmSolto = false
+    skinLua = 1
+  end 
+  
+  -- Verifica se selecionou a 2º Skin -- 
+  if isCliqueEmTexto(
+    retangulo2PosX, 
+    retanguloPosY,
+    largura, 
+    altura
+    ) and botaoUmSolto then
+    botaoUmSolto = false
+    skinLua = 2
+  end 
+  
+  -- Verifica se selecionou a 3º Skin -- 
+  if isCliqueEmTexto(
+    retangulo3PosX, 
+    retanguloPosY,
+    largura, 
+    altura
+    ) and botaoUmSolto then
+    botaoUmSolto = false
+    skinLua = 3
+  end 
+  
+  -- Verifica se selecionou a 4º Skin -- 
+  if isCliqueEmTexto(
+    retanguloPosX, 
+    retangulo2PosY,
+    largura, 
+    altura
+    ) and botaoUmSolto then
+    botaoUmSolto = false
+    skinTerra = 1
+  end 
+  
+  -- Verifica se selecionou a 5º Skin -- 
+  if isCliqueEmTexto(
+    retangulo2PosX, 
+    retangulo2PosY,
+    largura, 
+    altura
+    ) and botaoUmSolto then
+    botaoUmSolto = false
+    skinTerra = 2
+  end 
+  
+  -- Verifica se selecionou a 6º Skin -- 
+  if isCliqueEmTexto(
+    retangulo3PosX, 
+    retangulo2PosY,
+    largura, 
+    altura
+    ) and botaoUmSolto then
+    botaoUmSolto = false
+    skinTerra = 3
+  end 
+  
+  -- Verifica se selecionou a Lua Padrão -- 
+  if isCliqueEmTexto(
+    retanguloLuaPadraoPosX, 
+    retanguloPadraoPosY,
+    largura, 
+    altura
+    ) and botaoUmSolto then
+    botaoUmSolto = false
+    skinLua = 0
+  end 
+  
+  -- Verifica se selecionou a Terra Padrão -- 
+  if isCliqueEmTexto(
+    retanguloTerraPadraoPosX, 
+    retanguloPadraoPosY,
+    largura, 
+    altura
+    ) and botaoUmSolto then
+    botaoUmSolto = false
+    skinTerra = 0
+  end 
   
   -- verifica se clicou sobre o "Botão de retorno" -- 
   if isCliqueEmTexto(returnIcoX, returnIcoY, larguraReturnIco, alturaReturnIco) and botaoUmSolto then

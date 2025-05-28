@@ -95,6 +95,23 @@ function love.load()
   skinScreen = false
   isGameMusic = true
   volumeGeral = 0.5
+  -- Variáveis para definição das skins dos personagens --
+  skinTerra = 0
+  skinLua = 0
+  valoresCoresSkins = {
+    terra = {
+      {126, 218, 255},
+      {64, 89, 100},
+      {100, 230, 100}
+      
+    },
+    lua = {
+      {180, 0, 0},
+      {24, 151, 255},
+      {255, 182, 41}
+    }
+  }
+  -- Variáveis para definição das skins dos personagens --
   alterarVolume() -- função que altera o volume de todos os aúdios
   -- Carregamento de variáveis que não se alteram com as partidas
 end

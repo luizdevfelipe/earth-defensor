@@ -755,12 +755,7 @@ end
 -- função para armazenar o record do jogador --
 function recordPontuacao()
   if love.filesystem.exists("pontos.txt") then
-    pontuacao = love.filesystem.read("pontos.txt")
-    
-    local valores = {}
-    for valor in string.gmatch(pontuacao, "([^;]+)") do
-      table.insert(valores, tonumber(valor))
-    end
+    local valores = leituraPontuacao()
     
     if startGame == 1 then
       if valores[1] < onda then
@@ -777,6 +772,16 @@ function recordPontuacao()
       love.filesystem.write("pontos.txt", '0'..';'..onda)    
     end
   end
+end
+
+-- Função que retorna um vetor com os records de pontuação --
+function leituraPontuacao()
+  local pontuacao = love.filesystem.read("pontos.txt")
+  local valores = {}
+  for valor in string.gmatch(pontuacao, "([^;]+)") do
+    table.insert(valores, tonumber(valor))
+  end
+  return valores
 end
 
 -- Variáveis que devem ser atualizadas durante a execução

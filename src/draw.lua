@@ -10,15 +10,13 @@ function love.draw()
     efeitoEstrelas()
     
     --  Carregamento da imagem da Terra  --
-    if skinTerra > 0 then
-      love.graphics.setColor(valoresCoresSkins.terra[skinTerra][1], valoresCoresSkins.terra[skinTerra][2], valoresCoresSkins.terra[skinTerra][3])
+    love.graphics.draw(terra.imagem, terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
+     if skinTerra > 0 then
+      love.graphics.draw(valoresCoresSkins.terra[skinTerra], terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
     end
     if terraDestruidaSprite >= 1 then
       love.graphics.draw(terraDestruidaAnim[terraDestruidaSprite], terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
-    else
-      love.graphics.draw(terra.imagem, terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
     end
-    love.graphics.setColor(255, 255, 255)
     
     --  Carregamento da imagem da Lua  --
     if skinLua > 0 then
@@ -917,8 +915,8 @@ function telaDeSkins()
     "center"
   )
   
-  love.graphics.setColor(valoresCoresSkins.terra[1][1], valoresCoresSkins.terra[1][2], valoresCoresSkins.terra[1][3])
   love.graphics.draw(terra.imagem, skinLuaPosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
+  love.graphics.draw(valoresCoresSkins.terra[1], skinLuaPosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
   isSkinSelecionadaTexto(skinTerra, 1, 20, retanguloPosX, retangulo2PosY)

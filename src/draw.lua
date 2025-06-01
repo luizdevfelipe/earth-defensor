@@ -764,9 +764,10 @@ function telaDeSkins()
   
   valores = leituraPontuacao()
   local maiorOnda = valores[1]
- 
-  local largura = 300
-  local altura = 180
+  
+  local escalaMoldura = 0.3
+  local largura = moldura_skins:getWidth()*escalaMoldura - 10
+  local altura = moldura_skins:getHeight()*escalaMoldura - 10
   
   local retanguloPosY = 250
   local retangulo2PosY = 500
@@ -807,7 +808,7 @@ function telaDeSkins()
       love.graphics.printf( 
         'Selecionado',
         posX + 10,
-        posY + altura - 25,
+        posY + altura - 50,
         largura - 10,
         "center"
       )
@@ -815,7 +816,7 @@ function telaDeSkins()
       love.graphics.printf( 
         'Selecionar',
         posX + 10,
-        posY + altura - 25,
+        posY + altura - 50,
         largura - 10,
         "center"
       )
@@ -823,7 +824,7 @@ function telaDeSkins()
       love.graphics.printf( 
       'Mínimo Onda: '..ondaMinima,
       posX + 10,
-      posY + altura - 25,
+      posY + altura - 50,
       largura - 10,
       "center"
       )
@@ -840,16 +841,12 @@ function telaDeSkins()
   
   -- Texto LUA SANGUE --
   love.graphics.setColor(255, 255, 255)
-  love.graphics.setLineWidth(8)
-  love.graphics.rectangle('line', retanguloPosX, retanguloPosY, largura, altura)
-  love.graphics.setColor(0, 0, 0, 220)
-  love.graphics.rectangle('fill', retanguloPosX+4, retanguloPosY+4, largura-8, altura-8)
-  love.graphics.setColor(255, 255, 255)
+  love.graphics.draw(moldura_skins, retanguloPosX, retanguloPosY, 0, escalaMoldura, escalaMoldura)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Lua de Sangue',
     retanguloPosX + 10,
-    retanguloPosY + 10,
+    retanguloPosY + 30,
     largura - 10,
     "center"
   )
@@ -861,12 +858,7 @@ function telaDeSkins()
   isSkinSelecionadaTexto(skinLua, 1, 15, retanguloPosX, retanguloPosY)
   
   -- Texto LUA AZUL -- 
-  love.graphics.setColor(255, 255, 255)
-  love.graphics.setLineWidth(8)
-  love.graphics.rectangle('line', retangulo2PosX, retanguloPosY, largura, altura)
-  love.graphics.setColor(0, 0, 0, 220)
-  love.graphics.rectangle('fill', retangulo2PosX+4, retanguloPosY+4, largura-8, altura-8)
-  love.graphics.setColor(255, 255, 255)
+  love.graphics.draw(moldura_skins, retangulo2PosX, retanguloPosY, 0, escalaMoldura, escalaMoldura)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Lua Azul',
@@ -883,12 +875,7 @@ function telaDeSkins()
   isSkinSelecionadaTexto(skinLua, 2, 25, retangulo2PosX, retanguloPosY)
   
   -- Texto LUA DOURADA -- 
-  love.graphics.setColor(255, 255, 255)
-  love.graphics.setLineWidth(8)
-  love.graphics.rectangle('line', retangulo3PosX, retanguloPosY, largura, altura)
-  love.graphics.setColor(0, 0, 0, 220)
-  love.graphics.rectangle('fill', retangulo3PosX+4, retanguloPosY+4, largura-8, altura-8)
-  love.graphics.setColor(255, 255, 255)
+  love.graphics.draw(moldura_skins, retangulo3PosX, retanguloPosY, 0, escalaMoldura, escalaMoldura)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Lua Dourada',
@@ -905,12 +892,7 @@ function telaDeSkins()
   isSkinSelecionadaTexto(skinLua, 3, 35, retangulo3PosX, retanguloPosY)
   
   -- Texto TERRA GELADA -- 
-  love.graphics.setColor(255, 255, 255)
-  love.graphics.setLineWidth(8)
-  love.graphics.rectangle('line', retanguloPosX, retangulo2PosY, largura, altura)
-  love.graphics.setColor(0, 0, 0, 220)
-  love.graphics.rectangle('fill', retanguloPosX+4, retangulo2PosY+4, largura-8, altura-8)
-  love.graphics.setColor(255, 255, 255)
+  love.graphics.draw(moldura_skins, retanguloPosX, retangulo2PosY, 0, escalaMoldura, escalaMoldura)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Terra Gelada',
@@ -927,12 +909,7 @@ function telaDeSkins()
   isSkinSelecionadaTexto(skinTerra, 1, 20, retanguloPosX, retangulo2PosY)
   
   -- Texto TERRA SUBMERSA -- 
-  love.graphics.setColor(255, 255, 255)
-  love.graphics.setLineWidth(8)
-  love.graphics.rectangle('line', retangulo2PosX, retangulo2PosY, largura, altura)
-  love.graphics.setColor(0, 0, 0, 220)
-  love.graphics.rectangle('fill', retangulo2PosX+4, retangulo2PosY+4, largura-8, altura-8)
-  love.graphics.setColor(255, 255, 255)
+  love.graphics.draw(moldura_skins, retangulo2PosX, retangulo2PosY, 0, escalaMoldura, escalaMoldura)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Terra Desértica',
@@ -949,12 +926,7 @@ function telaDeSkins()
   isSkinSelecionadaTexto(skinTerra, 2, 30, retangulo2PosX, retangulo2PosY)
   
    -- Texto TERRA RADIOATIVA -- 
-  love.graphics.setColor(255, 255, 255)
-  love.graphics.setLineWidth(8)
-  love.graphics.rectangle('line', retangulo3PosX, retangulo2PosY, largura, altura)
-  love.graphics.setColor(0, 0, 0, 220)
-  love.graphics.rectangle('fill', retangulo3PosX+4, retangulo2PosY+4, largura-8, altura-8)
-  love.graphics.setColor(255, 255, 255)
+  love.graphics.draw(moldura_skins, retangulo3PosX, retangulo2PosY, 0, escalaMoldura, escalaMoldura)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Terra Radioativa',
@@ -971,12 +943,7 @@ function telaDeSkins()
   isSkinSelecionadaTexto(skinTerra, 3, 45, retangulo3PosX, retangulo2PosY)
   
   -- Texto LUA PADRÃO -- 
-  love.graphics.setColor(255, 255, 255)
-  love.graphics.setLineWidth(8)
-  love.graphics.rectangle('line', retanguloLuaPadraoPosX, retanguloPadraoPosY, largura, altura)
-  love.graphics.setColor(0, 0, 0, 220)
-  love.graphics.rectangle('fill', retanguloLuaPadraoPosX+4, retanguloPadraoPosY+4, largura-8, altura-8)
-  love.graphics.setColor(255, 255, 255)
+  love.graphics.draw(moldura_skins, retanguloLuaPadraoPosX, retanguloPadraoPosY, 0, escalaMoldura, escalaMoldura)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Lua Padrão',
@@ -991,12 +958,7 @@ function telaDeSkins()
   isSkinSelecionadaTexto(skinLua, 0, 0, retanguloLuaPadraoPosX, retanguloPadraoPosY)
   
    -- Texto TERRA PADRÃO-- 
-  love.graphics.setColor(255, 255, 255)
-  love.graphics.setLineWidth(8)
-  love.graphics.rectangle('line', retanguloTerraPadraoPosX, retanguloPadraoPosY, largura, altura)
-  love.graphics.setColor(0, 0, 0, 220)
-  love.graphics.rectangle('fill', retanguloTerraPadraoPosX+4, retanguloPadraoPosY+4, largura-8, altura-8)
-  love.graphics.setColor(255, 255, 255)
+  love.graphics.draw(moldura_skins, retanguloTerraPadraoPosX, retanguloPadraoPosY, 0, escalaMoldura, escalaMoldura)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Terra Padrão',

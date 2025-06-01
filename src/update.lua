@@ -754,34 +754,38 @@ end
 
 -- função para armazenar o record do jogador --
 function recordPontuacao()
-  if love.filesystem.exists("pontos.txt") then
-    local valores = leituraPontuacao()
-    
-    if startGame == 1 then
-      if valores[1] < onda then
-        love.filesystem.write("pontos.txt", onda..';'..valores[2])
-      end
-    elseif startGame == 2 then
-      love.filesystem.write("pontos.txt", valores[1]..';'..onda)
+  local valores = leituraPontuacao()
+  
+  if startGame == 1 then
+    if valores[1] < onda then
+      love.filesystem.write("save/pontos.txt", onda..';'..valores[2])
     end
- 
-  else
-    if startGame == 1 then
-      love.filesystem.write("pontos.txt", onda..';'..'0')    
-    elseif startGame == 2 then
-      love.filesystem.write("pontos.txt", '0'..';'..onda)    
-    end
+  elseif startGame == 2 then
+    love.filesystem.write("save/pontos.txt", valores[1]..';'..onda)
   end
 end
 
 -- Função que retorna um vetor com os records de pontuação --
 function leituraPontuacao()
-  local pontuacao = love.filesystem.read("pontos.txt")
-  local valores = {}
-  for valor in string.gmatch(pontuacao, "([^;]+)") do
-    table.insert(valores, tonumber(valor))
+  if love.filesystem.exists("save/pontos.txt") then
+    local pontuacao = love.filesystem.read("save/pontos.txt")
+    local valores = {}
+    for valor in string.gmatch(pontuacao, "([^;]+)") do
+      table.insert(valores, tonumber(valor))
+    end
+    return valores
+  else
+    if startGame == 1 then
+      love.filesystem.createDirectory("save")
+      love.filesystem.write("save/pontos.txt", onda..';'..'0')    
+      return {onda, 0}
+    elseif startGame == 2 then
+      love.filesystem.createDirectory("save")
+      love.filesystem.write("save/pontos.txt", '0'..';'..onda)   
+      return {0, onda}
+    end
+    return {0, 0}
   end
-  return valores
 end
 
 -- Variáveis que devem ser atualizadas durante a execução

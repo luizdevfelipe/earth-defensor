@@ -101,13 +101,13 @@ function love.load()
   valoresCoresSkins = {
     terra = {
       love.graphics.newImage("assets/images/terras/skins/skin_neve.png"),
-      {64, 89, 100},
+      love.graphics.newImage("assets/images/terras/skins/skin_deserto.png"),
       {100, 230, 100}
       
     },
     lua = {
       {180, 0, 0},
-      {24, 151, 255},
+      {58, 148, 255},
       {255, 182, 41}
     }
   }

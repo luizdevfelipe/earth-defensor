@@ -12,7 +12,12 @@ function love.draw()
     --  Carregamento da imagem da Terra  --
     love.graphics.draw(terra.imagem, terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
      if skinTerra > 0 then
-      love.graphics.draw(valoresCoresSkins.terra[skinTerra], terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
+       if type(valoresCoresSkins.terra[skinTerra]) == "table" then
+        love.graphics.setColor(valoresCoresSkins.terra[skinTerra][1], valoresCoresSkins.terra[skinTerra][2], valoresCoresSkins.terra[skinTerra][3])
+        love.graphics.draw(terra.imagem, terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
+       else
+        love.graphics.draw(valoresCoresSkins.terra[skinTerra], terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
+       end
     end
     if terraDestruidaSprite >= 1 then
       love.graphics.draw(terraDestruidaAnim[terraDestruidaSprite], terra.posX - terra.oriX, terra.posY - terra.oriY, 0, escalaTerraImg, escalaTerraImg)
@@ -930,15 +935,15 @@ function telaDeSkins()
   love.graphics.setColor(255, 255, 255)
   love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
-    'Terra Submersa',
+    'Terra Desértica',
     retangulo2PosX + 10,
     retangulo2PosY + 10,
     largura - 10,
     "center"
   )
   
-  love.graphics.setColor(valoresCoresSkins.terra[2][1], valoresCoresSkins.terra[2][2], valoresCoresSkins.terra[2][3])
   love.graphics.draw(terra.imagem, skinLua2PosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
+  love.graphics.draw(valoresCoresSkins.terra[2], skinLua2PosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
   isSkinSelecionadaTexto(skinTerra, 2, 30, retangulo2PosX, retangulo2PosY)

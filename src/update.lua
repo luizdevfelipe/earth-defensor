@@ -34,7 +34,7 @@ function animacaoIntroducao(dt)
   end
   
   -- Lógica do tempo de interrupção da animação via tecla pressionada --  
-  if love.keyboard.isDown('return') and musicaIntroducao:isPlaying() then
+  if love.keyboard.isDown('return') and musicaIntroducao:isPlaying() and not introducao then
     tempoPularAnim = tempoPularAnim - 1 
     if tempoPularAnim <= 0 then
       musicaIntroducao:stop()
@@ -625,7 +625,7 @@ function love.keypressed(key)
   end
   
   if key == "return" then
-    if startGame == 0 and not musicaIntroducao:isPlaying() and not skinScreen then
+    if startGame == 0 and not musicaIntroducao:isPlaying() and not skinScreen and not introducao then
       if botaoSelectModo then
         startGame = 1
       else
@@ -691,7 +691,7 @@ end
 function gerenciamentoDasMusicas()
   if isGameMusic then
     
-    if startGame == 0 and not musicaIntroducao:isPlaying() then
+    if startGame == 0 and not musicaIntroducao:isPlaying() and not introducao then
       musicaMenu:play()
       musicaMenu:setLooping(true)
     else      

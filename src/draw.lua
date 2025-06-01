@@ -773,12 +773,13 @@ function telaDeSkins()
   local retangulo2PosY = 500
   local retanguloPadraoPosY = screenHeight - altura - 100
   
-  if screenHeight <= 990 then
-    largura = 200
-    altura = 160
-    retanguloPosY = 155
+  if screenHeight < 1080 then
+    largura = moldura_skins:getWidth()*escalaMoldura - 35
+    altura = moldura_skins:getHeight()*escalaMoldura - 30
+    retanguloPosY = 140
     retangulo2PosY = 355
     retanguloPadraoPosY = 570
+    escalaMoldura = 0.27
   end
   
   local retanguloPosX = centroJanelaX - largura*2 
@@ -789,20 +790,22 @@ function telaDeSkins()
   local retangulo3PosX = centroJanelaX + largura
   local skinLua3PosX = retangulo3PosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
  
-  local skinSegundaLinhaY = retangulo2PosY + lua.imagem:getHeight()*escalaLuaImg/2
+  local skinSegundaLinhaY = retangulo2PosY + lua.imagem:getHeight()*escalaLuaImg/2 + 40
   
   local retanguloLuaPadraoPosX = (centroJanelaX - largura*2) + largura/2
   
   local skinLuaPadraoPosX = retanguloLuaPadraoPosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
-  local skinPadraoPosY = retanguloPadraoPosY + lua.imagem:getHeight()*escalaLuaImg/2
+  local skinPadraoPosY = retanguloPadraoPosY + lua.imagem:getHeight()*escalaLuaImg/2 + 40
   
   local retanguloTerraPadraoPosX = (centroJanelaX + largura) - largura/2
   local skinTerraPadraoPosX = retanguloTerraPadraoPosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
   
   local skinLuaPosX = retanguloPosX + 4 + largura/2 - lua.imagem:getHeight()*escalaLuaImg/2
-  local skinLuaPosY = retanguloPosY + lua.imagem:getHeight()*escalaLuaImg/2
+  local skinLuaPosY = retanguloPosY + lua.imagem:getHeight()*escalaLuaImg/2 + 40
   
   function isSkinSelecionadaTexto(skinSelecionada, posicaoSkin, ondaMinima, posX, posY)
+    love.graphics.setFont(fontNormal20)
+    love.graphics.setColor(255,255,255,255)
     if skinSelecionada == posicaoSkin then
       love.graphics.setColor(34, 177, 76)
       love.graphics.printf( 
@@ -822,7 +825,7 @@ function telaDeSkins()
       )
     else 
       love.graphics.printf( 
-      'Mínimo Onda: '..ondaMinima,
+      'Recorde: '..ondaMinima,
       posX + 10,
       posY + altura - 50,
       largura - 10,
@@ -840,13 +843,12 @@ function telaDeSkins()
   love.graphics.print("Skins", skinsX, skinsY)
   
   -- Texto LUA SANGUE --
-  love.graphics.setColor(255, 255, 255)
+  isSkinSelecionadaTexto(skinLua, 1, 15, retanguloPosX, retanguloPosY)
   love.graphics.draw(moldura_skins, retanguloPosX, retanguloPosY, 0, escalaMoldura, escalaMoldura)
-  love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Lua de Sangue',
     retanguloPosX + 10,
-    retanguloPosY + 30,
+    retanguloPosY + 60,
     largura - 10,
     "center"
   )
@@ -855,15 +857,13 @@ function telaDeSkins()
   love.graphics.draw(lua.imagem, skinLuaPosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  isSkinSelecionadaTexto(skinLua, 1, 15, retanguloPosX, retanguloPosY)
-  
   -- Texto LUA AZUL -- 
+  isSkinSelecionadaTexto(skinLua, 2, 25, retangulo2PosX, retanguloPosY)
   love.graphics.draw(moldura_skins, retangulo2PosX, retanguloPosY, 0, escalaMoldura, escalaMoldura)
-  love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Lua Azul',
     retangulo2PosX + 10,
-    retanguloPosY + 10,
+    retanguloPosY + 60,
     largura - 10,
     "center"
   )
@@ -872,15 +872,13 @@ function telaDeSkins()
   love.graphics.draw(lua.imagem, skinLua2PosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  isSkinSelecionadaTexto(skinLua, 2, 25, retangulo2PosX, retanguloPosY)
-  
   -- Texto LUA DOURADA -- 
+  isSkinSelecionadaTexto(skinLua, 3, 35, retangulo3PosX, retanguloPosY)
   love.graphics.draw(moldura_skins, retangulo3PosX, retanguloPosY, 0, escalaMoldura, escalaMoldura)
-  love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Lua Dourada',
     retangulo3PosX + 10,
-    retanguloPosY + 10,
+    retanguloPosY + 60,
     largura - 10,
     "center"
   )
@@ -889,15 +887,13 @@ function telaDeSkins()
   love.graphics.draw(lua.imagem, skinLua3PosX, skinLuaPosY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  isSkinSelecionadaTexto(skinLua, 3, 35, retangulo3PosX, retanguloPosY)
-  
   -- Texto TERRA GELADA -- 
+  isSkinSelecionadaTexto(skinTerra, 1, 20, retanguloPosX, retangulo2PosY)
   love.graphics.draw(moldura_skins, retanguloPosX, retangulo2PosY, 0, escalaMoldura, escalaMoldura)
-  love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Terra Gelada',
     retanguloPosX + 10,
-    retangulo2PosY + 10,
+    retangulo2PosY + 60,
     largura - 10,
     "center"
   )
@@ -906,15 +902,13 @@ function telaDeSkins()
   love.graphics.draw(valoresCoresSkins.terra[1], skinLuaPosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  isSkinSelecionadaTexto(skinTerra, 1, 20, retanguloPosX, retangulo2PosY)
-  
   -- Texto TERRA SUBMERSA -- 
+  isSkinSelecionadaTexto(skinTerra, 2, 30, retangulo2PosX, retangulo2PosY)
   love.graphics.draw(moldura_skins, retangulo2PosX, retangulo2PosY, 0, escalaMoldura, escalaMoldura)
-  love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Terra Desértica',
     retangulo2PosX + 10,
-    retangulo2PosY + 10,
+    retangulo2PosY + 60,
     largura - 10,
     "center"
   )
@@ -923,15 +917,13 @@ function telaDeSkins()
   love.graphics.draw(valoresCoresSkins.terra[2], skinLua2PosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  isSkinSelecionadaTexto(skinTerra, 2, 30, retangulo2PosX, retangulo2PosY)
-  
    -- Texto TERRA RADIOATIVA -- 
+  isSkinSelecionadaTexto(skinTerra, 3, 45, retangulo3PosX, retangulo2PosY)
   love.graphics.draw(moldura_skins, retangulo3PosX, retangulo2PosY, 0, escalaMoldura, escalaMoldura)
-  love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Terra Radioativa',
     retangulo3PosX + 10,
-    retangulo2PosY + 10,
+    retangulo2PosY + 60,
     largura - 10,
     "center"
   )
@@ -940,37 +932,31 @@ function telaDeSkins()
   love.graphics.draw(terra.imagem, skinLua3PosX, skinSegundaLinhaY, 0, escalaLuaImg, escalaLuaImg)
   love.graphics.setColor(255, 255, 255)
   
-  isSkinSelecionadaTexto(skinTerra, 3, 45, retangulo3PosX, retangulo2PosY)
-  
   -- Texto LUA PADRÃO -- 
+  isSkinSelecionadaTexto(skinLua, 0, 0, retanguloLuaPadraoPosX, retanguloPadraoPosY)
   love.graphics.draw(moldura_skins, retanguloLuaPadraoPosX, retanguloPadraoPosY, 0, escalaMoldura, escalaMoldura)
-  love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Lua Padrão',
     retanguloLuaPadraoPosX + 10,
-    retanguloPadraoPosY + 10,
+    retanguloPadraoPosY + 60,
     largura - 10,
     "center"
   )
   
   love.graphics.draw(lua.imagem, skinLuaPadraoPosX, skinPadraoPosY, 0, escalaLuaImg, escalaLuaImg)
      
-  isSkinSelecionadaTexto(skinLua, 0, 0, retanguloLuaPadraoPosX, retanguloPadraoPosY)
-  
    -- Texto TERRA PADRÃO-- 
+  isSkinSelecionadaTexto(skinTerra, 0, 0, retanguloTerraPadraoPosX, retanguloPadraoPosY)
   love.graphics.draw(moldura_skins, retanguloTerraPadraoPosX, retanguloPadraoPosY, 0, escalaMoldura, escalaMoldura)
-  love.graphics.setFont(fontNormal20)
   love.graphics.printf( 
     'Terra Padrão',
     retanguloTerraPadraoPosX + 10,
-    retanguloPadraoPosY + 10,
+    retanguloPadraoPosY + 60,
     largura - 10,
     "center"
   )
   
   love.graphics.draw(terra.imagem, skinTerraPadraoPosX, skinPadraoPosY, 0, escalaLuaImg, escalaLuaImg)
-  
-  isSkinSelecionadaTexto(skinTerra, 0, 0, retanguloTerraPadraoPosX, retanguloPadraoPosY)
   love.graphics.setColor(255, 255, 255)
   
   -- Exibe o botão de retorno --

@@ -625,7 +625,7 @@ function love.keypressed(key)
   end
   
   if key == "return" then
-    if startGame == 0 and not musicaIntroducao:isPlaying() then
+    if startGame == 0 and not musicaIntroducao:isPlaying() and not skinScreen then
       if botaoSelectModo then
         startGame = 1
       else

@@ -755,7 +755,6 @@ end
 -- função para armazenar o record do jogador --
 function recordPontuacao()
   local valores = leituraPontuacao()
-  
   if startGame == 1 then
     if valores[1] < onda then
       love.filesystem.write("save/pontos.txt", onda..';'..valores[2])
@@ -784,6 +783,7 @@ function leituraPontuacao()
       love.filesystem.write("save/pontos.txt", '0'..';'..onda)   
       return {0, onda}
     end
+    love.filesystem.createDirectory("save")
     return {0, 0}
   end
 end

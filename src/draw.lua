@@ -810,7 +810,7 @@ function telaDeSkins()
       love.graphics.setColor(34, 177, 76)
       love.graphics.printf( 
         'Selecionado',
-        posX + 10,
+        posX + 7,
         posY + altura - 50,
         largura - 10,
         "center"
@@ -818,7 +818,7 @@ function telaDeSkins()
     elseif maiorOnda >= ondaMinima then
       love.graphics.printf( 
         'Selecionar',
-        posX + 10,
+        posX + 7,
         posY + altura - 50,
         largura - 10,
         "center"
@@ -826,7 +826,7 @@ function telaDeSkins()
     else 
       love.graphics.printf( 
       'Recorde: '..ondaMinima,
-      posX + 10,
+      posX + 7,
       posY + altura - 50,
       largura - 10,
       "center"

@@ -19,14 +19,14 @@
 <p> ✅ Criar um jogo divertido, funcional e desafiador! </p>
 
 <hr>
-<h3 id='#ideia'>🧠 Ideia do jogo:</h3>
+<h3 id='ideia'>🧠 Ideia do jogo:</h3>
 <p>🪐 Earth Defensor insere o jogador em um cenário onde a Terra será atingida por meteoróides e seu objetido é protejê-la através do controle da Lua.</p>
 <p>🌕 Nosso satélite natural servirá como escudo, colidindo e destruindo os inimigos antes que cheguem a Terra.</p>
 <p>⚡ Além de controlar a Lua o jogador dispôem de potencializadores que influenciam as métricas do jogo, auxiliando-o no decorres das rodadas.</p>
 <p>🎯 Cada rodada apresenta mais dificuldades, o objetivo do jogador torna-se alcançar uma rodada nunca antes jogada, ultrapassando seus limites.</p>
 
 <hr>
-<h3 id='#Experimente'>Jogue você também!</h3>
+<h3 id='Experimente'>Jogue você também!</h3>
 <ol>
   <li><strong>📦 Clonar o projeto:</strong> faça o download do jogo clicando em "< >Code" e download zip ou se possuir o Git em sua máquina digite o comando abaixo:</li>
    
@@ -44,5 +44,5 @@
 <h3>☎️ Contados:</h3>
 <ul>
   <li><strong>📫 luizdevfelipe@gmail.com</strong></li>
-  <li>🌐 https://luizdevfelipe.github.io/portfolio/ </li>
+  <li>🌐 <a href="https://luizdevfelipe.github.io/portfolio/" target="_blank">Portfólio</a> </li>
 </ul>

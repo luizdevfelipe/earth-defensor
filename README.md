@@ -20,7 +20,7 @@
 
 <hr>
 <h3 id='ideia'>🧠 Ideia do jogo:</h3>
-<p>🪐 Earth Defensor insere o jogador em um cenário onde a Terra será atingida por meteoróides e seu objetido é protejê-la através do controle da Lua.</p>
+<p>🪐 Earth Defensor insere o jogador em um cenário onde a Terra será atingida por meteoroides e seu objetido é protejê-la através do controle da Lua.</p>
 <p>🌕 Nosso satélite natural servirá como escudo, colidindo e destruindo os inimigos antes que cheguem a Terra.</p>
 <p>⚡ Além de controlar a Lua o jogador dispôem de potencializadores que influenciam as métricas do jogo, auxiliando-o no decorres das rodadas.</p>
 <p>🎯 Cada rodada apresenta mais dificuldades, o objetivo do jogador torna-se alcançar uma rodada nunca antes jogada, ultrapassando seus limites.</p>
